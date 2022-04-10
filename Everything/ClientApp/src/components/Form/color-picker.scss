@@ -1,0 +1,11 @@
+@import "colors.scss";
+
+.f-selected-color {
+    cursor: pointer;
+    border-radius: 50px;
+    height: 20px;
+    width: 20px;
+    border: solid;
+    display: block;
+    margin: 0px 4px;
+}

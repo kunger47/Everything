@@ -1,0 +1,71 @@
+@import "colors.scss";
+@import "../../media-queries.scss";
+
+.e-page-budgeting {
+    .e-column {
+        margin: 15px;
+
+        .e-column-title {
+            text-align: center;
+            border-bottom: solid;
+            font-weight: bold;
+
+            .e-add-column {
+                color: $grey;
+            }
+        }
+
+        .e-item-col {
+            padding-right: 2px;
+            padding-left: 2px;
+
+            .form-group {
+                margin-bottom: 0px;
+            }
+
+            .e-item-block {
+                margin: 4px;
+                padding: 7px;
+                border-radius: 3px;
+                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.15), 0 6px 20px 0 rgba(0, 0, 0, 0.15);
+
+                cursor: pointer;
+
+                > span {
+                    width: 100%;
+                }
+
+                p {
+                    margin-bottom: 0;
+                }
+
+                &.e-budget-title {
+                    font-size: large;
+                    text-align: center;
+                }
+
+                &.e-add-item {
+                    text-align: center;
+                    cursor: pointer;
+                }
+
+                &.e-item-currency {
+                    text-align: right;
+                }
+            }
+        }
+
+        .e-total-row {
+            background-color: $good-green;
+            font-weight: bold;
+
+            .e-item-block {
+                cursor: auto;
+            }
+
+            &.e-negative {
+                background-color: $neg_money;
+            }
+        }
+    }
+}

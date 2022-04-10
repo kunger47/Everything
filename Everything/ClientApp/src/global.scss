@@ -1,0 +1,200 @@
+@import "colors.scss";
+@import "media-queries.scss";
+
+@include md-up {
+    html,
+    body,
+    #root,
+    .container {
+        height: 100%;
+    }
+
+    .navbar {
+        height: 7%;
+    }
+
+    .e-title-bar {
+        height: 5%;
+    }
+
+    main {
+        height: 93%;
+    }
+
+    .e-page-content {
+        height: 95%;
+    }
+}
+
+html {
+    font-size: 14px;
+}
+
+body {
+    background-color: $white;
+}
+
+.e-hide-navbar {
+    width: 100%;
+}
+
+.e-hidden-navbar {
+    background-color: $primary;
+    width: 100%;
+    color: $white;
+    font-weight: bold;
+
+    span {
+        cursor: pointer;
+    }
+}
+
+.navbar {
+    background-color: $primary;
+    .nav-link {
+        color: $white !important;
+
+        &:hover {
+            color: $black !important;
+        }
+    }
+
+    .navbar-toggler {
+        background-color: $secondary;
+        color: $black;
+    }
+}
+
+.container {
+    max-width: 100%;
+}
+
+.e-pull-right {
+    float: right;
+}
+
+input {
+    margin: 5px 0px;
+}
+
+.e-btn-group {
+    justify-content: space-evenly;
+    display: flex;
+}
+
+.btn {
+    background-color: $primary;
+    border-color: $primary;
+    margin: 5px 0px;
+
+    &:hover {
+        background-color: $secondary;
+        border-color: $secondary;
+    }
+}
+
+hr {
+    border: 0;
+    clear: both;
+    display: block;
+    width: 96%;
+    background-color: $grey;
+    height: 1px;
+}
+
+.e-label {
+    font-weight: bold;
+}
+
+.e-table-value-col {
+    padding: 11px 26px;
+}
+
+a {
+    color: $ternary !important;
+
+    &:hover {
+        cursor: pointer;
+        color: $secondary !important;
+        text-decoration: none;
+    }
+}
+
+.e-delete-icon {
+    cursor: pointer;
+    color: $warning;
+    margin: 0px 2px;
+}
+
+.e-clickable {
+    cursor: pointer;
+}
+
+.e-blurred-text {
+    color: transparent;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none; /* Standard */
+}
+
+.e-unblurred-text {
+    animation-name: unblur;
+    -webkit-animation-name: unblur;
+    -moz-animation-name: unblur;
+
+    transition-property: all;
+    -webkit-transition-property: -webkit-transform;
+    -moz-transition-property: -moz-transform background-color;
+
+    transition-duration: 1s;
+    -webkit-transition-duration: 1s;
+    -moz-transition-duration: 1s;
+
+    animation-duration: 1s;
+    -webkit-animation-duration: 1s;
+    -moz-animation-duration: 1s;
+
+    animation-iteration-count: 1;
+    -webkit-animation-iteration-count: 1;
+    -moz-animation-iteration-count: infinite;
+
+    animation-timing-function: linear;
+    -webkit-animation-timing-function: linear;
+    -moz-animation-timing-function: linear;
+
+    @keyframes unblur {
+        from {
+            color: transparent;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            -webkit-user-select: none; /* Safari */
+            -moz-user-select: none; /* Firefox */
+            -ms-user-select: none; /* IE10+/Edge */
+            user-select: none; /* Standard */
+        }
+        to {
+            color: black;
+            text-shadow: none;
+        }
+    }
+
+    @-webkit-keyframes unblur {
+        from {
+            color: transparent;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            -webkit-user-select: none; /* Safari */
+            -moz-user-select: none; /* Firefox */
+            -ms-user-select: none; /* IE10+/Edge */
+            user-select: none; /* Standard */
+        }
+        to {
+            color: black;
+            text-shadow: none;
+        }
+    }
+}
+
+.e-no-bottom-margin {
+    margin-bottom: 0;
+}
