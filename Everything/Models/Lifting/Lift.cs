@@ -9,6 +9,7 @@ namespace everything.Models
         {
             MuscleGroupLinks = new List<MuscleGroupForLift>();
             LiftSets = new List<LiftSet>();
+            LiftSetLinks = new List<LiftSetLink>();
         }
 
         public int Id { get; set; }
@@ -23,5 +24,6 @@ namespace everything.Models
 
         public IEnumerable<MuscleGroupForLift> MuscleGroupLinks { get; set; }
         public IEnumerable<LiftSet> LiftSets { get; set; }
+        public IEnumerable<LiftSetLink> LiftSetLinks { get; set; }
     }
 }

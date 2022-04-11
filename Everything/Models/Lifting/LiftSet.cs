@@ -12,5 +12,8 @@ namespace everything.Models
 
         public int LiftId { get; set; }
         public virtual Lift Lift { get; set; }
+
+        public int LiftSetLinkId { get; set; }
+        public virtual LiftSetLink LiftSetLink { get; set; }
     }
 }

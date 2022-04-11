@@ -4,24 +4,20 @@ using everything.Models;
 
 namespace everything.Mappings
 {
-    public class LiftSetMap : IEntityTypeConfiguration<LiftSet>
+    public class LiftSetLinkMap : IEntityTypeConfiguration<LiftSetLink>
     {
-        public void Configure(EntityTypeBuilder<LiftSet> builder)
+        public void Configure(EntityTypeBuilder<LiftSetLink> builder)
         {
             // Primary key
             builder.HasKey(m => m.Id);
 
             // Table & column mappings
-            builder.ToTable("LiftRecords");
+            builder.ToTable("LiftSetLinks");
             builder.Property(m => m.Id).HasColumnName("Id");
             builder.Property(m => m.Date).HasColumnName("Date").IsRequired();
 
             builder.HasOne(i => i.Lift)
-                .WithMany(i => i.LiftSets)
-                .IsRequired();
-
-            builder.HasOne(i => i.LiftSetLink)
-                .WithMany(i => i.LiftSets)
+                .WithMany(i => i.LiftSetLinks)
                 .IsRequired();
         }
     }
