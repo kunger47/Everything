@@ -34,7 +34,7 @@ const Budgeting = () => {
         <Page title="Budgeting" classNameExtension='budgeting'>
             <Col>
                 {budgets.map(b =>
-                    <ReactLink to={`/budget?budgetId=${b.id}`}>
+                    <ReactLink to={`/budget?budgetId=${b.id}`} key={b.id}>
                         <Button className="">
                             {b.name}
                         </Button>

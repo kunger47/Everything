@@ -74,9 +74,9 @@ const GamePlayersColumn = (props: Props) => {
                             </span>
                         </Col>
                     </Row>
-                    {props.players.length > 0 && props.players.map((player: Player, index: number) => {
-                        return <Row>
-                            <GamePlayerBlock player={player} key={player.id} reload={props.reload} />
+                    {props.players.length > 0 && props.players.map((player: Player) => {
+                        return <Row key={player.id}>
+                            <GamePlayerBlock player={player} reload={props.reload} />
                         </Row>
                     })}
                     {props.players.length < 9 && <Row>

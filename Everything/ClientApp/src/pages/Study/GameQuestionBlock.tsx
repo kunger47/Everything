@@ -9,6 +9,10 @@ import { toast } from 'react-toastify';
 import Player from 'models/study/Player';
 import NumberInput from 'components/Form/NumberInput';
 
+import useSound from 'use-sound';
+import rightSound from '../../audio/correct_sound.wav';
+import wrongSound from '../../audio/incorrect_sound.mp3';
+
 interface Props {
     question: GameQuestion;
     toggleReload: boolean;
@@ -29,6 +33,9 @@ const GameQuestionBlock = (props: Props) => {
 
     const inputRef = useRef<HTMLInputElement>(null);
     const betRef = useRef<HTMLInputElement>(null);
+
+    const [playRight] = useSound(rightSound);
+    const [playWrong] = useSound(wrongSound);
 
     useEffect(() => {
         let answerIndex = answers.findIndex(a => a.wasRight);
@@ -86,13 +93,18 @@ const GameQuestionBlock = (props: Props) => {
     }
 
     const submitUserGuess = (answer: QuestionAnswer, value: boolean | null) => {
+        if (value)
+            playRight();
+        else if (value == false)
+            playWrong();
+
         if (!!answer.id) {
             if (!answer.bet)
                 studyApi.submitGuessForQuestion({ ...answer, wasRight: value, bet: playersBet }, loadAnswers);
         }
-        else
+        else {
             studyApi.createGuessForQuestion({ ...answer, wasRight: value, bet: playersBet }, loadAnswers);
-
+        }
         if (value)
             setShowingAnswer(true);
 

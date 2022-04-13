@@ -96,7 +96,7 @@ const Study = () => {
                     </Col>
                 </Row>
                 {games.map(game =>
-                    <Row>
+                    <Row key={game.id}>
                         <GameBlock game={game} reload={loadGames} />
                     </Row>
                 )}

@@ -22,7 +22,8 @@
     "react-scripts": "^4.0.1",
     "react-toastify": "^8.1.0",
     "reactstrap": "^8.4.1",
-    "rimraf": "^2.6.2"
+    "rimraf": "^2.6.2",
+    "use-sound": "^4.0.1"
   },
   "devDependencies": {
     "@testing-library/react": "^10.2.1",

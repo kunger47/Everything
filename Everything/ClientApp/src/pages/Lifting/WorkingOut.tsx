@@ -50,7 +50,7 @@ const WorkingOut = () => {
                     {/* TODO: Turn this into a checklist where you can click to add another random lift */}
                     {/* TODO: how to determine that it is complete? */}
                     {lifts && lifts.map((l, i) => {
-                        return <li style={i === currentLiftIndex ? { fontWeight: "bold" } : {}}>
+                        return <li key={l.id} style={i === currentLiftIndex ? { fontWeight: "bold" } : {}}>
                             <a onClick={() => setCurrentLiftIndex(i)}>{l.name}</a>
                         </li>
                     })}

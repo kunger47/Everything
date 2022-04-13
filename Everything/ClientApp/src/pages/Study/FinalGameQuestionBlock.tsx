@@ -7,6 +7,10 @@ import QuestionAnswer from 'models/study/QuestionAnswer';
 import Player from 'models/study/Player';
 import PlayersGuessBlock from './PlayersGuessBlock';
 
+import useSound from 'use-sound';
+import rightSound from '../../audio/correct_sound.wav';
+import wrongSound from '../../audio/incorrect_sound.mp3';
+
 interface Props {
     question: GameQuestion;
     toggleReload: boolean;
@@ -25,6 +29,9 @@ const FinalGameQuestionBlock = (props: Props) => {
 
     const inputRef = useRef<HTMLInputElement>(null);
     const betRef = useRef<HTMLInputElement>(null);
+
+    const [playRight] = useSound(rightSound);
+    const [playWrong] = useSound(wrongSound);
 
     useEffect(() => {
         isSelected && !!inputRef && !!inputRef.current && inputRef.current.focus();
@@ -56,6 +63,11 @@ const FinalGameQuestionBlock = (props: Props) => {
     }
 
     const submitUserGuess = (answer: QuestionAnswer) => (right: boolean | null, playersBet: number) => {
+        if (right)
+            playRight();
+        else if (right == false)
+            playWrong();
+
         if (!!answer.id) {
             if (!answer.bet)
                 studyApi.submitGuessForQuestion({ ...answer, wasRight: right, bet: playersBet }, loadAnswers);
@@ -122,8 +134,9 @@ const FinalGameQuestionBlock = (props: Props) => {
                     </Row>
                     {!hideQuestion && <Row>
                         <>
-                            {sortedAnswers.map(a =>
+                            {sortedAnswers.map((a, i) =>
                                 <PlayersGuessBlock
+                                    key={i}
                                     questionAnswer={a}
                                     submitUserGuess={submitUserGuess(a)}
                                     removeUserGuess={removeUserGuess(a)}

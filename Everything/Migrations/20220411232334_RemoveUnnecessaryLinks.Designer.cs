@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using everything.Data;
 
 namespace everything.Migrations
 {
     [DbContext(typeof(EverythingContext))]
-    partial class EverythingContextModelSnapshot : ModelSnapshot
+    [Migration("20220411232334_RemoveUnnecessaryLinks")]
+    partial class RemoveUnnecessaryLinks
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -309,6 +311,9 @@ namespace everything.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("LiftSetLinkId")
                         .HasColumnType("int");
 
@@ -341,17 +346,12 @@ namespace everything.Migrations
                     b.Property<int>("LiftId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("LiftingWorkoutId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Notes")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("LiftId");
-
-                    b.HasIndex("LiftingWorkoutId");
 
                     b.ToTable("LiftSetLinks");
                 });
@@ -372,27 +372,6 @@ namespace everything.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("LiftType");
-                });
-
-            modelBuilder.Entity("everything.Models.LiftingWorkout", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Notes")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("LiftingWorkouts");
                 });
 
             modelBuilder.Entity("everything.Models.MuscleGroup", b =>
@@ -794,14 +773,7 @@ namespace everything.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("everything.Models.LiftingWorkout", "LiftingWorkout")
-                        .WithMany("LiftSetLinks")
-                        .HasForeignKey("LiftingWorkoutId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.Navigation("Lift");
-
-                    b.Navigation("LiftingWorkout");
                 });
 
             modelBuilder.Entity("everything.Models.MuscleGroupForLift", b =>
@@ -976,11 +948,6 @@ namespace everything.Migrations
             modelBuilder.Entity("everything.Models.LiftType", b =>
                 {
                     b.Navigation("Lifts");
-                });
-
-            modelBuilder.Entity("everything.Models.LiftingWorkout", b =>
-                {
-                    b.Navigation("LiftSetLinks");
                 });
 
             modelBuilder.Entity("everything.Models.MuscleGroup", b =>

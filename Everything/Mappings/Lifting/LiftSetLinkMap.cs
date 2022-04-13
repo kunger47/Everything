@@ -14,9 +14,12 @@ namespace everything.Mappings
             // Table & column mappings
             builder.ToTable("LiftSetLinks");
             builder.Property(m => m.Id).HasColumnName("Id");
-            builder.Property(m => m.Date).HasColumnName("Date").IsRequired();
 
             builder.HasOne(i => i.Lift)
+                .WithMany(i => i.LiftSetLinks)
+                .IsRequired();
+
+            builder.HasOne(i => i.LiftingWorkout)
                 .WithMany(i => i.LiftSetLinks)
                 .IsRequired();
         }

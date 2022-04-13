@@ -78,7 +78,7 @@ const ItemBlock = (props: Props) => {
                                 <Popover id="popover-basic">
                                     {/* <Popover.Header as="h3">{ }</Popover.Header>
                                     <Popover.Body> */}
-                                    {tasks.map(t => <p>{t.name}</p>)}
+                                    {tasks.map(t => <p key={t.id}>{t.name}</p>)}
                                     {!isAddingTask
                                         ? <div onClick={() => setIsAddingTask(true)}>Add +</div>
                                         : <FormControl

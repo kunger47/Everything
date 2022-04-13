@@ -8,7 +8,6 @@ namespace everything.Models
         public Lift()
         {
             MuscleGroupLinks = new List<MuscleGroupForLift>();
-            LiftSets = new List<LiftSet>();
             LiftSetLinks = new List<LiftSetLink>();
         }
 
@@ -23,7 +22,6 @@ namespace everything.Models
         public virtual LiftType LiftType { get; set; }
 
         public IEnumerable<MuscleGroupForLift> MuscleGroupLinks { get; set; }
-        public IEnumerable<LiftSet> LiftSets { get; set; }
         public IEnumerable<LiftSetLink> LiftSetLinks { get; set; }
     }
 }

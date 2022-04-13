@@ -29,7 +29,10 @@ namespace everything.Controllers
         [Route("{liftId:int}/{date:datetime}")]
         public IActionResult GetByLiftByDay(int liftId, DateTime date)
         {
-            var sets = _context.LiftSets.Where(l => l.LiftId == liftId && l.Date == date);
+            var sets = _context.LiftSets
+                .Include(l => l.LiftSetLink)
+                .ThenInclude(l => l.LiftingWorkout)
+                .Where(l => l.LiftSetLink.LiftId == liftId && l.LiftSetLink.LiftingWorkout.Date == date);
             return Ok(sets);
         }
 
@@ -37,7 +40,7 @@ namespace everything.Controllers
         public async Task<IActionResult> Create(LiftSet item)
         {
             _context.Add(item);
-            await _context.SaveChangesAsync(); 
+            await _context.SaveChangesAsync();
             return Ok(item);
         }
 
@@ -48,7 +51,6 @@ namespace everything.Controllers
             set.Number = item.Number;
             set.Reps = item.Reps;
             set.Weight = item.Weight;
-            set.Date = item.Date;
             await _context.SaveChangesAsync();
             return Ok(item);
         }
@@ -59,7 +61,7 @@ namespace everything.Controllers
         {
             var item = await _context.LiftSets.FirstOrDefaultAsync(p => p.Id == id);
             _context.LiftSets.Remove(item);
-            await _context.SaveChangesAsync(); 
+            await _context.SaveChangesAsync();
             return Ok(true);
         }
     }

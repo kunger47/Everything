@@ -52,7 +52,7 @@ const ExpenseBudgets = (props: Props) => {
             </Row>
             {
                 !!budgets && budgets.map(i =>
-                    <ExpenseBudgetRow budget={i} reload={refreshBudgets} blurred={props.blurred} />
+                    <ExpenseBudgetRow budget={i} reload={refreshBudgets} blurred={props.blurred} key={i.id} />
                 )
             }
             <Row className="e-total-row e-negative">

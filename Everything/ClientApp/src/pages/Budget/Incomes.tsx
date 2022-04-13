@@ -52,7 +52,7 @@ const Incomes = (props: Props) => {
             </Row>
             {
                 !!incomes && incomes.map(i =>
-                    <IncomeSourceRow source={i} reload={refreshIncomes} blurred={props.blurred} />
+                    <IncomeSourceRow source={i} reload={refreshIncomes} blurred={props.blurred} key={i.id} />
                 )
             }
             <Row className="e-total-row">

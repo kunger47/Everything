@@ -15,7 +15,7 @@ namespace everything.Migrations
                 defaultValue: 0);
 
             migrationBuilder.CreateTable(
-                name: "LiftSetLink",
+                name: "LiftSetLinks",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)

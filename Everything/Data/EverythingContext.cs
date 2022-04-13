@@ -19,6 +19,8 @@ namespace everything.Data
             builder.Entity<Lift>().ToTable("Lifts");
             builder.Entity<LiftDayPlan>().ToTable("LiftDayPlans");
             builder.Entity<LiftSet>().ToTable("LiftSets");
+            builder.Entity<LiftSetLink>().ToTable("LiftSetLinks");
+            builder.Entity<LiftingWorkout>().ToTable("LiftingWorkouts");
             builder.Entity<MuscleGroup>().ToTable("MuscleGroups");
             builder.Entity<MuscleGroupForLift>().ToTable("MuscleGroupForLifts");
             builder.Entity<MuscleGroupForLiftDayPlan>().ToTable("MuscleGroupForLiftDayPlans");
@@ -53,6 +55,8 @@ namespace everything.Data
         public DbSet<Lift> Lifts { get; set; }
         public DbSet<LiftDayPlan> LiftDayPlans { get; set; }
         public DbSet<LiftSet> LiftSets { get; set; }
+        public DbSet<LiftSetLink> LiftSetLinks { get; set; }
+        public DbSet<LiftingWorkout> LiftingWorkouts { get; set; }
         public DbSet<MuscleGroup> MuscleGroups { get; set; }
         public DbSet<MuscleGroupForLift> MuscleGroupForLifts { get; set; }
         public DbSet<MuscleGroupForLiftDayPlan> MuscleGroupForLiftDayPlans { get; set; }

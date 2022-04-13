@@ -159,7 +159,7 @@ const GameBoard = () => {
                                 </Col>
                             </Row>
                             {sortedPlayersByMoney.map((player: Player, index: number) => {
-                                return <Row>
+                                return <Row key={player.id}>
                                     <Col className="e-users-place" xs={1}>
                                         <span>{getUsersPlace(index)}</span>
                                     </Col>
