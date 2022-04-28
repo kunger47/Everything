@@ -1,49 +1,56 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
-import Lift from "models/lifting/Lift";
+import React, { useEffect, useState } from 'react';
 import LiftingApi from 'services/apis/lifting-api';
 import './Workout.scss';
-import { Row, Col, Button, FormControl, Form } from 'react-bootstrap';
+import { Row, Col, Button, Form } from 'react-bootstrap';
 import ReactPlayer from "react-player"
 import LiftSet from 'models/lifting/LiftSet';
 import liftingApi from 'services/apis/lifting-api';
 import { getDateURLFormat } from 'services/date';
 import { handleRawInputChange } from 'services/form-helpers';
 import EditibleSetRow from './EditibleSetRow';
+import LiftSetLink from 'models/lifting/LiftSetLink';
+import Lift from 'models/lifting/Lift';
+import Input from 'components/Form/Input';
+import NumberInput from 'components/Form/NumberInput';
 
 interface Props {
-    lift: Lift;
-    saveLift: (videoLink: string) => void;
+    liftSetLinkId: number;
 }
 
 const SingleLiftLog = (props: Props) => {
     const [showVideo, setShowVideo] = useState<boolean>(true);
+    const [liftSetLink, setLiftSetLink] = useState<LiftSetLink>();
+    const [lift, setLift] = useState<Lift>(new Lift());
     const [sets, setSets] = useState<LiftSet[]>([]);
     const [newSet, setNewSet] = useState<LiftSet>(new LiftSet());
     const [addingSet, setAddingSet] = useState<boolean>(false);
     const [videoLink, setVideoLink] = useState<string>('');
 
     useEffect(() => {
-        //TODO: Pull in Luxon to handle sending down dates to api.
-        getSets();
-    }, [props.lift]);
+        setLift(liftSetLink?.lift ?? new Lift());
+        setSets(liftSetLink?.sets ?? []);
+    }, [liftSetLink]);
 
-    const getSets = () => {
-        if (props.lift?.id)
-            LiftingApi.getLiftSetRecordsForDate(props.lift.id, new Date(), setSets);
+    useEffect(() => {
+        getLiftSetLink();
+    }, [props.liftSetLinkId]);
+
+    const getLiftSetLink = () => {
+        if (props.liftSetLinkId)
+            LiftingApi.getLiftSetLink(props.liftSetLinkId, setLiftSetLink);
     }
 
     const onSaveSet = () => {
-        // Should I requiry the api? will that restart the video?
         liftingApi.createLiftSetRecord(newSet, handleCreate);
     }
 
     const handleCreate = () => {
         setAddingSet(false);
-        getSets();
+        getLiftSetLink();
     }
 
     const handleUpdate = () => {
-        getSets();
+        getLiftSetLink();
     }
 
     const onCancelSet = () => {
@@ -51,11 +58,11 @@ const SingleLiftLog = (props: Props) => {
     }
 
     const getNewSet = () => {
-        return { liftId: props.lift.id, number: getNextSetNumber(), date: getDateURLFormat(new Date()), reps: null, weight: null };
+        return { liftSetLinkId: props.liftSetLinkId, number: getNextSetNumber(), date: getDateURLFormat(new Date()), reps: null, weight: null };
     }
 
     const getNextSetNumber = () => {
-        var sequenceNumbers = sets?.map(r => r.number ?? 0);
+        var sequenceNumbers = sets.map(r => r.number ?? 0) ?? [];
         if (sequenceNumbers.length === 0)
             sequenceNumbers = [0]
         return Math.max(...sequenceNumbers) + 1;
@@ -66,12 +73,13 @@ const SingleLiftLog = (props: Props) => {
         setNewSet(getNewSet());
     }
 
-    const returnValue = (property: keyof LiftSet) => (e: ChangeEvent<HTMLInputElement>) => {
-        handleRawInputChange([newSet, setNewSet], property)(e.currentTarget.value);
+    const updateLink = (link: string) => {
+        setVideoLink(link);
     };
 
-    const updateLink = (e: ChangeEvent<HTMLInputElement>) => {
-        setVideoLink(e.currentTarget.value);
+    const saveLift = (videoLink: string) => {
+        lift.videoLink = videoLink;
+        LiftingApi.updateLift(lift, getLiftSetLink);
     }
 
     return (
@@ -80,20 +88,20 @@ const SingleLiftLog = (props: Props) => {
                 <Col md={12} className="e-lift-log-title">
                     <Button className="e-pull-right" onClick={() => { setShowVideo(!showVideo) }}>{showVideo ? "Hide Video" : "Show Video"}</Button>
                     <h2 className="e-lift-title">
-                        {props.lift.name}
+                        {lift.name ?? ''}
                     </h2>
-                    {props.lift.name
-                        && <a target="_blank" href={`https://www.youtube.com/results?search_query=${props.lift.name.replace(' ', '+')}`}>
+                    {lift.name
+                        && <a target="_blank" href={`https://www.youtube.com/results?search_query=${(lift.name ?? "").replace(' ', '+')}`}>
                             Search Youtube
                         </a>}
                 </Col>
             </Row>
             <Row>
-                {props.lift.videoLink
+                {lift.videoLink
                     ? <>
                         {showVideo && <Col md={12} className="e-video">
                             <ReactPlayer
-                                url={props.lift.videoLink}
+                                url={lift.videoLink ?? ''}
                             />
                         </Col>}
                     </>
@@ -102,13 +110,14 @@ const SingleLiftLog = (props: Props) => {
                             <Form.Label>Video Link</Form.Label>
                         </Col>
                         <Col md={4}>
-                            <FormControl
+                            <Input
                                 value={videoLink}
-                                onChange={updateLink}
+                                inputName={"videolink"}
+                                handleInputChange={updateLink}
                             />
                         </Col>
                         <Col md={6}>
-                            <Button onClick={() => props.saveLift(videoLink)}>Save Video Link</Button>
+                            <Button onClick={() => saveLift(videoLink)}>Save Video Link</Button>
                         </Col>
                     </>}
                 <hr />
@@ -126,7 +135,7 @@ const SingleLiftLog = (props: Props) => {
                         <Col className="e-label" xs={3}>
                         </Col>
                     </Row>
-                    {sets && sets.map((set) => {
+                    {sets.length > 0 && sets.map((set) => {
                         return <EditibleSetRow
                             key={set.id}
                             set={set}
@@ -136,21 +145,24 @@ const SingleLiftLog = (props: Props) => {
                     {addingSet
                         ? <Row>
                             <Col xs={3}>
-                                <FormControl
-                                    value={newSet.number ?? undefined}
-                                    onChange={returnValue("number")}
+                                <NumberInput
+                                    value={newSet.number}
+                                    inputName={'SetNumber'}
+                                    handleInputChange={handleRawInputChange([newSet, setNewSet], "number")}
                                 />
                             </Col>
                             <Col xs={3}>
-                                <FormControl
-                                    value={newSet.reps ?? undefined}
-                                    onChange={returnValue("reps")}
+                                <NumberInput
+                                    value={newSet.reps}
+                                    inputName={'SetReps'}
+                                    handleInputChange={handleRawInputChange([newSet, setNewSet], "reps")}
                                 />
                             </Col>
                             <Col xs={3}>
-                                <FormControl
-                                    value={newSet.weight ?? undefined}
-                                    onChange={returnValue("weight")}
+                                <NumberInput
+                                    value={newSet.weight}
+                                    inputName={'SetWeight'}
+                                    handleInputChange={handleRawInputChange([newSet, setNewSet], "weight")}
                                 />
                             </Col>
                             <Col xs={3} className="e-btn-group">

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using everything.Data;
 
 namespace everything.Migrations
 {
     [DbContext(typeof(EverythingContext))]
-    partial class EverythingContextModelSnapshot : ModelSnapshot
+    [Migration("20220416214254_RemoveUnusedDateField")]
+    partial class RemoveUnusedDateField
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

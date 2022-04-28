@@ -52,7 +52,7 @@ namespace everything.Controllers
         {
             item.CreatedDate = DateTime.Now;
             _context.Add(item);
-            await _context.SaveChangesAsync(); 
+            await _context.SaveChangesAsync();
             return Ok(item);
         }
 
@@ -70,7 +70,7 @@ namespace everything.Controllers
         {
             var lift = await _context.Lifts.FirstOrDefaultAsync(p => p.Id == id);
             _context.Lifts.Remove(lift);
-            await _context.SaveChangesAsync(); 
+            await _context.SaveChangesAsync();
             return NoContent();
         }
     }

@@ -250,6 +250,12 @@
         .e-question-statement-side,
         .e-question-answer-side {
             backface-visibility: hidden;
+
+            img {
+                max-width: 100%;
+                max-height: 100%;
+                object-fit: contain;
+            }
         }
 
         .e-question-statement-side {
@@ -347,6 +353,12 @@
 
                         &::-webkit-scrollbar {
                             display: none; /* for Chrome, Safari, and Opera */
+                        }
+
+                        img {
+                            max-width:100%;
+                            // max-height:100%;
+                            object-fit: contain;
                         }
                     }
 

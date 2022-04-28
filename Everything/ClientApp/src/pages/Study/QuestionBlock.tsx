@@ -86,7 +86,10 @@ const QuestionBlock = (props: Props) => {
                         {!isEditing
                             ? <span>
                                 <Row className="e-question-question" onClick={() => setIsEditing(true)}>
-                                    {props.question.statement}
+                                    {!props.question.statement.includes("http")
+                                        ? <>{props.question.statement}</>
+                                        : <img src={props.question.statement} />
+                                    }
                                 </Row>
                                 <Row className="e-question-difficulties">
                                     <Col xs={2} onClick={() => saveDifficultyUpdate(0)}><div className={getDiffClass(0)}></div></Col>

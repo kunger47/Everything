@@ -1,9 +1,10 @@
-import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './ToDo.scss';
 import todoApi from 'services/apis/todo-api';
 import ToDoBoard from 'models/todo/ToDoBoard';
-import { Col, FormControl } from 'react-bootstrap';
+import { Col } from 'react-bootstrap';
 import { Link as ReactLink } from 'react-router-dom';
+import Input from 'components/Form/Input';
 
 interface Props {
     board: ToDoBoard;
@@ -47,11 +48,13 @@ const BoardBlock = (props: Props) => {
                     {isHovering && <span className="e-pull-right e-delete-icon" onClick={() => deleteBoard(props.board.id)}>x</span>}
                     <p className="e-board-name" onClick={() => setIsEditing(true)}>{props.board.name}</p>
                 </span>
-                : <FormControl
+                : <Input
                     ref={updateRef}
                     value={itemName ?? undefined}
-                    onChange={(e: ChangeEvent<HTMLInputElement>) => { setItemName(e.currentTarget.value) }}
-                    onBlur={saveUpdate} />
+                    inputName={"itemName"}
+                    handleInputChange={setItemName}
+                    onBlur={saveUpdate}
+                />
             }
         </Col>
     )

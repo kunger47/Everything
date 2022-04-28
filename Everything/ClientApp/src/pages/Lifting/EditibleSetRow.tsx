@@ -1,9 +1,10 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { useState } from 'react';
 import './Workout.scss';
-import { Row, Col, Button, FormControl } from 'react-bootstrap';
+import { Row, Col, Button } from 'react-bootstrap';
 import LiftSet from 'models/lifting/LiftSet';
 import liftingApi from 'services/apis/lifting-api';
 import { handleRawInputChange } from 'services/form-helpers';
+import NumberInput from 'components/Form/NumberInput';
 
 interface Props {
     set: LiftSet;
@@ -33,10 +34,6 @@ const EditibleSetRow = (props: Props) => {
         setEditingSet(false);
     }
 
-    const returnValue = (property: keyof LiftSet) => (e: ChangeEvent<HTMLInputElement>) => {
-        handleRawInputChange([copySet, setCopySet], property)(e.currentTarget.value);
-    };
-
     return (
         <>
             {!editingSet
@@ -51,21 +48,24 @@ const EditibleSetRow = (props: Props) => {
                 </Row>
                 : <Row>
                     <Col xs={3}>
-                        <FormControl
-                            value={copySet.number ?? undefined}
-                            onChange={returnValue("number")}
+                        <NumberInput
+                            value={copySet.number}
+                            inputName={'SetNumber'}
+                            handleInputChange={handleRawInputChange([copySet, setCopySet], "number")}
                         />
                     </Col>
                     <Col xs={3}>
-                        <FormControl
-                            onChange={returnValue("reps")}
-                            value={copySet.reps ?? undefined}
+                        <NumberInput
+                            value={copySet.reps}
+                            inputName={'SetReps'}
+                            handleInputChange={handleRawInputChange([copySet, setCopySet], "reps")}
                         />
                     </Col>
                     <Col xs={3}>
-                        <FormControl
-                            onChange={returnValue("weight")}
-                            value={copySet.weight ?? undefined}
+                        <NumberInput
+                            value={copySet.weight}
+                            inputName={'SetWeight'}
+                            handleInputChange={handleRawInputChange([copySet, setCopySet], "weight")}
                         />
                     </Col>
                     <Col xs={3} className="e-btn-group">

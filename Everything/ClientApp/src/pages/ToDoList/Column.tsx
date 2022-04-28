@@ -1,5 +1,5 @@
-import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
-import { Button, Col, FormControl, Row } from 'react-bootstrap';
+import React, { useEffect, useRef, useState } from 'react';
+import { Button, Col, Row } from 'react-bootstrap';
 import './ToDo.scss';
 import { Droppable } from 'react-beautiful-dnd';
 import ItemBlock from './ItemBlock';
@@ -7,6 +7,7 @@ import ToDoColumn from 'models/todo/ToDoColumn';
 import ToDoItem from 'models/todo/ToDoItem';
 import todoApi from 'services/apis/todo-api';
 import { handleRawInputChange } from 'services/form-helpers';
+import Input from 'components/Form/Input';
 
 interface Props {
     column: ToDoColumn;
@@ -42,10 +43,6 @@ const Column = (props: Props) => {
         setNew(new ToDoItem());
     }
 
-    const returnValue = (property: keyof ToDoItem) => (e: ChangeEvent<HTMLInputElement>) => {
-        handleRawInputChange([newItem, setNew], property)(e.currentTarget.value);
-    };
-
     const saveUpdate = () => {
         setIsEditing(false);
         if (!!columnName && props.column.name != columnName && !!columnName.trim())
@@ -66,12 +63,13 @@ const Column = (props: Props) => {
                                 {isHovering && <span className="e-pull-right e-delete-icon" onClick={() => deleteColumn(props.column.id)}>x</span>}
                                 <p onClick={() => setIsEditing(true)}>{props.column.name}</p>
                             </span>
-                            : <FormControl
+                            : <Input
                                 ref={updateRef}
                                 value={columnName ?? undefined}
-                                onChange={(e: ChangeEvent<HTMLInputElement>) => { setColumnName(e.currentTarget.value) }}
-                                onBlur={saveUpdate} />
-                        }
+                                inputName={"columnName"}
+                                handleInputChange={setColumnName}
+                                onBlur={saveUpdate}
+                            />}
                     </Col>
                 </Row>
                 <Droppable droppableId={props.column.id.toString()}>
@@ -87,14 +85,13 @@ const Column = (props: Props) => {
                 <Row className="e-add-item-row">
                     {!isAdding
                         ? <Button onClick={() => setIsAdding(true)}>+</Button>
-                        : <>
-                            <FormControl
-                                ref={addRef}
-                                value={newItem.name ?? undefined}
-                                onChange={returnValue("name")}
-                                onBlur={saveNew}
-                            />
-                        </>}
+                        : <Input
+                            ref={addRef}
+                            value={newItem.name ?? undefined}
+                            inputName={"columnName"}
+                            handleInputChange={handleRawInputChange([newItem, setNew], "name")}
+                            onBlur={saveNew}
+                        />}
                 </Row>
             </Col >
         </>

@@ -10,6 +10,7 @@ import PlayersGuessBlock from './PlayersGuessBlock';
 import useSound from 'use-sound';
 import rightSound from '../../audio/correct_sound.wav';
 import wrongSound from '../../audio/incorrect_sound.mp3';
+import thinkingSound from '../../audio/welcome_to_the_family.mp3';
 
 interface Props {
     question: GameQuestion;
@@ -32,6 +33,7 @@ const FinalGameQuestionBlock = (props: Props) => {
 
     const [playRight] = useSound(rightSound);
     const [playWrong] = useSound(wrongSound);
+    const [playThinking] = useSound(thinkingSound);
 
     useEffect(() => {
         isSelected && !!inputRef && !!inputRef.current && inputRef.current.focus();
@@ -115,10 +117,17 @@ const FinalGameQuestionBlock = (props: Props) => {
                                     <div className='e-question-actions'>
                                         {isHovering && !hideQuestion && <span className="" onClick={() => setShowingAnswer(!showingAnswer)}>{' FLIP '}</span>}
                                     </div>
-                                    <div className="e-question-text e-clickable" onClick={() => setHideQuestion(false)}>
-                                        <span >
-                                            {hideQuestion ? "Write Down Your Bets" : props.question.statement}
-                                        </span>
+                                    <div className="e-question-text e-clickable" onClick={() => {
+                                        playThinking();
+                                        setHideQuestion(false)
+                                    }}>
+                                        {hideQuestion
+                                            ? <span>Write Down Your Bets</span>
+                                            : <>{!props.question.statement.includes("http")
+                                                ? <span>{props.question.statement}</span>
+                                                : <img src={props.question.statement} />}
+                                            </>
+                                        }
                                     </div>
                                 </div>
                                 <div className='e-question-answer-side'>

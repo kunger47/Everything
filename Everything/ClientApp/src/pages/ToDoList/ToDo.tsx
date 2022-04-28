@@ -1,11 +1,12 @@
 import Page from 'components/Layout/PageLayout';
-import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './ToDo.scss';
 import todoApi from 'services/apis/todo-api';
-import { Col, FormControl, Row } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 import { handleRawInputChange } from 'services/form-helpers';
 import ToDoBoard from 'models/todo/ToDoBoard';
 import BoardBlock from './BoardBlock';
+import Input from 'components/Form/Input';
 
 const ToDo = () => {
     const [boards, setBoards] = useState<ToDoBoard[]>([]);
@@ -32,10 +33,6 @@ const ToDo = () => {
         setIsAddingBoard(false);
     }
 
-    const returnValue = (property: keyof ToDoBoard) => (e: ChangeEvent<HTMLInputElement>) => {
-        handleRawInputChange([newBoard, setNewBoard], property)(e.currentTarget.value);
-    };
-
     return (
         <Page title="To Do" classNameExtension="to-do">
             <Col>
@@ -47,11 +44,12 @@ const ToDo = () => {
                         {!isAddingBoard
                             ? <p className='e-add-column' onClick={() => setIsAddingBoard(true)}>+</p>
                             : <>
-                                <FormControl
+                                <Input
                                     ref={addRef}
                                     value={newBoard.name ?? undefined}
-                                    onChange={returnValue("name")}
-                                    onBlur={() => saveBoard()}
+                                    inputName={"newBoardName"}
+                                    handleInputChange={handleRawInputChange([newBoard, setNewBoard], "name")}
+                                    onBlur={saveBoard}
                                 />
                             </>}
                     </Col>

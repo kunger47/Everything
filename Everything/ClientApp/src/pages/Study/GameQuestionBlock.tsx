@@ -1,6 +1,6 @@
 import React, { useEffect, useState, KeyboardEvent, useRef } from 'react';
 import './Study.scss';
-import { Button, Col, FormControl, Modal, Row } from 'react-bootstrap';
+import { Button, Col, Modal, Row } from 'react-bootstrap';
 import studyApi from 'services/apis/study-api';
 import { GameQuestion } from 'models/study/GameQuestionCategory';
 import QuestionAnswer from 'models/study/QuestionAnswer';
@@ -8,6 +8,7 @@ import { formatAsCurrency } from 'services/formatters';
 import { toast } from 'react-toastify';
 import Player from 'models/study/Player';
 import NumberInput from 'components/Form/NumberInput';
+import Input from 'components/Form/Input';
 
 import useSound from 'use-sound';
 import rightSound from '../../audio/correct_sound.wav';
@@ -30,6 +31,7 @@ const GameQuestionBlock = (props: Props) => {
     const [colorHexCode, setColorHexCode] = useState<string>('');
     const [playersBet, setPlayersBet] = useState<number>(0);
     const [betIsSubmitted, setBetIsSubmitted] = useState<boolean>(false);
+    const [submittedUsers, setSubmittedUsers] = useState<number[]>([]);
 
     const inputRef = useRef<HTMLInputElement>(null);
     const betRef = useRef<HTMLInputElement>(null);
@@ -81,9 +83,16 @@ const GameQuestionBlock = (props: Props) => {
 
     const onPlayerInput = (event: KeyboardEvent<HTMLInputElement>) => {
         let numberPressed = parseInt(event.key);
-        if (!isNaN(numberPressed) && numberPressed < props.players.length) {
+        if (!isNaN(numberPressed) && numberPressed < props.players.length && submittedUsers.indexOf(numberPressed) == -1) {
+            setSubmittedUsers(submittedUsers.concat([numberPressed]));
             let player = props.players[numberPressed];
-            toast.success(`${player.name}!`, { style: { backgroundColor: player.colorHexCode ?? "", color: '#000' } });
+            toast.success(`${player.name}!`,
+                {
+                    style: { backgroundColor: player.colorHexCode ?? "", color: '#000' },
+                    pauseOnHover: true,
+                    closeOnClick: true
+                }
+            );
         }
     }
 
@@ -159,7 +168,10 @@ const GameQuestionBlock = (props: Props) => {
                                         {isHovering && <span className="" onClick={() => setShowingAnswer(!showingAnswer)}>{' FLIP '}</span>}
                                     </div>
                                     <div className="e-question-text">
-                                        <span>{props.question.statement}</span >
+                                        {!props.question.statement.includes("http")
+                                            ? <span>{props.question.statement}</span>
+                                            : <img src={props.question.statement} />
+                                        }
                                     </div>
                                 </div>
                                 <div className='e-question-answer-side'>
@@ -173,13 +185,19 @@ const GameQuestionBlock = (props: Props) => {
                             </div>
                         </Col>
                     </Row>}
-                    {!props.question.isDouble && <Row>
-                        <Col>
-                            <FormControl
-                                ref={inputRef}
-                                onKeyPress={onPlayerInput} />
-                        </Col>
-                    </Row>}
+                    {!props.question.isDouble &&
+                        <Row>
+                            <Col>
+                                <Input
+                                    ref={inputRef}
+                                    value={submittedUsers.map(i => props.players[i].name).toString()}
+                                    inputName={'submitingUsers'}
+                                    handleInputChange={() => { }}
+                                    onKeyPress={onPlayerInput}
+                                />
+                            </Col>
+                        </Row>
+                    }
                     {props.question.isDouble && <Row>
                         <Col xs={10}>
                             <NumberInput

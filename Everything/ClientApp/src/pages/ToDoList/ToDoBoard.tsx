@@ -1,13 +1,14 @@
 import Page from 'components/Layout/PageLayout';
-import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './ToDo.scss';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import Column from './Column';
 import ToDoColumn from 'models/todo/ToDoColumn';
 import todoApi from 'services/apis/todo-api';
-import { Col, FormControl, Row } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 import { handleRawInputChange } from 'services/form-helpers';
 import { useLocation } from 'react-router-dom';
+import Input from 'components/Form/Input';
 
 const ToDoBoard = () => {
     const search = useLocation().search;
@@ -46,10 +47,6 @@ const ToDoBoard = () => {
         setNewColumn(new ToDoColumn());
     }
 
-    const returnValue = (property: keyof ToDoColumn) => (e: ChangeEvent<HTMLInputElement>) => {
-        handleRawInputChange([newColumn, setNewColumn], property)(e.currentTarget.value);
-    };
-
     const onDragEnd = (result: DropResult) => {
         let { destination, source, draggableId } = result;
 
@@ -87,11 +84,12 @@ const ToDoBoard = () => {
                         {!isAddingColumn
                             ? <p className='e-add-column' onClick={() => setIsAddingColumn(true)}>Add +</p>
                             : <>
-                                <FormControl
+                                <Input
                                     ref={addRef}
                                     value={newColumn.name ?? undefined}
-                                    onChange={returnValue("name")}
-                                    onBlur={() => saveColumn()}
+                                    inputName={"newColumnName"}
+                                    handleInputChange={handleRawInputChange([newColumn, setNewColumn], "name")}
+                                    onBlur={saveColumn}
                                 />
                             </>}
                     </Col>

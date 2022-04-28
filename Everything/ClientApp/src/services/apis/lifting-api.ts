@@ -4,6 +4,8 @@ import LiftDayPlan from "models/lifting/LiftDayPlan";
 import MuscleGroup from "models/lifting/MuscleGroup";
 import Api from "../api";
 import { getDateURLFormat } from "../date";
+import LiftingWorkout from "models/lifting/LiftingWorkout";
+import LiftSetLink from "models/lifting/LiftSetLink";
 
 class LiftingApi {
     //Lifts
@@ -53,6 +55,25 @@ class LiftingApi {
 
     deleteLiftSetRecord(setId: number, onSuccess: () => void) {
         return Api.delete({ url: `https://localhost:44340/liftsets/${setId}`, onSuccess });
+    }
+
+    //LiftSetLinks
+    getLiftSetLink(linkId: number, onSuccess: (result: LiftSetLink) => void) {
+        return Api.callApi({ url: `https://localhost:44340/liftsetlinks/${linkId}`, onSuccess });
+    }
+
+    //Workouts
+    getLiftingWorkoutsForDate(date: Date, onSuccess: (result: LiftingWorkout[]) => void) {
+        let dateForUrl = getDateURLFormat(date);
+        return Api.callApi({ url: `https://localhost:44340/liftingworkouts/${dateForUrl}`, onSuccess });
+    }
+
+    getLiftingWorkout(id: number, onSuccess: (result: LiftingWorkout) => void) {
+        return Api.callApi({ url: `https://localhost:44340/liftingworkouts/${id}`, onSuccess });
+    }
+
+    createLiftingWorkout(liftDayPlanId: number, data: LiftingWorkout, onSuccess: () => void) {
+        return Api.post({ url: `https://localhost:44340/liftingworkouts/${liftDayPlanId}`, body: data, onSuccess });
     }
 }
 

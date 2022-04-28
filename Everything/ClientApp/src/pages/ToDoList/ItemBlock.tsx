@@ -1,11 +1,12 @@
-import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './ToDo.scss';
 import { Draggable } from 'react-beautiful-dnd';
 import ToDoItem from 'models/todo/ToDoItem';
 import todoApi from 'services/apis/todo-api';
-import { FormControl, OverlayTrigger, Popover } from 'react-bootstrap';
+import { OverlayTrigger, Popover } from 'react-bootstrap';
 import ToDoItemTask from 'models/todo/ToDoItemTask';
 import { handleRawInputChange } from 'services/form-helpers';
+import Input from 'components/Form/Input';
 
 interface Props {
     item: ToDoItem;
@@ -57,10 +58,6 @@ const ItemBlock = (props: Props) => {
         setIsAddingTask(false);
     }
 
-    const returnValue = (property: keyof ToDoItemTask) => (e: ChangeEvent<HTMLInputElement>) => {
-        handleRawInputChange([newTask, setNewTask], property)(e.currentTarget.value);
-    };
-
     return (
         <Draggable draggableId={props.item.id.toString()} index={props.index}>
             {provided => (
@@ -81,11 +78,12 @@ const ItemBlock = (props: Props) => {
                                     {tasks.map(t => <p key={t.id}>{t.name}</p>)}
                                     {!isAddingTask
                                         ? <div onClick={() => setIsAddingTask(true)}>Add +</div>
-                                        : <FormControl
+                                        : <Input
                                             ref={addRef}
                                             value={newTask.name ?? undefined}
-                                            onChange={returnValue("name")}
-                                            onBlur={() => saveTask()}
+                                            inputName={"newTaskName"}
+                                            handleInputChange={handleRawInputChange([newTask, setNewTask], "name")}
+                                            onBlur={saveTask}
                                         />}
                                     {/* </Popover.Body> */}
                                 </Popover>
@@ -96,12 +94,13 @@ const ItemBlock = (props: Props) => {
                                 <span onClick={() => setIsEditing(true)}>{props.item.name}</span>
                             </span>
                         </OverlayTrigger>
-
-                        : <FormControl
+                        : <Input
                             ref={updateRef}
                             value={itemName ?? undefined}
-                            onChange={(e: ChangeEvent<HTMLInputElement>) => { setItemName(e.currentTarget.value) }}
-                            onBlur={saveUpdate} />
+                            inputName={"itemName"}
+                            handleInputChange={setItemName}
+                            onBlur={saveUpdate}
+                        />
                     }
                 </div>
             )}
