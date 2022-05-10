@@ -63,7 +63,7 @@
 
                 &:hover {
                     cursor: pointer;
-                    background-color: $ternary;
+                    background-color: $tertiary;
                 }
             }
         }
@@ -394,7 +394,7 @@
                                 background-color: $secondary;
                             }
                             &:nth-child(5) {
-                                background-color: $ternary;
+                                background-color: $tertiary;
                             }
                             &:nth-child(6) {
                                 background-color: $warning;

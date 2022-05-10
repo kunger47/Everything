@@ -69,7 +69,7 @@ const WorkingOut = () => {
                                     </Col>
                                     <Col xs={4}>
                                         <div className="e-lift-skip" >
-                                            <Button onClick={() => setCurrentLiftIndex(currentLiftIndex + 1)}>Skip</Button>
+                                            <Button onClick={() => setCurrentLiftIndex(currentLiftIndex + 1)}>Remove</Button>
                                         </div>
                                     </Col>
                                     <Col xs={4}>

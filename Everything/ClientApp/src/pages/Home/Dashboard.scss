@@ -1,0 +1,133 @@
+@import "colors.scss";
+
+.e-page-dashboard {
+  background-color: $primary;
+  
+  @mixin center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%)
+  }
+
+  .stage {
+    @include center;
+    width: 350px;
+    height: 350px;
+    perspective: 800;
+  }
+
+  .frame {
+    @include center;
+    width: 350px;
+    height: 350px;
+    opacity: 0;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.06);
+    animation: show 0.5s 3s ease forwards;
+  }
+
+  .box {
+    position: absolute;
+    width: 175px;
+    height: 175px;
+    background: $white;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.07);
+    overflow: hidden;
+    border-radius: 4px;
+
+    &:nth-child(1) {
+      background: $old-yellow;
+      border-radius: 5px 0 0 0;
+      border-right: none;
+      border-bottom: none;
+      animation: clr 1s 1s ease forwards;
+    }
+
+    &:nth-child(2) {
+      background: $old-yellow;
+      border-radius: 0 5px 0 0;
+      left: 175px;
+      border-left: none;
+      border-bottom: none;
+      transform-origin: 0 0;
+      transform: rotateY(180deg);
+      animation: fold 1s 1s ease forwards;
+    }
+
+    &:nth-child(3) {
+      background: $old-yellow;
+      border-radius: 0 0 0 5px;
+      top: 175px;
+      width: 175px;
+      opacity: 0;
+      border-top: none;
+      border-right: none;
+      transform: rotateX(180deg);
+      transform-origin: 0 0;
+      animation: fold2 1s 2s ease forwards;
+    }
+
+    &:nth-child(4) {
+      background: $old-yellow;
+      border-radius: 0 0 5px 0;
+      top: 175px;
+      left: 175px;
+      opacity: 0;
+      border-top: none;
+      border-left: none;
+      transform: rotateX(180deg);
+      transform-origin: 0 0;
+      animation: fold2 1s 2s ease forwards
+    }
+  }
+
+  @keyframes clr {
+    99% {
+      background: $old-yellow
+    }
+
+    100% {
+      background: $white
+    }
+  }
+
+  @keyframes fold {
+    99% {
+      background: $old-yellow
+    }
+
+    100% {
+      background: $white;
+      transform: rotateY(360deg)
+    }
+  }
+
+  @keyframes fold2 {
+    0% {
+      opacity: 1;
+      background: $old-yellow
+    }
+
+    25% {
+      opacity: 1;
+      background: $old-yellow;
+    }
+
+    40% {
+      opacity: 1;
+      background: $white;
+    }
+
+    100% {
+      opacity: 1;
+      background: $white;
+      transform: rotateX(0deg)
+    }
+  }
+
+  @keyframes show {
+    100% {
+      opacity: 1
+    }
+  }
+}

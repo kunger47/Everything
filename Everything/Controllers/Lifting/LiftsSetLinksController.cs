@@ -36,7 +36,7 @@ namespace everything.Controllers
                     Id = l.Lift.Id,
                     Name = l.Lift.Name,
                     Description = l.Lift.Description,
-                    LiftType = l.Lift.LiftType.Name,
+                    LiftTypeName = l.Lift.LiftType.Name,
                     VideoLink = l.Lift.VideoLink
                 },
                 Sets = l.LiftSets.Select(s => new GetLiftSetMessage

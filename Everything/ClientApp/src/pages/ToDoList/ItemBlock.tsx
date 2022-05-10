@@ -92,6 +92,7 @@ const ItemBlock = (props: Props) => {
                             <span>
                                 {isHovering && <span className="e-pull-right e-delete-icon" onClick={() => deleteItem(props.item.id)}>x</span>}
                                 <span onClick={() => setIsEditing(true)}>{props.item.name}</span>
+
                             </span>
                         </OverlayTrigger>
                         : <Input
@@ -103,8 +104,9 @@ const ItemBlock = (props: Props) => {
                         />
                     }
                 </div>
-            )}
-        </Draggable>
+            )
+            }
+        </Draggable >
     )
 }
 

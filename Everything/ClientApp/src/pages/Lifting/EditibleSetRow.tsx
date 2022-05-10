@@ -9,6 +9,7 @@ import NumberInput from 'components/Form/NumberInput';
 interface Props {
     set: LiftSet;
     onSuccessfulEdit: () => void;
+    onCopy: () => void;
 }
 
 const EditibleSetRow = (props: Props) => {
@@ -43,7 +44,8 @@ const EditibleSetRow = (props: Props) => {
                     <Col xs={3} className="e-table-value-col">{copySet.weight ?? undefined}</Col>
                     <Col xs={3} className="e-btn-group">
                         <Button onClick={() => setEditingSet(true)}>Update</Button>
-                        <Button onClick={() => deleteSet()}>Delete</Button>
+                        <Button onClick={props.onCopy}>Copy</Button>
+                        <Button onClick={() => deleteSet()}>Remove</Button>
                     </Col>
                 </Row>
                 : <Row>

@@ -32,6 +32,17 @@ const SingleLiftLog = (props: Props) => {
     }, [liftSetLink]);
 
     useEffect(() => {
+        setVideoLink(lift.videoLink);
+        if (!showVideo && lift.videoLink)
+            setShowVideo(true);
+        if (showVideo && !lift.videoLink)
+            setShowVideo(false);
+    }, [lift.videoLink]);
+
+    useEffect(() => {
+    }, [lift.videoLink]);
+
+    useEffect(() => {
         getLiftSetLink();
     }, [props.liftSetLinkId]);
 
@@ -42,6 +53,11 @@ const SingleLiftLog = (props: Props) => {
 
     const onSaveSet = () => {
         liftingApi.createLiftSetRecord(newSet, handleCreate);
+    }
+
+    const onSaveCopySet = (copiedSet: LiftSet) => {
+        var newSet = getNewSet();
+        liftingApi.createLiftSetRecord({ ...newSet, weight: copiedSet.weight, reps: copiedSet.reps }, handleCreate);
     }
 
     const handleCreate = () => {
@@ -86,25 +102,29 @@ const SingleLiftLog = (props: Props) => {
         <>
             <Row>
                 <Col md={12} className="e-lift-log-title">
-                    <Button className="e-pull-right" onClick={() => { setShowVideo(!showVideo) }}>{showVideo ? "Hide Video" : "Show Video"}</Button>
+                    {!!lift.videoLink && <Button className="e-pull-right" onClick={() => { setShowVideo(!showVideo) }}>
+                        {showVideo ? "Hide Video" : "Show Video"}
+                    </Button>}
                     <h2 className="e-lift-title">
                         {lift.name ?? ''}
                     </h2>
-                    {lift.name
-                        && <a target="_blank" href={`https://www.youtube.com/results?search_query=${(lift.name ?? "").replace(' ', '+')}`}>
+                    <Col md={12} className="">
+                        {<p>{!!lift.description ? `${lift.description}` : "+ Add a lift description"}</p>}
+                    </Col>
+                    <Col md={12} className="">
+                        <a target="_blank" href={`https://www.youtube.com/results?search_query=${(lift.name ?? "").replace(' ', '+')}`}>
                             Search Youtube
-                        </a>}
+                        </a>
+                    </Col>
                 </Col>
             </Row>
             <Row>
-                {lift.videoLink
-                    ? <>
-                        {showVideo && <Col md={12} className="e-video">
-                            <ReactPlayer
-                                url={lift.videoLink ?? ''}
-                            />
-                        </Col>}
-                    </>
+                {showVideo
+                    ? <Col md={12} className="e-video">
+                        <ReactPlayer
+                            url={lift.videoLink ?? ''}
+                        />
+                    </Col>
                     : <>
                         <Col md={2}>
                             <Form.Label>Video Link</Form.Label>
@@ -140,6 +160,7 @@ const SingleLiftLog = (props: Props) => {
                             key={set.id}
                             set={set}
                             onSuccessfulEdit={handleUpdate}
+                            onCopy={() => onSaveCopySet(set)}
                         />
                     })}
                     {addingSet

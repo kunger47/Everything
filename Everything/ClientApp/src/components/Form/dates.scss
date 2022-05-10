@@ -1,0 +1,117 @@
+@import "colors.scss";
+
+.input-group {
+    .DayPickerInput {
+        width: inherit;
+    }
+
+    .DayPicker-Day--selected:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside) {
+        background-color: $primary !important;
+
+        &:hover {
+            background-color: $light-primary !important;
+        }
+    }
+
+    .DayPicker:not(.DayPicker--interactionDisabled) .DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--selected):not(.DayPicker-Day--outside):hover {
+        background-color: $grey !important;
+    }
+}
+
+// .f-date-range-picker,
+.f-date-picker {
+    .input-group {
+        .DayPickerInput {
+            width: inherit;
+        }
+
+        // .input-group-append {
+        //     .input-group-text {
+        //         background: white;
+        //         border-right: none;
+        //         border-left: none;
+        //         border-radius: 0px;
+        //         padding: 0px;
+        //     }
+        // }
+
+        .DayPicker-Day--selected:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside) {
+            background-color: $black !important;
+
+            &:hover {
+                background-color: $grey !important;
+            }
+        }
+
+        .DayPicker:not(.DayPicker--interactionDisabled) .DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--selected):not(.DayPicker-Day--outside):hover {
+            background-color: $grey !important;
+        }
+
+        .InputFromTo {
+            .DayPicker-Day--selected:not(.DayPicker-Day--start):not(.DayPicker-Day--end):not(.DayPicker-Day--outside) {
+                background-color: $light-primary !important;
+                color: $primary;
+            }
+
+            .DayPicker-Day {
+                border-radius: 0 !important;
+            }
+
+            .DayPicker-Day--start {
+                border-top-left-radius: 50% !important;
+                border-bottom-left-radius: 50% !important;
+            }
+
+            .DayPicker-Day--end {
+                border-top-right-radius: 50% !important;
+                border-bottom-right-radius: 50% !important;
+            }
+
+            .DayPickerInput-Overlay {
+                width: 550px;
+            }
+        }
+
+        // .InputFromTo-from {
+        //     &.f-for-popover {
+        //         border-right: solid;
+        //         border-color: $factor-grey;
+        //     }
+
+        //     .f-date-header {
+        //         padding-left: 95px;
+        //         font-weight: bold;
+        //         font-size: 16px;
+        //     }
+
+        //     .DayPickerInput {
+        //         input {
+        //             text-align: right;
+        //             border-top-right-radius: 0px;
+        //             border-bottom-right-radius: 0px;
+        //         }
+        //     }
+        // }
+
+        // .InputFromTo-to {
+        //     .DayPickerInput-Overlay {
+        //         margin-left: -198px;
+        //     }
+
+        //     .f-date-header {
+        //         padding-left: 108px;
+        //         font-weight: bold;
+        //         font-size: 16px;
+        //     }
+
+        //     .DayPickerInput {
+        //         input {
+        //             text-align: left;
+        //             border-left: none;
+        //             border-top-left-radius: 0px;
+        //             border-bottom-left-radius: 0px;
+        //         }
+        //     }
+        // }
+    }
+}

@@ -10,6 +10,6 @@ namespace everything.Controllers
         public string VideoLink { get; set; }
         public bool IsActive { get; set; }
         public DateTime CreatedDate { get; set; }
-        public string LiftType { get; set; }
+        public string LiftTypeName { get; set; }
     }
 }

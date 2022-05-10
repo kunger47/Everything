@@ -13,6 +13,7 @@ import Page from 'components/Layout/PageLayout';
 import LiftingWorkout from 'models/lifting/LiftingWorkout';
 import Input from 'components/Form/Input';
 import { handleRawInputChange } from 'services/form-helpers';
+// import DatePicker from 'components/Form/date-picker';
 
 const Workout = () => {
     const [workouts, setWorkouts] = useState<LiftingWorkout[]>([]);
@@ -24,6 +25,7 @@ const Workout = () => {
     const [header, setHeader] = useState<string>("Select a Workout Plan");
     const [isCreating, setIsCreating] = useState<boolean>(false);
     const [newWorkout, setNewWorkout] = useState<LiftingWorkout>(new LiftingWorkout());
+    const [date, setDate] = useState<Date>(new Date());
 
     useEffect(() => {
         LiftingApi.getLiftDayPlans(setPlans);
@@ -31,7 +33,7 @@ const Workout = () => {
 
     useEffect(() => {
         getWorkouts();
-    }, []);
+    }, [date]);
 
     useEffect(() => {
         var title = selectedGroup
@@ -53,7 +55,7 @@ const Workout = () => {
     }, [selectedGroup]);
 
     const getWorkouts = () => {
-        LiftingApi.getLiftingWorkoutsForDate(new Date(), setWorkouts);
+        LiftingApi.getLiftingWorkoutsForDate(date, setWorkouts);
     }
 
     const createWorkout = () => {
@@ -72,18 +74,23 @@ const Workout = () => {
             <Col md={10}>
                 {!isCreating
                     ? <div className="e-grouping">
+                        {/* <DatePicker
+                            value={date}
+                            placeholder={"Workout Date"}
+                            handleDateUpdate={setDate}
+                        /> */}
                         {
                             workouts.map((workout: LiftingWorkout) => {
                                 return <ReactLink to={`/workoutplan?liftingWorkoutId=${workout.id}`}>
-                                    <Button key={workout.id}>
+                                    <div key={workout.id} className="e-group-item e-item">
                                         {workout.name}
-                                    </Button>
+                                    </div>
                                 </ReactLink>
                             })
                         }
-                        <Button onClick={() => setIsCreating(true)}>
-                            +
-                        </Button>
+                        <div className="e-group-item e-item" onClick={() => setIsCreating(true)}>
+                            + Prepare a New Workout
+                        </div>
                     </div>
                     : <>
                         <h1>{header}</h1>
@@ -101,7 +108,8 @@ const Workout = () => {
                         {selectedPlan === undefined
                             ? <LiftPlans
                                 items={plans}
-                                onClick={setSelectedPlan} />
+                                onClick={setSelectedPlan}
+                                onBack={() => setIsCreating(false)} />
                             : selectedGroup === undefined
                                 ? <MuscleGroups
                                     items={groups}
