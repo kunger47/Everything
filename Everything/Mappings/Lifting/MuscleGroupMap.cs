@@ -15,6 +15,10 @@ namespace everything.Mappings
             builder.ToTable("MuscleGroups");
             builder.Property(m => m.Id).HasColumnName("Id");
             builder.Property(m => m.Name).HasColumnName("Name").IsRequired();
+
+            builder.HasOne(i => i.User)
+                .WithMany(i => i.MuscleGroups)
+                .IsRequired();
         }
     }
 }

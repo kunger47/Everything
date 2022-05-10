@@ -15,6 +15,9 @@ namespace everything.Models
         public string Name { get; set; }
         public string Notes { get; set; }
 
+        public int UserId { get; set; }
+        public User User { get; set; }
+
         public IList<LiftSetLink> LiftSetLinks { get; set; }
     }
 }

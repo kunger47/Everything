@@ -16,8 +16,13 @@ namespace everything.Mappings
             builder.Property(m => m.Id).HasColumnName("Id");
             builder.Property(m => m.Name).HasColumnName("Name").IsRequired();
             builder.Property(m => m.IsActive).HasColumnName("IsActive").IsRequired().HasDefaultValue(1);
+            builder.Property(m => m.UserId).HasDefaultValue(0);
 
             builder.HasOne(i => i.LiftType)
+                .WithMany(i => i.Lifts)
+                .IsRequired();
+
+            builder.HasOne(i => i.User)
                 .WithMany(i => i.Lifts)
                 .IsRequired();
         }

@@ -14,6 +14,9 @@ namespace everything.Models
         public string Name { get; set; }
         public DateTime CreatedDate { get; set; }
 
+        public int UserId { get; set; }
+        public User User { get; set; }
+
         public virtual IEnumerable<MuscleGroupForLiftDayPlan> MuscleGroupForLiftsLinks { get; set; }
     }
 }

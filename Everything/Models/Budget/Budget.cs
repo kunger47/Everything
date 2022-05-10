@@ -17,7 +17,8 @@ namespace everything.Models
         public string Description { get; set; }
         public bool IsActive { get; set; }
         public DateTime CreatedDate { get; set; }
-
+        public int UserId { get; set; }
+        public User User { get; set; }
 
         public virtual IEnumerable<Account> Accounts { get; set; }
         public virtual IEnumerable<IncomeSource> IncomeSources { get; set; }

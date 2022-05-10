@@ -16,6 +16,11 @@ namespace everything.Mappings
             builder.Property(m => m.Id).HasColumnName("Id");
             builder.Property(m => m.Name).HasColumnName("Name").IsRequired();
             builder.Property(m => m.Date).HasColumnName("Date").IsRequired();
+            builder.Property(m => m.UserId).HasDefaultValue(0);
+
+            builder.HasOne(i => i.User)
+                .WithMany(i => i.Games)
+                .IsRequired();
         }
     }
 }

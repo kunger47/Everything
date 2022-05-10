@@ -18,6 +18,9 @@ namespace everything.Models
         public bool IsActive { get; set; }
         public DateTime CreatedDate { get; set; }
 
+        public int UserId { get; set; }
+        public User User { get; set; }
+
         public int LiftTypeId { get; set; }
         public virtual LiftType LiftType { get; set; }
 

@@ -15,6 +15,8 @@ namespace everything.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public int Sequence { get; set; }
+        public int UserId { get; set; }
+        public User User { get; set; }
 
         public virtual IEnumerable<ToDoColumn> ToDoColumns { get; set; }
     }

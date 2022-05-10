@@ -11,6 +11,8 @@ namespace everything.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<User>().ToTable("Users");
+
             builder.Entity<ToDoBoard>().ToTable("ToDoBoards");
             builder.Entity<ToDoColumn>().ToTable("ToDoColumns");
             builder.Entity<ToDoItem>().ToTable("ToDoItems");
@@ -46,6 +48,8 @@ namespace everything.Data
 
             base.OnModelCreating(builder);
         }
+
+        public DbSet<User> Users { get; set; }
 
         public DbSet<ToDoBoard> ToDoBoards { get; set; }
         public DbSet<ToDoColumn> ToDoColumns { get; set; }

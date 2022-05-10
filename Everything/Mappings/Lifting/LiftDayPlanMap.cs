@@ -14,6 +14,11 @@ namespace everything.Mappings
             // Table & column mappings
             builder.ToTable("LiftDayPlans");
             builder.Property(m => m.Id).HasColumnName("Id");
+            builder.Property(m => m.UserId).HasDefaultValue(0);
+
+            builder.HasOne(i => i.User)
+                .WithMany(i => i.LiftDayPlans)
+                .IsRequired();
         }
     }
 }

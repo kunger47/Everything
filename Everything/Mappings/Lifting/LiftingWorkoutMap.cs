@@ -15,6 +15,11 @@ namespace everything.Mappings
             builder.ToTable("LiftingWorkouts");
             builder.Property(m => m.Id).HasColumnName("Id");
             builder.Property(m => m.Date).HasColumnName("Date").IsRequired();
+            builder.Property(m => m.UserId).HasDefaultValue(0);
+
+            builder.HasOne(i => i.User)
+                .WithMany(i => i.LiftingWorkouts)
+                .IsRequired();
         }
     }
 }
