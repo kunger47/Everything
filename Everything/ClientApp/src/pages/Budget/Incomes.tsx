@@ -46,7 +46,7 @@ const Incomes = (props: Props) => {
     }
 
     return (
-        <Col className='e-column'>
+        <Col xs={12} md={6} className='e-column e-table-column'>
             <Row>
                 <Col className="e-column-title">Income Sources</Col>
             </Row>

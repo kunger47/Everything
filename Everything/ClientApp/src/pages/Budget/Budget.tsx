@@ -9,6 +9,7 @@ import './Budget.scss';
 import Accounts from './Accounts';
 import Incomes from './Incomes';
 import ExpenseBudgets from './ExpenseBudgets';
+import Expenses from './Expenses';
 
 const Budget = () => {
     const search = useLocation().search;
@@ -36,12 +37,7 @@ const Budget = () => {
                 <>
                     <Col className="e-column">
                         <Row>
-                            <Col xs="3" className="e-item-col">
-                                <div className="e-item-block e-budget-title">
-                                    {budget.name}
-                                </div>
-                            </Col>
-                            <Col xs="8" className="e-item-col">
+                            <Col xs={11} className="e-item-col">
                                 <div className="e-item-block e-add-item">
                                     {!!budget.description
                                         ? <p>budget.description</p>
@@ -58,6 +54,7 @@ const Budget = () => {
                             <Accounts budgetId={budget.id} blurred={blurred} />
                             <Incomes budgetId={budget.id} blurred={blurred} />
                             <ExpenseBudgets budgetId={budget.id} blurred={blurred} />
+                            <Expenses budgetId={budget.id} blurred={blurred} />
                         </Row>
                     </Col>
                 </>

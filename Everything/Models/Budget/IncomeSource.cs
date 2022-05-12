@@ -17,7 +17,7 @@ namespace everything.Models
         public int BudgetId { get; set; }
         public virtual Budget Budget { get; set; }
 
-        //thinking this will only be used for savings accounts?
+        //thinking this will only be used for savings accounts? -eh maybe not
         public int? DepositAccountId { get; set; }
         public virtual Account DepositAccount { get; set; }
 

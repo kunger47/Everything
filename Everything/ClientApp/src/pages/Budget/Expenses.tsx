@@ -1,28 +1,28 @@
 import Input from 'components/Form/Input';
-import Account from 'models/budget/Account';
+import Expense from 'models/budget/Expense';
 import React, { useEffect, useRef, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import budgetApi from 'services/apis/budget-api';
 import { handleRawInputChange } from 'services/form-helpers';
 import { formatAsCurrency } from 'services/formatters';
-import AccountRow from './AccountRow';
 
 import './Budget.scss';
+import ExpenseRow from './ExpenseRow';
 
 interface Props {
     budgetId: number;
     blurred: boolean;
 }
 
-const Accounts = (props: Props) => {
+const Expenses = (props: Props) => {
     const addRef = useRef<HTMLInputElement>(null);
-    const [accounts, setAccounts] = useState<Account[]>([]);
+    const [expenses, setExpenses] = useState<Expense[]>([]);
     const [isAdding, setIsAdding] = useState<boolean>(false);
-    const [newAccount, setNewAccount] = useState<Account>(new Account());
+    const [newItem, setNewItem] = useState<Expense>(new Expense());
     const [total, setTotal] = useState<number>(0);
 
     useEffect(() => {
-        refreshAccounts();
+        refreshExpenses();
     }, [props.budgetId]);
 
     useEffect(() => {
@@ -31,31 +31,31 @@ const Accounts = (props: Props) => {
     }, [isAdding]);
 
     useEffect(() => {
-        setTotal(accounts.length > 0 ? accounts.map(a => a.amount).reduce((accumulator, curr) => accumulator + curr) : 0);
-    }, [accounts])
+        setTotal(expenses.length > 0 ? expenses.map(a => a.amount).reduce((accumulator, curr) => accumulator + curr) : 0);
+    }, [expenses])
 
-    const refreshAccounts = () => {
-        budgetApi.getAccounts(props.budgetId, setAccounts);
+    const refreshExpenses = () => {
+        budgetApi.getExpensesForBudget(props.budgetId, setExpenses);
     }
 
     const saveNew = () => {
-        if (!!newAccount.name?.trim())
-            budgetApi.createAccount({ ...newAccount, budgetId: props.budgetId }, refreshAccounts);
+        // if (!!newItem.name?.trim())
+        //     budgetApi.createExpense({ ...newItem, expenseBudgetId:  }, refreshExpenses);
         setIsAdding(false);
-        setNewAccount(new Account());
+        setNewItem(new Expense());
     }
 
     return (
         <Col xs={12} md={6} className='e-column e-table-column'>
             <Row>
-                <Col className="e-column-title">Accounts</Col>
+                <Col className="e-column-title">Expenses</Col>
             </Row>
             {
-                !!accounts && accounts.map(a =>
-                    <AccountRow account={a} reload={refreshAccounts} blurred={props.blurred} />
+                !!expenses && expenses.map(e =>
+                    <ExpenseRow expense={e} reload={refreshExpenses} blurred={props.blurred} key={e.id} />
                 )
             }
-            <Row className="e-total-row">
+            <Row className="e-total-row e-negative">
                 <Col xs={8} className="e-item-col" onClick={() => setIsAdding(true)}>
                     <div className="e-item-block">Total</div>
                 </Col>
@@ -73,9 +73,9 @@ const Accounts = (props: Props) => {
                     : <Col>
                         <Input
                             ref={addRef}
-                            inputName="New Account Name"
-                            value={newAccount.name ?? undefined}
-                            handleInputChange={handleRawInputChange([newAccount, setNewAccount], "name")}
+                            inputName="New Expense Name"
+                            value={newItem.name ?? undefined}
+                            handleInputChange={handleRawInputChange([newItem, setNewItem], "name")}
                             onBlur={saveNew}
                         />
                     </Col>}
@@ -84,4 +84,4 @@ const Accounts = (props: Props) => {
     )
 };
 
-export default Accounts;
+export default Expenses;

@@ -1,5 +1,6 @@
 import Account from "models/budget/Account";
 import BudgetModel from "models/budget/BudgetModel";
+import Expense from "models/budget/Expense";
 import ExpenseBudget from "models/budget/ExpenseBudget";
 import IncomeSource from "models/budget/IncomeSource";
 import Api from "../api";
@@ -75,6 +76,23 @@ class BudgetApi {
 
     removeExpenseBudget(id: number, onSuccess: () => void) {
         return Api.delete({ url: `https://localhost:44340/expensebudgets/${id}`, onSuccess });
+    }
+
+    //ExpenseBudgets
+    getExpensesForBudget(budgetId: number, onSuccess: (result: Expense[]) => void) {
+        return Api.callApi({ url: `https://localhost:44340/expenses/forBudget/${budgetId}`, onSuccess });
+    }
+
+    createExpense(data: Expense, onSuccess: () => void) {
+        return Api.post({ url: `https://localhost:44340/expenses`, body: data, onSuccess });
+    }
+
+    updateExpense(data: Expense, onSuccess: () => void) {
+        return Api.put({ url: `https://localhost:44340/expenses`, body: data, onSuccess });
+    }
+
+    removeExpense(id: number, onSuccess: () => void) {
+        return Api.delete({ url: `https://localhost:44340/expenses/${id}`, onSuccess });
     }
 }
 
