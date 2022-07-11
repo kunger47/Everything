@@ -39,17 +39,23 @@ const ExpenseRow = (props: Props) => {
 
     const saveUpdate = () => {
         if (!!tempName.trim())
-            budgetApi.updateExpense({ ...props.expense, name: tempName }, props.reload);
-        setIsUpdatingName(false);
-        setIsUpdatingAmount(false);
+            budgetApi.updateExpense({ ...props.expense, name: tempName }, onSuccessfulSave);
     }
 
     const saveAmountUpdate = (value: any) => {
         let newValue = parseInt(value);
         if (!!newValue && newValue != props.expense.amount)
-            budgetApi.updateExpense({ ...props.expense, amount: newValue }, props.reload);
+            budgetApi.updateExpense({ ...props.expense, amount: newValue }, onSuccessfulSave);
+    }
+
+    const indicateNoLongerEditing = () => {
         setIsUpdatingName(false);
         setIsUpdatingAmount(false);
+    }
+
+    const onSuccessfulSave = () => {
+        indicateNoLongerEditing();
+        props.reload();
     }
 
     return (
@@ -76,6 +82,7 @@ const ExpenseRow = (props: Props) => {
                         inputName={'Expense Value'}
                         value={tempAmount}
                         onBlur={saveAmountUpdate}
+                        onBlurNoChange={indicateNoLongerEditing}
                         onFocus={() => { }} />}
             </Col>
         </Row >

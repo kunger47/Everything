@@ -6,6 +6,7 @@ interface Props {
     inputName: string;
     onFocus: () => void;
     onBlur: (newValue: any) => void;
+    onBlurNoChange: () => void;
 
     placeholder?: string;
     step?: number;
@@ -29,7 +30,7 @@ const SaveOnBlurNumberInput = forwardRef((props: Props, ref: ForwardedRef<HTMLIn
             handleInputChange={setCopiedData}
             onFocus={() => props.onFocus}
             step={props.step}
-            onBlur={() => { valueHasChanged() && props.onBlur(copiedData) }}
+            onBlur={() => { valueHasChanged() ? props.onBlur(copiedData) : props.onBlurNoChange() }}
             customAppendText={props.customAppendText}
             disabled={props.disabled} />
     );

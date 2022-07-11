@@ -39,17 +39,23 @@ const AccountRow = (props: Props) => {
 
     const saveUpdate = () => {
         if (!!tempName.trim())
-            budgetApi.updateAccount({ ...props.account, name: tempName }, props.reload);
-        setIsUpdatingName(false);
-        setIsUpdatingAmount(false);
+            budgetApi.updateAccount({ ...props.account, name: tempName }, onSuccessfulSave);
     }
 
     const saveAmountUpdate = (value: any) => {
         let newValue = parseInt(value);
         if (!!newValue && newValue != props.account.amount)
-            budgetApi.updateAccount({ ...props.account, amount: newValue }, props.reload);
+            budgetApi.updateAccount({ ...props.account, amount: newValue }, onSuccessfulSave);
+    }
+
+    const indicateNoLongerEditing = () => {
         setIsUpdatingName(false);
         setIsUpdatingAmount(false);
+    }
+
+    const onSuccessfulSave = () => {
+        indicateNoLongerEditing();
+        props.reload();
     }
 
     return (
@@ -76,6 +82,7 @@ const AccountRow = (props: Props) => {
                         inputName={'Account Value'}
                         value={tempAmount}
                         onBlur={saveAmountUpdate}
+                        onBlurNoChange={indicateNoLongerEditing}
                         onFocus={() => { }} />}
             </Col>
         </Row >
