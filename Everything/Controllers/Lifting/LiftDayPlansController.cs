@@ -21,25 +21,34 @@ namespace everything.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
+            //TODO: For current User
             return Ok(await _context.LiftDayPlans.ToListAsync());
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(LiftDayPlan item)
+        public async Task<IActionResult> Create(CreateLiftDayPlanMessage item)
         {
-            item.CreatedDate = DateTime.Now;
-            _context.Add(item);
-            await _context.SaveChangesAsync(); 
-            return Ok(item);
+            var plan = new LiftDayPlan
+            {
+                CreatedDate = DateTime.Now,
+                Name = item.Name,
+                UserId = item.UserId
+            };
+
+            _context.Add(plan);
+            await _context.SaveChangesAsync();
+            return Ok(plan);
         }
 
         [HttpDelete]
         public async Task<IActionResult> Delete(int id)
         {
-            var item = await _context.LiftDayPlans.FirstOrDefaultAsync(p => p.Id == id);
+            var item = await _context.LiftDayPlans
+                //TODO: For Current User
+                .FirstOrDefaultAsync(p => p.Id == id);
             _context.LiftDayPlans.Remove(item);
-            await _context.SaveChangesAsync(); 
-            return NoContent();
+            await _context.SaveChangesAsync();
+            return Ok(true);
         }
     }
 }

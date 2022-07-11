@@ -24,7 +24,9 @@ namespace everything.Controllers
         public async Task<IActionResult> GetByDate(DateTime date)
         {
             return Ok(await _context.LiftingWorkouts
-               .Where(w => w.Date.Date == date.Date)
+                // Make this current User
+                //.Where(l => l.UserId == item.UserId)
+                .Where(w => w.Date.Date == date.Date)
                 .Select(w => new GetLiftingWorkoutMessage
                 {
                     Id = w.Id,
@@ -39,6 +41,8 @@ namespace everything.Controllers
         public IActionResult GetById(int id)
         {
             var w = _context.LiftingWorkouts
+                // Make this current User
+                //.Where(l => l.UserId == item.UserId)
                 .Include(w => w.LiftSetLinks)
                     .ThenInclude(l => l.Lift)
                 .FirstOrDefault(w => w.Id == id);
@@ -61,10 +65,12 @@ namespace everything.Controllers
             {
                 Date = item.Date ?? DateTime.Now.Date,
                 Name = item.Name,
-                Notes = item.Notes
+                Notes = item.Notes,
+                UserId = item.UserId
             };
 
             var liftplan = await _context.LiftDayPlans
+                .Where(l => l.UserId == item.UserId)
                 .Include(p => p.MuscleGroupForLiftsLinks)
                     .ThenInclude(l => l.MuscleGroup)
                         .ThenInclude(g => g.MuscleGroupForLiftsLinks)
@@ -88,7 +94,10 @@ namespace everything.Controllers
         [HttpPut]
         public async Task<IActionResult> Update(UpdateLiftingWorkoutMessage item)
         {
-            var workout = await _context.LiftingWorkouts.FirstOrDefaultAsync(p => p.Id == item.Id);
+            var workout = await _context.LiftingWorkouts
+                // Make this current User
+                //.Where(l => l.UserId == item.UserId)
+                .FirstOrDefaultAsync(p => p.Id == item.Id);
             workout.Name = item.Name;
             workout.Date = item.Date;
             workout.Notes = item.Notes;
@@ -99,7 +108,10 @@ namespace everything.Controllers
         [HttpDelete]
         public async Task<IActionResult> Delete(int id)
         {
-            var item = await _context.LiftingWorkouts.FirstOrDefaultAsync(p => p.Id == id);
+            var item = await _context.LiftingWorkouts
+                // Make this current User
+                //.Where(l => l.UserId == item.UserId)
+                .FirstOrDefaultAsync(p => p.Id == id);
             _context.LiftingWorkouts.Remove(item);
             await _context.SaveChangesAsync();
             return NoContent();

@@ -18,6 +18,7 @@ namespace everything.Controllers
         {
             _context = context;
         }
+        //TODO: Add current user check
 
         [HttpGet]
         public async Task<IActionResult> Get()
@@ -36,12 +37,17 @@ namespace everything.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(MuscleGroup item)
+        public async Task<IActionResult> Create(CreateMuscleGroupMessage item)
         {
-            item.CreatedDate = DateTime.Now;
-            _context.Add(item);
-            await _context.SaveChangesAsync(); 
-            return Ok(item);
+            var group = new MuscleGroup
+            {
+                CreatedDate = DateTime.Now,
+                Name = item.Name
+            };
+
+            _context.Add(group);
+            await _context.SaveChangesAsync();
+            return Ok(group);
         }
 
         [HttpDelete]
@@ -49,8 +55,8 @@ namespace everything.Controllers
         {
             var item = await _context.MuscleGroups.FirstOrDefaultAsync(p => p.Id == id);
             _context.MuscleGroups.Remove(item);
-            await _context.SaveChangesAsync(); 
-            return NoContent();
+            await _context.SaveChangesAsync();
+            return Ok(true);
         }
     }
 }

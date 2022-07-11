@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace everything.Models
 {
-    public class Lift
+    public class Lift : IForUser
     {
         public Lift()
         {
@@ -19,7 +19,7 @@ namespace everything.Models
         public DateTime CreatedDate { get; set; }
 
         public int UserId { get; set; }
-        public User User { get; set; }
+        public virtual User User { get; set; }
 
         public int LiftTypeId { get; set; }
         public virtual LiftType LiftType { get; set; }

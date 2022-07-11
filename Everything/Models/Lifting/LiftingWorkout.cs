@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace everything.Models
 {
-    public class LiftingWorkout
+    public class LiftingWorkout : IForUser
     {
         public LiftingWorkout()
         {
@@ -16,7 +16,7 @@ namespace everything.Models
         public string Notes { get; set; }
 
         public int UserId { get; set; }
-        public User User { get; set; }
+        public virtual User User { get; set; }
 
         public IList<LiftSetLink> LiftSetLinks { get; set; }
     }

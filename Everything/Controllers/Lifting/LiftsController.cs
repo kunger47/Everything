@@ -31,6 +31,7 @@ namespace everything.Controllers
         {
             return Ok(_context.MuscleGroupForLifts
                 .Include(p => p.Lift)
+                //TODO: For Current User
                 .Where(l => l.MuscleGroupId == groupId)
                 .Select(l => l.Lift));
         }
@@ -44,23 +45,41 @@ namespace everything.Controllers
                 .Include(g => g.MuscleGroup)
                     .ThenInclude(mp => mp.MuscleGroupForPlanLinks)
                 .Where(g => g.MuscleGroup.MuscleGroupForPlanLinks.Any(l => l.LiftDayPlanId == planId))
+                //TODO: For Current User
                 .Select(g => g.Lift));
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Lift item)
+        public async Task<IActionResult> Create(CreateLiftMessage item)
         {
-            item.CreatedDate = DateTime.Now;
-            _context.Add(item);
+            var lift = new Lift
+            {
+                CreatedDate = DateTime.Now,
+                Description = item.Description,
+                Name = item.Name,
+                IsActive = true,
+                LiftTypeId = item.LiftTypeId,
+                UserId = item.UserId,
+                VideoLink = item.VideoLink,
+            };
+            _context.Add(lift);
             await _context.SaveChangesAsync();
-            return Ok(item);
+            return Ok(lift);
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update(Lift item)
+        public async Task<IActionResult> Update(UpdateLiftMessage item)
         {
-            var lift = _context.Lifts.FirstOrDefault(l => l.Id == item.Id);
+            var lift = _context.Lifts
+                //TODO: For Current User
+                .FirstOrDefault(l => l.Id == item.Id);
+
             lift.VideoLink = item.VideoLink;
+            lift.Description = item.Description;
+            lift.LiftTypeId = item.LiftTypeId;
+            lift.Name = item.Name;
+            lift.IsActive = item.IsActive;
+
             await _context.SaveChangesAsync();
             return Ok(item);
         }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace everything.Models
 {
-    public class Game
+    public class Game : IForUser
     {
         public Game()
         {
@@ -14,8 +14,9 @@ namespace everything.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public DateTime Date { get; set; }
+
         public int UserId { get; set; }
-        public User User { get; set; }
+        public virtual User User { get; set; }
 
         public virtual IEnumerable<Player> Players { get; set; }
         public virtual IList<GameQuestion> GameQuestions { get; set; }

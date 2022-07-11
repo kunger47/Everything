@@ -41,7 +41,8 @@ namespace everything.Controllers
                 Name = item.Name,
                 Description = item.Description,
                 Sequence = item.Sequence,
-                CreatedDate = DateTime.Now
+                CreatedDate = DateTime.Now,
+                UserId = item.UserId
             };
 
             _context.Add(board);

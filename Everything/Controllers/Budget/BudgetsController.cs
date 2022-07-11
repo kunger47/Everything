@@ -80,7 +80,8 @@ namespace everything.Controllers
                 Name = item.Name,
                 Description = item.Description,
                 CreatedDate = DateTime.Now,
-                IsActive = true
+                IsActive = true,
+                UserId = item.UserId
             };
 
             _context.Add(budget);

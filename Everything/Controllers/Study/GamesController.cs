@@ -55,7 +55,8 @@ namespace everything.Controllers
             var source = new Game
             {
                 Name = item.Name,
-                Date = DateTime.Now
+                Date = DateTime.Now,
+                UserId = item.UserId
             };
 
             var categories = _context.QuestionCategories

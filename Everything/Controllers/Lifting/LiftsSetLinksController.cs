@@ -37,6 +37,7 @@ namespace everything.Controllers
                     Name = l.Lift.Name,
                     Description = l.Lift.Description,
                     LiftTypeName = l.Lift.LiftType.Name,
+                    LiftTypeId = l.Lift.LiftType.Id,
                     VideoLink = l.Lift.VideoLink
                 },
                 Sets = l.LiftSets.Select(s => new GetLiftSetMessage
@@ -44,7 +45,8 @@ namespace everything.Controllers
                     Id = s.Id,
                     Number = s.Number,
                     Reps = s.Reps,
-                    Weight = s.Weight
+                    Weight = s.Weight,
+                    LiftSetLinkId = s.LiftSetLinkId
                 })
             });
         }

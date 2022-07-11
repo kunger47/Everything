@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace everything.Models
 {
-    public class LiftDayPlan
+    public class LiftDayPlan : IForUser
     {
         public LiftDayPlan()
         {
@@ -15,7 +15,7 @@ namespace everything.Models
         public DateTime CreatedDate { get; set; }
 
         public int UserId { get; set; }
-        public User User { get; set; }
+        public virtual User User { get; set; }
 
         public virtual IEnumerable<MuscleGroupForLiftDayPlan> MuscleGroupForLiftsLinks { get; set; }
     }

@@ -18,6 +18,7 @@ namespace everything.Controllers
         {
             _context = context;
         }
+        //TODO: Add check for current user
 
         [HttpGet]
         public async Task<IActionResult> Get()
@@ -37,20 +38,30 @@ namespace everything.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(LiftSet item)
+        public async Task<IActionResult> Create(CreateLiftSetMessage item)
         {
-            _context.Add(item);
+            var set = new LiftSet
+            {
+                Number = item.Number,
+                Reps = item.Reps,
+                Weight = item.Weight,
+                LiftSetLinkId = item.LiftSetLinkId
+            };
+
+            _context.Add(set);
             await _context.SaveChangesAsync();
-            return Ok(item);
+            return Ok(set);
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update(LiftSet item)
+        public async Task<IActionResult> Update(UpdateLiftSetMessage item)
         {
             var set = _context.LiftSets.FirstOrDefault(l => l.Id == item.Id);
+
             set.Number = item.Number;
             set.Reps = item.Reps;
             set.Weight = item.Weight;
+
             await _context.SaveChangesAsync();
             return Ok(item);
         }

@@ -13,6 +13,7 @@ namespace everything.Controllers
     public class CreateGameMessage
     {
         public string Name { get; set; }
+        public int UserId { get; set; }
     }
 
     public class UpdateGameMessage

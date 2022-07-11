@@ -16,6 +16,8 @@ namespace everything.Controllers
         public string Name { get; set; }
         public string Description { get; set; }
         public int Sequence { get; set; }
+        // TODO: Replace the UserId in Create messages with context Current User
+        public int UserId { get; set; }
     }
 
     public class UpdateToDoBoardMessage
