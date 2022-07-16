@@ -1,10 +1,28 @@
 import ToDoBoard from "models/todo/ToDoBoard";
+import ToDoBoardFolder from "models/todo/ToDoBoardFolder";
 import ToDoColumn from "models/todo/ToDoColumn";
 import ToDoItem from "models/todo/ToDoItem";
 import ToDoItemTask from "models/todo/ToDoItemTask";
 import Api from "../api";
 
 class LiftingApi {
+    //Folder
+    createFolder(data: ToDoBoardFolder, onSuccess: () => void) {
+        return Api.post({ url: `https://localhost:44340/todoboardfolders`, body: data, onSuccess });
+    }
+
+    getFoldersForFolder(folderId: number | null, onSuccess: (result: ToDoBoardFolder[]) => void) {
+        return Api.callApi({ url: `https://localhost:44340/todoboardfolders/forfolder/${folderId}`, onSuccess });
+    }
+
+    updateFolder(data: ToDoBoardFolder, onSuccess: () => void) {
+        return Api.put({ url: `https://localhost:44340/todoboardfolders`, body: data, onSuccess });
+    }
+
+    removeFolder(folderId: number, onSuccess: () => void) {
+        return Api.delete({ url: `https://localhost:44340/todoboardfolders/${folderId}`, onSuccess });
+    }
+
     //Board
     createBoard(data: ToDoBoard, onSuccess: () => void) {
         return Api.post({ url: `https://localhost:44340/todoboards`, body: data, onSuccess });
@@ -12,6 +30,10 @@ class LiftingApi {
 
     getBoards(onSuccess: (result: ToDoBoard[]) => void) {
         return Api.callApi({ url: `https://localhost:44340/todoboards`, onSuccess });
+    }
+
+    getBoardsForFolder(folderId: number | null, onSuccess: (result: ToDoBoard[]) => void) {
+        return Api.callApi({ url: `https://localhost:44340/todoboards/forfolder/${folderId}`, onSuccess });
     }
 
     updateBoard(data: ToDoBoard, onSuccess: () => void) {

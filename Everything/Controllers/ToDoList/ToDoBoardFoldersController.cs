@@ -10,11 +10,11 @@ namespace everything.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ToDoBoardsController : ControllerBase
+    public class ToDoBoardFoldersController : ControllerBase
     {
         readonly EverythingContext _context;
 
-        public ToDoBoardsController(EverythingContext context)
+        public ToDoBoardFoldersController(EverythingContext context)
         {
             _context = context;
         }
@@ -22,8 +22,8 @@ namespace everything.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            return Ok(await _context.ToDoBoards
-                .Select(c => new GetToDoBoardMessage
+            return Ok(await _context.ToDoBoardFolders
+                .Select(c => new GetToDoBoardFolderMessage
                 {
                     Id = c.Id,
                     Name = c.Name,
@@ -38,9 +38,9 @@ namespace everything.Controllers
         public async Task<IActionResult> GetForFolder(string folderId)
         {
             var foundId = int.TryParse(folderId, out int parsedId);
-            return Ok(await _context.ToDoBoards
+            return Ok(await _context.ToDoBoardFolders
                 .Where(b => b.BoardFolderId == (foundId ? parsedId : null))
-                .Select(c => new GetToDoBoardMessage
+                .Select(c => new GetToDoBoardFolderMessage
                 {
                     Id = c.Id,
                     Name = c.Name,
@@ -51,9 +51,9 @@ namespace everything.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateToDoBoardMessage item)
+        public async Task<IActionResult> Create(CreateToDoBoardFolderMessage item)
         {
-            var board = new ToDoBoard
+            var folder = new ToDoBoardFolder
             {
                 Name = item.Name,
                 Description = item.Description,
@@ -62,19 +62,19 @@ namespace everything.Controllers
                 BoardFolderId = item.BoardFolderId
             };
 
-            _context.Add(board);
+            _context.Add(folder);
             await _context.SaveChangesAsync();
             return Ok(true);
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update(UpdateToDoBoardMessage item)
+        public async Task<IActionResult> Update(UpdateToDoBoardFolderMessage item)
         {
-            var board = await _context.ToDoBoards.FirstOrDefaultAsync(p => p.Id == item.Id);
+            var folder = await _context.ToDoBoardFolders.FirstOrDefaultAsync(p => p.Id == item.Id);
 
-            board.Name = item.Name;
-            board.Description = item.Description;
-            board.BoardFolderId = item.BoardFolderId;
+            folder.Name = item.Name;
+            folder.Description = item.Description;
+            folder.BoardFolderId = item.BoardFolderId;
 
             await _context.SaveChangesAsync();
             return Ok(true);
@@ -84,21 +84,26 @@ namespace everything.Controllers
         [Route("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var board = await _context.ToDoBoards.FirstOrDefaultAsync(p => p.Id == id);
+            var folder = await _context.ToDoBoardFolders.FirstOrDefaultAsync(p => p.Id == id);
 
-            foreach (var column in board.ToDoColumns)
+            foreach (var board in folder.ToDoBoards)
             {
-                foreach (var item in column.ToDoItems)
+                foreach (var column in board.ToDoColumns)
                 {
-                    foreach (var task in item.Tasks)
+                    foreach (var item in column.ToDoItems)
                     {
-                        _context.ToDoItemTasks.Remove(task);
+                        foreach (var task in item.Tasks)
+                        {
+                            _context.ToDoItemTasks.Remove(task);
+                        }
+                        _context.ToDoItems.Remove(item);
                     }
-                    _context.ToDoItems.Remove(item);
+                    _context.ToDoColumns.Remove(column);
                 }
-                _context.ToDoColumns.Remove(column);
+                _context.ToDoBoards.Remove(board);
             }
-            _context.ToDoBoards.Remove(board);
+            _context.ToDoBoardFolders.Remove(folder);
+
 
             await _context.SaveChangesAsync();
             return NoContent();

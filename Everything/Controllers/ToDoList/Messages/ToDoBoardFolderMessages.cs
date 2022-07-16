@@ -2,7 +2,7 @@ using System;
 
 namespace everything.Controllers
 {
-    public class GetToDoBoardMessage
+    public class GetToDoBoardFolderMessage
     {
         public int Id { get; set; }
         public DateTime CreatedDate { get; set; }
@@ -11,7 +11,7 @@ namespace everything.Controllers
         public int? BoardFolderId { get; set; }
     }
 
-    public class CreateToDoBoardMessage
+    public class CreateToDoBoardFolderMessage
     {
         public string Name { get; set; }
         public string Description { get; set; }
@@ -20,7 +20,7 @@ namespace everything.Controllers
         public int? BoardFolderId { get; set; }
     }
 
-    public class UpdateToDoBoardMessage
+    public class UpdateToDoBoardFolderMessage
     {
         public int Id { get; set; }
         public string Name { get; set; }

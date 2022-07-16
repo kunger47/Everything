@@ -10,6 +10,7 @@ namespace everything.Models
             Budgets = new List<Budget>();
             Games = new List<Game>();
             QuestionCategories = new List<QuestionCategory>();
+            ToDoBoardFolders = new List<ToDoBoardFolder>();
             ToDoBoards = new List<ToDoBoard>();
             MuscleGroups = new List<MuscleGroup>();
             LiftTypes = new List<LiftType>();
@@ -27,6 +28,7 @@ namespace everything.Models
         public virtual IEnumerable<Game> Games { get; set; }
         public virtual IEnumerable<QuestionCategory> QuestionCategories { get; set; }
 
+        public virtual IEnumerable<ToDoBoardFolder> ToDoBoardFolders { get; set; }
         public virtual IEnumerable<ToDoBoard> ToDoBoards { get; set; }
 
         public virtual IEnumerable<MuscleGroup> MuscleGroups { get; set; }

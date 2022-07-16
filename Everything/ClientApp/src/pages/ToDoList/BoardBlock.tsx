@@ -37,7 +37,7 @@ const BoardBlock = (props: Props) => {
     };
 
     return (
-        <Col sm={3} className='e-board-block' onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+        <Col sm={3} id={props.board.id.toString()} className='e-todo-page-block e-board-block' draggable="true" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
             <ReactLink to={`/todoboard?boardId=${props.board.id}`}>
                 <p className="e-select-board-link">
                     GO

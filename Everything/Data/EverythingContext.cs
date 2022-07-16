@@ -13,6 +13,7 @@ namespace everything.Data
         {
             builder.Entity<User>().ToTable("Users");
 
+            builder.Entity<ToDoBoard>().ToTable("ToDoBoardFolders");
             builder.Entity<ToDoBoard>().ToTable("ToDoBoards");
             builder.Entity<ToDoColumn>().ToTable("ToDoColumns");
             builder.Entity<ToDoItem>().ToTable("ToDoItems");
@@ -51,6 +52,7 @@ namespace everything.Data
 
         public DbSet<User> Users { get; set; }
 
+        public DbSet<ToDoBoardFolder> ToDoBoardFolders { get; set; }
         public DbSet<ToDoBoard> ToDoBoards { get; set; }
         public DbSet<ToDoColumn> ToDoColumns { get; set; }
         public DbSet<ToDoItem> ToDoItems { get; set; }

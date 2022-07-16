@@ -3,11 +3,12 @@ using System.Collections.Generic;
 
 namespace everything.Models
 {
-    public class ToDoBoard : IForUser
+    public class ToDoBoardFolder : IForUser
     {
-        public ToDoBoard()
+        public ToDoBoardFolder()
         {
-            ToDoColumns = new List<ToDoColumn>();
+            ToDoBoards = new List<ToDoBoard>();
+            BoardFolders = new List<ToDoBoardFolder>();
         }
 
         public int Id { get; set; }
@@ -21,6 +22,7 @@ namespace everything.Models
         public int? BoardFolderId { get; set; }
         public virtual ToDoBoardFolder BoardFolder { get; set; }
 
-        public virtual IEnumerable<ToDoColumn> ToDoColumns { get; set; }
+        public virtual IEnumerable<ToDoBoard> ToDoBoards { get; set; }
+        public virtual IEnumerable<ToDoBoardFolder> BoardFolders { get; set; }
     }
 }
