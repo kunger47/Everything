@@ -1,9 +1,9 @@
-import Input from 'components/Form/Input';
+import SaveOnBlurInput from 'components/Form/SaveOnBlurInput';
 import Expense from 'models/budget/Expense';
 import React, { useEffect, useRef, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import budgetApi from 'services/apis/budget-api';
-import { handleRawInputChange } from 'services/form-helpers';
+import { sumByProperty } from 'services/array-helpers';
 import { formatAsCurrency } from 'services/formatters';
 
 import './Budget.scss';
@@ -31,18 +31,25 @@ const Expenses = (props: Props) => {
     }, [isAdding]);
 
     useEffect(() => {
-        setTotal(expenses.length > 0 ? expenses.map(a => a.amount).reduce((accumulator, curr) => accumulator + curr) : 0);
+        setTotal(sumByProperty(expenses, "amount"));
     }, [expenses])
 
     const refreshExpenses = () => {
         budgetApi.getExpensesForBudget(props.budgetId, setExpenses);
     }
 
-    const saveNew = () => {
-        // if (!!newItem.name?.trim())
-        //     budgetApi.createExpense({ ...newItem, expenseBudgetId:  }, refreshExpenses);
+    const saveNew = (value: string) => {
+        // budgetApi.createExpense({ ...newItem, name: value, expenseBudgetId:  }, refreshExpenses);
+    }
+
+    const indicateNoLongerAdding = () => {
         setIsAdding(false);
         setNewItem(new Expense());
+    }
+
+    const onSuccessfulAdd = () => {
+        indicateNoLongerAdding();
+        refreshExpenses();
     }
 
     return (
@@ -71,12 +78,13 @@ const Expenses = (props: Props) => {
                         <div className="e-item-block e-add-item">Add +</div>
                     </Col>
                     : <Col>
-                        <Input
+                        <SaveOnBlurInput
                             ref={addRef}
                             inputName="New Expense Name"
-                            value={newItem.name ?? undefined}
-                            handleInputChange={handleRawInputChange([newItem, setNewItem], "name")}
+                            value={newItem.name ?? ''}
                             onBlur={saveNew}
+                            onBlurNoChange={indicateNoLongerAdding}
+                            isRequired
                         />
                     </Col>}
             </Row>}

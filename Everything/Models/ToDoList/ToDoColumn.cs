@@ -19,6 +19,6 @@ namespace everything.Models
         public int ToDoBoardId { get; set; }
         public virtual ToDoBoard ToDoBoard { get; set; }
 
-        public virtual IEnumerable<ToDoItem> ToDoItems { get; set; }
+        public virtual ICollection<ToDoItem> ToDoItems { get; set; }
     }
 }

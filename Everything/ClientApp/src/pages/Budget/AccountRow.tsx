@@ -1,4 +1,4 @@
-import Input from 'components/Form/Input';
+import SaveOnBlurInput from 'components/Form/SaveOnBlurInput';
 import SaveOnBlurNumberInput from 'components/Form/SaveOnBlurNumberInput';
 import Account from 'models/budget/Account';
 import React, { useEffect, useRef, useState } from 'react';
@@ -17,15 +17,8 @@ interface Props {
 const AccountRow = (props: Props) => {
     const [isUpdatingName, setIsUpdatingName] = useState<boolean>(false);
     const [isUpdatingAmount, setIsUpdatingAmount] = useState<boolean>(false);
-    const [tempName, setTempName] = useState<string>(props.account.name ?? '');
-    const [tempAmount, setTempAmount] = useState<number>(props.account.amount);
     const updateNameRef = useRef<HTMLInputElement>(null);
     const updateAmountRef = useRef<HTMLInputElement>(null);
-
-    useEffect(() => {
-        setTempName(props.account.name ?? '');
-        setTempAmount(props.account.amount);
-    }, [props.account]);
 
     useEffect(() => {
         if (isUpdatingName && !!updateNameRef?.current)
@@ -37,15 +30,12 @@ const AccountRow = (props: Props) => {
             updateAmountRef.current.focus();
     }, [isUpdatingAmount]);
 
-    const saveUpdate = () => {
-        if (!!tempName.trim())
-            budgetApi.updateAccount({ ...props.account, name: tempName }, onSuccessfulSave);
+    const saveUpdate = (value: string) => {
+        budgetApi.updateAccount({ ...props.account, name: value }, onSuccessfulSave);
     }
 
-    const saveAmountUpdate = (value: any) => {
-        let newValue = parseInt(value);
-        if (!!newValue && newValue != props.account.amount)
-            budgetApi.updateAccount({ ...props.account, amount: newValue }, onSuccessfulSave);
+    const saveAmountUpdate = (value: number | null) => {
+        budgetApi.updateAccount({ ...props.account, amount: value ?? 0 }, onSuccessfulSave);
     }
 
     const indicateNoLongerEditing = () => {
@@ -65,12 +55,14 @@ const AccountRow = (props: Props) => {
                     ? <div className="e-item-block" onClick={() => !props.blurred && setIsUpdatingName(true)}>
                         {props.account.name}
                     </div>
-                    : <Input
+                    : <SaveOnBlurInput
                         ref={updateNameRef}
                         inputName={'Account Name'}
-                        value={tempName}
-                        handleInputChange={setTempName}
-                        onBlur={saveUpdate} />}
+                        value={props.account.name ?? ''}
+                        onBlur={saveUpdate}
+                        onBlurNoChange={indicateNoLongerEditing}
+                        isRequired />
+                }
             </Col>
             <Col xs={4} className="e-item-col">
                 {!isUpdatingAmount
@@ -80,10 +72,11 @@ const AccountRow = (props: Props) => {
                     : <SaveOnBlurNumberInput
                         ref={updateAmountRef}
                         inputName={'Account Value'}
-                        value={tempAmount}
+                        value={props.account.amount}
                         onBlur={saveAmountUpdate}
                         onBlurNoChange={indicateNoLongerEditing}
-                        onFocus={() => { }} />}
+                        onFocus={() => { }}
+                        isRequired />}
             </Col>
         </Row >
     )

@@ -1,4 +1,4 @@
-import Input from 'components/Form/Input';
+import SaveOnBlurInput from 'components/Form/SaveOnBlurInput';
 import SaveOnBlurNumberInput from 'components/Form/SaveOnBlurNumberInput';
 import ExpenseBudget from 'models/budget/ExpenseBudget';
 import React, { useEffect, useRef, useState } from 'react';
@@ -17,15 +17,8 @@ interface Props {
 const ExpenseBudgetRow = (props: Props) => {
     const [isUpdatingName, setIsUpdatingName] = useState<boolean>(false);
     const [isUpdatingAmount, setIsUpdatingAmount] = useState<boolean>(false);
-    const [tempName, setTempName] = useState<string>(props.budget.name ?? '');
-    const [tempAmount, setTempAmount] = useState<number>(props.budget.amount);
     const updateNameRef = useRef<HTMLInputElement>(null);
     const updateAmountRef = useRef<HTMLInputElement>(null);
-
-    useEffect(() => {
-        setTempName(props.budget.name ?? '');
-        setTempAmount(props.budget.amount);
-    }, [props.budget]);
 
     useEffect(() => {
         if (isUpdatingName && !!updateNameRef?.current)
@@ -37,15 +30,12 @@ const ExpenseBudgetRow = (props: Props) => {
             updateAmountRef.current.focus();
     }, [isUpdatingAmount]);
 
-    const saveUpdate = () => {
-        if (!!tempName.trim())
-            budgetApi.updateExpenseBudget({ ...props.budget, name: tempName }, onSuccessfulSave);
+    const saveUpdate = (value: string) => {
+        budgetApi.updateExpenseBudget({ ...props.budget, name: value }, onSuccessfulSave);
     }
 
-    const saveAmountUpdate = (value: any) => {
-        let newValue = parseInt(value);
-        if (!!newValue && newValue != props.budget.amount)
-            budgetApi.updateExpenseBudget({ ...props.budget, amount: newValue }, onSuccessfulSave);
+    const saveAmountUpdate = (value: number | null) => {
+        budgetApi.updateExpenseBudget({ ...props.budget, amount: value ?? 0 }, onSuccessfulSave);
     }
 
     const indicateNoLongerEditing = () => {
@@ -65,12 +55,13 @@ const ExpenseBudgetRow = (props: Props) => {
                     ? <div className="e-item-block" onClick={() => !props.blurred && setIsUpdatingName(true)}>
                         {props.budget.name}
                     </div>
-                    : <Input
+                    : <SaveOnBlurInput
                         ref={updateNameRef}
                         inputName={'Budget Name'}
-                        value={tempName}
-                        handleInputChange={setTempName}
-                        onBlur={saveUpdate} />}
+                        value={props.budget.name ?? ''}
+                        onBlur={saveUpdate}
+                        onBlurNoChange={indicateNoLongerEditing}
+                        isRequired />}
             </Col>
             <Col xs={4} className="e-item-col">
                 {!isUpdatingAmount
@@ -80,10 +71,11 @@ const ExpenseBudgetRow = (props: Props) => {
                     : <SaveOnBlurNumberInput
                         ref={updateAmountRef}
                         inputName={'Budget Value'}
-                        value={tempAmount}
+                        value={props.budget.amount}
                         onBlur={saveAmountUpdate}
                         onBlurNoChange={indicateNoLongerEditing}
-                        onFocus={() => { }} />}
+                        onFocus={() => { }}
+                        isRequired />}
             </Col>
         </Row >
     )

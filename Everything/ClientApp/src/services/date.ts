@@ -13,6 +13,22 @@ export class DateRange {
     }
 }
 
+export function areDatesEqual(date1: Date, date2: Date): boolean {
+    let firstDate = DateTime.fromJSDate(date1);
+    let secondDate = DateTime.fromJSDate(date2);
+    return datesAreTheSameDay(firstDate, secondDate);
+}
+
+function datesAreTheSameDay(date1: DateTime, date2: DateTime): boolean {
+    return datesAreInSameMonth(date1, date2) && date1.day == date2.day; //TODO: can I use date1.hasSame here?
+}
+function datesAreInSameMonth(date1: DateTime, date2: DateTime): boolean {
+    return datesAreInSameYear(date1, date2) && date1.month == date2.month; //TODO: can I use date1.hasSame here?
+}
+function datesAreInSameYear(date1: DateTime, date2: DateTime): boolean {
+    return date1.year == date2.year; //TODO: can I use date1.hasSame here?
+}
+
 export function getTodaysDate(): Date {
     return DateTime.now().toJSDate();
 }

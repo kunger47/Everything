@@ -1,4 +1,4 @@
-import Input from 'components/Form/Input';
+import SaveOnBlurInput from 'components/Form/SaveOnBlurInput';
 import SaveOnBlurNumberInput from 'components/Form/SaveOnBlurNumberInput';
 import IncomeSource from 'models/budget/IncomeSource';
 import React, { useEffect, useRef, useState } from 'react';
@@ -17,15 +17,8 @@ interface Props {
 const IncomeSourceRow = (props: Props) => {
     const [isUpdatingName, setIsUpdatingName] = useState<boolean>(false);
     const [isUpdatingAmount, setIsUpdatingAmount] = useState<boolean>(false);
-    const [tempName, setTempName] = useState<string>(props.source.name ?? '');
-    const [tempAmount, setTempAmount] = useState<number>(props.source.amount);
     const updateNameRef = useRef<HTMLInputElement>(null);
     const updateAmountRef = useRef<HTMLInputElement>(null);
-
-    useEffect(() => {
-        setTempName(props.source.name ?? '');
-        setTempAmount(props.source.amount);
-    }, [props.source]);
 
     useEffect(() => {
         if (isUpdatingName && !!updateNameRef?.current)
@@ -37,15 +30,12 @@ const IncomeSourceRow = (props: Props) => {
             updateAmountRef.current.focus();
     }, [isUpdatingAmount]);
 
-    const saveUpdate = () => {
-        if (!!tempName.trim())
-            budgetApi.updateIncomeSource({ ...props.source, name: tempName }, onSuccessfulSave);
+    const saveUpdate = (value: string) => {
+        budgetApi.updateIncomeSource({ ...props.source, name: value }, onSuccessfulSave);
     }
 
-    const saveAmountUpdate = (value: any) => {
-        let newValue = parseInt(value);
-        if (!!newValue && newValue != props.source.amount)
-            budgetApi.updateIncomeSource({ ...props.source, amount: newValue }, onSuccessfulSave);
+    const saveAmountUpdate = (value: number | null) => {
+        budgetApi.updateIncomeSource({ ...props.source, amount: value ?? 0 }, onSuccessfulSave);
     }
 
     const indicateNoLongerEditing = () => {
@@ -58,7 +48,6 @@ const IncomeSourceRow = (props: Props) => {
         props.reload();
     }
 
-
     return (
         <Row>
             <Col xs={8} className="e-item-col">
@@ -66,12 +55,13 @@ const IncomeSourceRow = (props: Props) => {
                     ? <div className="e-item-block" onClick={() => !props.blurred && setIsUpdatingName(true)}>
                         {props.source.name}
                     </div>
-                    : <Input
+                    : <SaveOnBlurInput
                         ref={updateNameRef}
                         inputName={'Source Name'}
-                        value={tempName}
-                        handleInputChange={setTempName}
-                        onBlur={saveUpdate} />}
+                        value={props.source.name ?? ''}
+                        onBlur={saveUpdate}
+                        onBlurNoChange={indicateNoLongerEditing}
+                        isRequired />}
             </Col>
             <Col xs={4} className="e-item-col">
                 {!isUpdatingAmount
@@ -81,10 +71,11 @@ const IncomeSourceRow = (props: Props) => {
                     : <SaveOnBlurNumberInput
                         ref={updateAmountRef}
                         inputName={'Source Value'}
-                        value={tempAmount}
+                        value={props.source.amount}
                         onBlur={saveAmountUpdate}
                         onBlurNoChange={indicateNoLongerEditing}
-                        onFocus={() => { }} />}
+                        onFocus={() => { }}
+                        isRequired />}
             </Col>
         </Row >
     )

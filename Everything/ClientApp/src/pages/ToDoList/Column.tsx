@@ -38,9 +38,14 @@ const Column = (props: Props) => {
 
     const saveNew = () => {
         if (!!newItem.name?.trim())
-            todoApi.createItem({ ...newItem, toDoColumnId: props.column.id }, props.reload);
+            todoApi.createItem({ ...newItem, toDoColumnId: props.column.id, sequence: getNextSequence() }, props.reload);
         setIsAdding(false);
         setNew(new ToDoItem());
+    }
+
+    const getNextSequence = () => {
+        var seqs = props.column.toDoItems.map(i => i.sequence);
+        return Math.max(...seqs) + 1;
     }
 
     const saveUpdate = () => {

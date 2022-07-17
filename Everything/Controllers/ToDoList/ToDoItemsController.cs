@@ -1,10 +1,9 @@
-using System;
-using System.Threading.Tasks;
+using everything.Core;
+using everything.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using everything.Data;
-using everything.Models;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace everything.Controllers
 {
@@ -13,10 +12,12 @@ namespace everything.Controllers
     public class ToDoItemsController : ControllerBase
     {
         readonly EverythingContext _context;
+        readonly ToDoItemUpdater _toDoItemUpdater;
 
         public ToDoItemsController(EverythingContext context)
         {
             _context = context;
+            _toDoItemUpdater = new ToDoItemUpdater(_context);
         }
 
         [HttpGet]
@@ -37,16 +38,7 @@ namespace everything.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateToDoItemMessage item)
         {
-            var todo = new ToDoItem
-            {
-                Name = item.Name,
-                Description = item.Description,
-                Sequence = item.Sequence,
-                CreatedDate = DateTime.Now,
-                ToDoColumnId = item.ToDoColumnId
-            };
-
-            _context.Add(todo);
+            _toDoItemUpdater.AddToDoItem(item);
             await _context.SaveChangesAsync();
             return Ok(item);
         }
@@ -54,14 +46,7 @@ namespace everything.Controllers
         [HttpPut]
         public async Task<IActionResult> Update(UpdateToDoItemMessage item)
         {
-            var todo = await _context.ToDoItems.FirstOrDefaultAsync(p => p.Id == item.Id);
-
-            todo.Name = item.Name;
-            todo.Description = item.Description;
-            todo.Sequence = item.Sequence;
-            todo.ToDoColumnId = item.ToDoColumnId;
-            todo.DueDate = item.DueDate;
-
+            _toDoItemUpdater.UpdateToDoItem(item);
             await _context.SaveChangesAsync();
             return Ok(true);
         }
@@ -70,14 +55,7 @@ namespace everything.Controllers
         [Route("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var item = await _context.ToDoItems.FirstOrDefaultAsync(p => p.Id == id);
-
-            foreach (var task in item.Tasks)
-            {
-                _context.ToDoItemTasks.Remove(task);
-            }
-
-            _context.ToDoItems.Remove(item);
+            _toDoItemUpdater.RemoveToDoItem(id);
             await _context.SaveChangesAsync();
             return NoContent();
         }

@@ -10,6 +10,7 @@ import Accounts from './Accounts';
 import Incomes from './Incomes';
 import ExpenseBudgets from './ExpenseBudgets';
 import Expenses from './Expenses';
+import { isANumberAndGreaterThan0 } from 'services/number-helper';
 
 const Budget = () => {
     const search = useLocation().search;
@@ -27,7 +28,7 @@ const Budget = () => {
     }, [budgetId]);
 
     const refreshBudget = () => {
-        if (!!budgetId && !isNaN(budgetId))
+        if (isANumberAndGreaterThan0(budgetId))
             budgetApi.getBudget(budgetId, setBudget);
     }
 

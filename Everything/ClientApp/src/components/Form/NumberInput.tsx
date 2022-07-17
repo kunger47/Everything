@@ -54,6 +54,12 @@ const NumberInput = forwardRef((props: Props, ref: ForwardedRef<HTMLInputElement
             e.target.select();
     }
 
+    const onKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            e.currentTarget.blur();
+        }
+    };
+
     return (
         <Form.Group className={props.className}>
             {!props.inline && props.label &&
@@ -87,6 +93,7 @@ const NumberInput = forwardRef((props: Props, ref: ForwardedRef<HTMLInputElement
                     ref={ref}
                     autoComplete='off'
                     tabIndex={props.tabIndex}
+                    onKeyPress={onKeyPress}
                 />
                 {!!props.customAppendText &&
                     <div className="input-group-append">

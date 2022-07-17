@@ -6,8 +6,7 @@ import budgetApi from 'services/apis/budget-api';
 import { Link as ReactLink } from 'react-router-dom';
 
 import './Budget.scss';
-import { handleRawInputChange } from 'services/form-helpers';
-import Input from 'components/Form/Input';
+import SaveOnBlurInput from 'components/Form/SaveOnBlurInput';
 
 const Budgeting = () => {
     const [budgets, setBudgets] = useState<BudgetModel[]>([]);
@@ -23,11 +22,19 @@ const Budgeting = () => {
         budgetApi.getBudgets(setBudgets);
     }
 
-    const saveNew = () => {
+    const saveNew = (value: string) => {
         if (!!newBudget.name?.trim())
-            budgetApi.createBudget({ ...newBudget }, refreshBudgets);
+            budgetApi.createBudget({ ...newBudget, name: value }, onSuccessfulAdd);
+    }
+
+    const indicateNoLongerAdding = () => {
         setIsAdding(false);
         setNewBudget(new BudgetModel());
+    }
+
+    const onSuccessfulAdd = () => {
+        indicateNoLongerAdding();
+        refreshBudgets();
     }
 
     return (
@@ -44,12 +51,13 @@ const Budgeting = () => {
                     ? <Button className="" onClick={() => setIsAdding(true)}>
                         Add Budget
                     </Button>
-                    : <Input
+                    : <SaveOnBlurInput
                         ref={addRef}
                         inputName={'New Budget Name'}
-                        value={newBudget.name ?? undefined}
-                        handleInputChange={handleRawInputChange([newBudget, setNewBudget], "name")}
+                        value={newBudget.name ?? ''}
                         onBlur={saveNew}
+                        onBlurNoChange={indicateNoLongerAdding}
+                        isRequired
                     />
                 }
             </Col>

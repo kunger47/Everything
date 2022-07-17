@@ -1,9 +1,9 @@
-import Input from 'components/Form/Input';
+import SaveOnBlurInput from 'components/Form/SaveOnBlurInput';
 import Account from 'models/budget/Account';
 import React, { useEffect, useRef, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import budgetApi from 'services/apis/budget-api';
-import { handleRawInputChange } from 'services/form-helpers';
+import { sumByProperty } from 'services/array-helpers';
 import { formatAsCurrency } from 'services/formatters';
 import AccountRow from './AccountRow';
 
@@ -31,18 +31,25 @@ const Accounts = (props: Props) => {
     }, [isAdding]);
 
     useEffect(() => {
-        setTotal(accounts.length > 0 ? accounts.map(a => a.amount).reduce((accumulator, curr) => accumulator + curr) : 0);
+        setTotal(sumByProperty(accounts, "amount"));
     }, [accounts])
 
     const refreshAccounts = () => {
         budgetApi.getAccounts(props.budgetId, setAccounts);
     }
 
-    const saveNew = () => {
-        if (!!newAccount.name?.trim())
-            budgetApi.createAccount({ ...newAccount, budgetId: props.budgetId }, refreshAccounts);
+    const saveNew = (value: string) => {
+        budgetApi.createAccount({ ...newAccount, name: value, budgetId: props.budgetId }, onSuccessfulAdd);
+    }
+
+    const indicateNoLongerAdding = () => {
         setIsAdding(false);
         setNewAccount(new Account());
+    }
+
+    const onSuccessfulAdd = () => {
+        indicateNoLongerAdding();
+        refreshAccounts();
     }
 
     return (
@@ -71,12 +78,13 @@ const Accounts = (props: Props) => {
                         <div className="e-item-block e-add-item">Add +</div>
                     </Col>
                     : <Col>
-                        <Input
+                        <SaveOnBlurInput
                             ref={addRef}
                             inputName="New Account Name"
-                            value={newAccount.name ?? undefined}
-                            handleInputChange={handleRawInputChange([newAccount, setNewAccount], "name")}
+                            value={newAccount.name ?? ''}
                             onBlur={saveNew}
+                            onBlurNoChange={indicateNoLongerAdding}
+                            isRequired
                         />
                     </Col>}
             </Row>}
