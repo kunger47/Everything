@@ -9,6 +9,7 @@ import { Col, Row } from 'react-bootstrap';
 import { handleRawInputChange } from 'services/form-helpers';
 import { useLocation } from 'react-router-dom';
 import Input from 'components/Form/Input';
+import { copyObject } from 'services/object-helper';
 
 const ToDoBoard = () => {
     const search = useLocation().search;
@@ -65,7 +66,7 @@ const ToDoBoard = () => {
 
             if (toDoIndex > -1) {
                 let item = col.toDoItems[toDoIndex];
-                let updates = JSON.parse(JSON.stringify(item));
+                let updates = copyObject(item);
                 todoApi.updateItem({ ...updates, sequence: destination.index, toDoColumnId: (destination.droppableId as any as number) }, loadColumns);
             }
         }

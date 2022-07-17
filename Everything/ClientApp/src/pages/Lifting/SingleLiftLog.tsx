@@ -33,6 +33,7 @@ const SingleLiftLog = (props: Props) => {
 
     useEffect(() => {
         setVideoLink(lift.videoLink);
+
         if (!showVideo && lift.videoLink)
             setShowVideo(true);
         if (showVideo && !lift.videoLink)

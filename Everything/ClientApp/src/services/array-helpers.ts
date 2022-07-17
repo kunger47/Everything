@@ -34,3 +34,61 @@ export function distinct<T>(array: T[]) {
 export function distinctDate(array: Date[]) {
     return array.filter((a, index) => array.findIndex(b => areDatesEqual(a, b)) == index);
 }
+
+export function sortByNumberPropertyDescending<T>(array: T[], property: keyof T) {
+    var sortedArray = array.sort((a: T, b: T) => {
+        if ((a[property] ?? 0) < (b[property] ?? 0)) {
+            return 1;
+        }
+        if ((a[property] ?? 0) > (b[property] ?? 0)) {
+            return -1;
+        }
+        return 0;
+    });
+
+    return sortedArray;
+}
+
+export function sortByNumberPropertyAcsending<T>(array: T[], property: keyof T) {
+    var sortedArray = array.sort((a: T, b: T) => {
+        if ((a[property] ?? 0) < (b[property] ?? 0)) {
+            return -1;
+        }
+        if ((a[property] ?? 0) > (b[property] ?? 0)) {
+            return 1;
+        }
+        return 0;
+    });
+
+    return sortedArray;
+}
+
+export function sortByStringPropertyDescending<T>(array: T[], property: keyof T) {
+    var sortedArray = array.sort((a: T, b: T) => {
+        var aValue = ((a[property] ?? "") as string).toUpperCase();
+        var bValue = ((b[property] ?? "") as string).toUpperCase();
+
+        if (aValue < bValue)
+            return 1;
+        if (aValue > bValue)
+            return -1;
+        return 0;
+    });
+
+    return sortedArray;
+}
+
+export function sortByStringPropertyAcsending<T>(array: T[], property: keyof T) {
+    var sortedArray = array.sort((a: T, b: T) => {
+        var aValue = ((a[property] ?? "") as string).toUpperCase();
+        var bValue = ((b[property] ?? "") as string).toUpperCase();
+
+        if (aValue < bValue ?? "")
+            return -1;
+        if (aValue > bValue)
+            return 1;
+        return 0;
+    });
+
+    return sortedArray;
+}

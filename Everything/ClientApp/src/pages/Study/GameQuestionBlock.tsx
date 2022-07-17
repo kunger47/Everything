@@ -13,6 +13,7 @@ import Input from 'components/Form/Input';
 import useSound from 'use-sound';
 import rightSound from '../../audio/correct_sound.wav';
 import wrongSound from '../../audio/incorrect_sound.mp3';
+import { sortByStringPropertyAcsending } from 'services/array-helpers';
 
 interface Props {
     question: GameQuestion;
@@ -70,15 +71,7 @@ const GameQuestionBlock = (props: Props) => {
     }, [answers]);
 
     useEffect(() => {
-        setSortedAnswers(answers.sort((a: QuestionAnswer, b: QuestionAnswer) => {
-            if (a.playerName < b.playerName) {
-                return -1;
-            }
-            if (a.playerName > b.playerName) {
-                return 1;
-            }
-            return 0;
-        }));
+        setSortedAnswers(sortByStringPropertyAcsending(answers, "playerName"));
     }, [answers]);
 
     const onPlayerInput = (event: KeyboardEvent<HTMLInputElement>) => {

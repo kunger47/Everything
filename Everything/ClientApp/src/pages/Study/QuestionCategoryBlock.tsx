@@ -1,11 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import QuestionCategory from 'models/study/QuestionCategory';
-import { Col, Form } from 'react-bootstrap';
+import { Col } from 'react-bootstrap';
 import { Link as ReactLink } from 'react-router-dom';
 import studyApi from 'services/apis/study-api';
 import './Study.scss';
 import Input from 'components/Form/Input';
-import { handleRawInputChange } from 'services/form-helpers';
 
 interface Props {
     questionCategory: QuestionCategory;

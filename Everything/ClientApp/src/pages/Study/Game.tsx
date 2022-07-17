@@ -11,6 +11,8 @@ import Game from 'models/study/Game';
 import { Col, Row } from 'react-bootstrap';
 import FinalGameQuestionBlock from './FinalGameQuestionBlock';
 import GamePlayerBlock from './GamePlayerBlock';
+import { sortByNumberPropertyAcsending, sortByNumberPropertyDescending } from 'services/array-helpers';
+import { copyObject } from 'services/object-helper';
 
 export type GameRoundType = "Single" | "Double" | "Final" | "Results";
 
@@ -41,32 +43,13 @@ const GameBoard = () => {
     }, [intGameId]);
 
     useEffect(() => {
-        let newArray: Player[] = JSON.parse(JSON.stringify(players));
-
-        var moneySort = newArray.sort((a: Player, b: Player) => {
-            if ((a.amount ?? 0) < (b.amount ?? 0)) {
-                return 1;
-            }
-            if ((a.amount ?? 0) > (b.amount ?? 0)) {
-                return -1;
-            }
-            return 0;
-        });
-        setSortedPlayersByMoney(moneySort);
+        let newArray: Player[] = copyObject(players);
+        setSortedPlayersByMoney(sortByNumberPropertyDescending(newArray, "amount"));
     }, [players]);
 
     useEffect(() => {
-        let newArray: Player[] = JSON.parse(JSON.stringify(players));
-
-        setSortedPlayersById(newArray.sort((a: Player, b: Player) => {
-            if (a.id < b.id) {
-                return -1;
-            }
-            if (a.id > b.id) {
-                return 1;
-            }
-            return 0;
-        }));
+        let newArray: Player[] = copyObject(players);
+        setSortedPlayersById(sortByNumberPropertyAcsending(newArray, "id"));
     }, [players]);
 
     useEffect(() => {

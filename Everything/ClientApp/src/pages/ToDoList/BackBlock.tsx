@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import './ToDo.scss';
-import ToDoBoardFolder from 'models/todo/ToDoBoardFolder';
 import { Col } from 'react-bootstrap';
 
 interface Props {
