@@ -81,7 +81,7 @@ namespace everything.Controllers
                 Description = item.Description,
                 CreatedDate = DateTime.Now,
                 IsActive = true,
-                UserId = item.UserId
+                UserId = _context.Users.First().Id
             };
 
             _context.Add(budget);

@@ -42,6 +42,10 @@ namespace everything.Data
             builder.Entity<GameQuestion>().ToTable("GameQuestions");
             builder.Entity<QuestionAnswer>().ToTable("QuestionAnswers");
 
+            builder.Entity<TravelTag>().ToTable("TravelTags");
+            builder.Entity<PackingItem>().ToTable("PackingItems");
+            builder.Entity<TagForPackingItem>().ToTable("TagForPackingItems");
+
             foreach (var relationship in builder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
             {
                 relationship.DeleteBehavior = DeleteBehavior.Restrict;
@@ -80,5 +84,9 @@ namespace everything.Data
         public DbSet<Player> Players { get; set; }
         public DbSet<GameQuestion> GameQuestions { get; set; }
         public DbSet<QuestionAnswer> QuestionAnswers { get; set; }
+
+        public DbSet<TravelTag> TravelTags { get; set; }
+        public DbSet<PackingItem> PackingItems { get; set; }
+        public DbSet<TagForPackingItem> TagForPackingItems { get; set; }
     }
 }

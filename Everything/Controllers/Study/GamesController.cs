@@ -56,7 +56,7 @@ namespace everything.Controllers
             {
                 Name = item.Name,
                 Date = DateTime.Now,
-                UserId = item.UserId
+                UserId = _context.Users.First().Id
             };
 
             var categories = _context.QuestionCategories

@@ -59,7 +59,7 @@ namespace everything.Controllers
                 Name = item.Name,
                 IsActive = true,
                 LiftTypeId = item.LiftTypeId,
-                UserId = item.UserId,
+                UserId = _context.Users.First().Id,
                 VideoLink = item.VideoLink,
             };
             _context.Add(lift);

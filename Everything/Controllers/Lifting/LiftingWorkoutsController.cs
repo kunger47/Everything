@@ -61,16 +61,17 @@ namespace everything.Controllers
         [Route("{liftDayPlanId:int}")]
         public async Task<IActionResult> Create(int liftDayPlanId, CreateLiftingWorkoutMessage item)
         {
+            var user = _context.Users.First();
             var workout = new LiftingWorkout
             {
                 Date = item.Date ?? DateTime.Now.Date,
                 Name = item.Name,
                 Notes = item.Notes,
-                UserId = item.UserId
+                UserId = user.Id
             };
 
             var liftplan = await _context.LiftDayPlans
-                .Where(l => l.UserId == item.UserId)
+                .Where(l => l.UserId == user.Id)
                 .Include(p => p.MuscleGroupForLiftsLinks)
                     .ThenInclude(l => l.MuscleGroup)
                         .ThenInclude(g => g.MuscleGroupForLiftsLinks)

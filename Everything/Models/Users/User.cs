@@ -8,15 +8,21 @@ namespace everything.Models
         public User()
         {
             Budgets = new List<Budget>();
+
             Games = new List<Game>();
             QuestionCategories = new List<QuestionCategory>();
+
             ToDoBoardFolders = new List<ToDoBoardFolder>();
             ToDoBoards = new List<ToDoBoard>();
+
             MuscleGroups = new List<MuscleGroup>();
             LiftTypes = new List<LiftType>();
             LiftingWorkouts = new List<LiftingWorkout>();
             LiftDayPlans = new List<LiftDayPlan>();
             Lifts = new List<Lift>();
+
+            TravelTags = new List<TravelTag>();
+            PackingItems = new List<PackingItem>();
         }
 
         public int Id { get; set; }
@@ -36,5 +42,8 @@ namespace everything.Models
         public virtual IEnumerable<LiftingWorkout> LiftingWorkouts { get; set; }
         public virtual IEnumerable<LiftDayPlan> LiftDayPlans { get; set; }
         public virtual IEnumerable<Lift> Lifts { get; set; }
+
+        public virtual IEnumerable<TravelTag> TravelTags { get; set; }
+        public virtual IEnumerable<PackingItem> PackingItems { get; set; }
     }
 }

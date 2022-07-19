@@ -28,11 +28,12 @@ namespace everything.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateLiftDayPlanMessage item)
         {
+            var user = await _context.Users.FirstOrDefaultAsync();
             var plan = new LiftDayPlan
             {
                 CreatedDate = DateTime.Now,
                 Name = item.Name,
-                UserId = item.UserId
+                UserId = user.Id
             };
 
             _context.Add(plan);

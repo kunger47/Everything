@@ -58,7 +58,7 @@ namespace everything.Controllers
             var questionCategory = new QuestionCategory
             {
                 Name = item.Name,
-                UserId = item.UserId
+                UserId = _context.Users.First().Id
             };
 
             _context.Add(questionCategory);
