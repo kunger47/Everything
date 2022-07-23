@@ -1,0 +1,16 @@
+@import "colors.scss";
+@import "media-queries.scss";
+
+@include md-up {
+    .e-page-container {
+        height: 100%;
+    }
+
+    .e-page-content {
+        height: 95%;
+    }
+}
+
+.e-page-container {
+    max-width: 100%;
+}

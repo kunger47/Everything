@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import LiftingApi from 'services/apis/lifting-api';
-import './Workout.scss';
+import './WorkingOut.scss';
 import { Row, Col, Button } from 'react-bootstrap';
 import { useLocation } from "react-router-dom";
 import SingleLiftLog from './SingleLiftLog';
@@ -39,7 +39,7 @@ const WorkingOut = () => {
     }
 
     return (
-        <Page title="Workout" classNameExtension='workout' >
+        <Page title="Workout" classNameExtension='workingout' >
             {setLinks.length > 0 &&
                 <>
                     <Col md={2} className="e-sidebar">

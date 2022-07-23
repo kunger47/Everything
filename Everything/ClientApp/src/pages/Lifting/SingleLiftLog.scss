@@ -1,0 +1,23 @@
+@import "colors.scss";
+@import "../../media-queries.scss";
+
+.e-single-lift-log {
+    .e-lift-log-title {
+        color: $black;
+        margin: 5px 0px;
+    }
+
+    .e-video {
+        div {
+            width: 100% !important;
+        }
+    }
+
+    .e-add-row {
+        width: 100%;
+    }
+
+    textarea {
+        width: 100%;
+    }
+}

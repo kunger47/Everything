@@ -5,7 +5,7 @@ import ToDoItem from "models/todo/ToDoItem";
 import ToDoItemTask from "models/todo/ToDoItemTask";
 import Api from "../api";
 
-class LiftingApi {
+class ToDoApi {
     //Folder
     createFolder(data: ToDoBoardFolder, onSuccess: () => void) {
         return Api.post({ url: `https://localhost:44340/todoboardfolders`, body: data, onSuccess });
@@ -92,4 +92,4 @@ class LiftingApi {
     }
 }
 
-export default new LiftingApi();
+export default new ToDoApi();

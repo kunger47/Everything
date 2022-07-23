@@ -4,8 +4,7 @@
 @include md-up {
     html,
     body,
-    #root,
-    .container {
+    #root {
         height: 100%;
     }
 
@@ -19,10 +18,6 @@
 
     main {
         height: 93%;
-    }
-
-    .e-page-content {
-        height: 95%;
     }
 }
 

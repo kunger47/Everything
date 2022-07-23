@@ -1,110 +1,75 @@
 @import "colors.scss";
 @import "../../media-queries.scss";
 
-.e-sidebar {
-    background-color: $grey;
+.e-page-workout {
+    .e-sidebar {
+        background-color: $grey;
 
-    .e-sidebar-title {
-        text-align: center;
-        padding: 15px;
+        .e-sidebar-title {
+            text-align: center;
+            padding: 15px;
+        }
     }
-}
 
-.e-lift-log-title {
-    color: $black;
-    margin: 5px 0px;
-}
+    .e-grouping {
+        .e-group-item {
+            background-color: $primary;
+            color: $white;
+            text-align: center;
 
-.e-video {
-    div {
-        width: 100% !important;
-    }
-}
-
-.e-add-row {
-    width: 100%;
-}
-
-textarea {
-    width: 100%;
-}
-
-.e-lift-previous,
-.e-lift-skip,
-.e-lift-next {
-    color: $black;
-}
-
-.e-lift-previous {
-    text-align: left;
-}
-
-.e-lift-skip {
-    text-align: center;
-}
-
-.e-lift-next {
-    text-align: right;
-}
-
-.e-grouping {
-    .e-group-item {
-        background-color: $primary;
-        color: $white;
-        text-align: center;
-
-        &:hover {
-            cursor: pointer;
-        }
-
-        &.e-add-item {
-            background-color: $secondary;
-            &:hover {
-                background-color: $tertiary;
-            }
-        }
-
-        &.e-back {
-            background-color: $grey;
-            &:hover {
-                background-color: $black;
-            }
-        }
-
-        &.e-item {
             &:hover {
                 cursor: pointer;
+            }
+
+            &.e-add-item {
                 background-color: $secondary;
+                &:hover {
+                    background-color: $tertiary;
+                }
+            }
+
+            &.e-back {
+                background-color: $grey;
+                &:hover {
+                    background-color: $black;
+                }
+            }
+
+            &.e-item {
+                &:hover {
+                    cursor: pointer;
+                    background-color: $secondary;
+                }
             }
         }
     }
-}
 
-@include md-down {
-    .e-grouping {
-        margin: 2vw;
+    @include md-down {
+        .e-grouping {
+            margin: 2vw;
 
-        .e-group-item {
-            border-radius: 8px;
-            padding: 2vw 0vw;
-            margin: 3vw;
-            font-size: 1rem;
+            .e-group-item {
+                border-radius: 8px;
+                padding: 2vw 0vw;
+                margin: 3vw;
+                font-size: 1rem;
+            }
         }
     }
-}
 
-@include md-up {
-    .e-grouping {
-        margin: 10% 15%;
-        display: grid;
-        grid-template-columns: auto auto auto;
+    @include md-up {
+        .e-grouping {
+            margin: 10% 15%;
+            display: grid;
+            grid-template-columns: auto auto auto;
 
-        .e-group-item {
-            border-radius: 18px;
-            padding: 5vw 0vw;
-            margin: 1vw;
-            font-size: 2vw;
-            min-width: 15vw;
+            .e-group-item {
+                border-radius: 18px;
+                padding: 5vw 0vw;
+                margin: 1vw;
+                font-size: 2vw;
+                min-width: 15vw;
+            }
         }
     }
 }

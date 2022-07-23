@@ -1,7 +1,7 @@
 import Input from 'components/Form/Input';
 import React, { useEffect, useRef, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
-import './Layout.scss';
+import './TitleBar.scss';
 
 interface Props {
     title?: string;

@@ -18,7 +18,7 @@ import Budgeting from "pages/Budget/Budgeting";
 import Study from "pages/Study/Study";
 import QuestionCategoryPage from "pages/Study/QuestionCategoryPage";
 import GameBoard from "pages/Study/Game";
-import PackingItems from "pages/Travel/PackingItems";
+import TravelLists from "pages/Travel/TravelLists";
 
 export type RouteItem = {
   name: string;
@@ -58,7 +58,7 @@ export const Routes: RouteItem[] =
     { name: "iNaturalist", route: "iNaturalist", component: INaturalist, isMainMenuLink: true },
 
     { name: "Travel", route: "travel", component: Travel, isMainMenuLink: true },
-    { name: "Packing Items", route: "packingitems", component: PackingItems },
+    { name: "Travel Lists", route: "travellists", component: TravelLists },
 
     { name: "Study", route: "study", component: Study, isMainMenuLink: true },
     { name: "Question Category", route: "questioncategory", component: QuestionCategoryPage },

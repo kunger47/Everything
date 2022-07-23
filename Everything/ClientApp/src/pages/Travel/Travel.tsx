@@ -52,7 +52,7 @@ const Travel = () => {
                     </Col>
                 </Row>
                 <Row>
-                    <ReactLink to={`/packingitems`}>
+                    <ReactLink to={`/travellists`}>
                         <Col className='e-travel-block'>
                             <span>
                                 <p className="e-block-name">{"Packing Items & Tags"}</p>

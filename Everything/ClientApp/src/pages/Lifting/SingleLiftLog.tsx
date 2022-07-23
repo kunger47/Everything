@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import LiftingApi from 'services/apis/lifting-api';
-import './Workout.scss';
+import './SingleLiftLog.scss';
 import { Row, Col, Button, Form } from 'react-bootstrap';
 import ReactPlayer from "react-player"
 import LiftSet from 'models/lifting/LiftSet';
@@ -100,7 +100,7 @@ const SingleLiftLog = (props: Props) => {
     }
 
     return (
-        <>
+        <div className='e-single-lift-log'>
             <Row>
                 <Col md={12} className="e-lift-log-title">
                     {!!lift.videoLink && <Button className="e-pull-right" onClick={() => { setShowVideo(!showVideo) }}>
@@ -200,7 +200,7 @@ const SingleLiftLog = (props: Props) => {
                     }
                 </Col>
             </Row >
-        </>
+        </div>
     )
 }
 
