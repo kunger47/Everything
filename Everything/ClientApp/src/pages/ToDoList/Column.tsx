@@ -45,6 +45,8 @@ const Column = (props: Props) => {
 
     const getNextSequence = () => {
         var seqs = props.column.toDoItems.map(i => i.sequence);
+        if (seqs.length < 1)
+            return 0;
         return Math.max(...seqs) + 1;
     }
 
