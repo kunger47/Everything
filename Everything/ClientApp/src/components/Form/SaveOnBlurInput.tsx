@@ -33,7 +33,8 @@ const SaveOnBlurInput = forwardRef((props: Props, ref: ForwardedRef<HTMLInputEle
             placeholder={props.placeholder}
             handleInputChange={setCopiedData}
             onFocus={() => !!props.onFocus && props.onFocus()}
-            onBlur={onBlur} />
+            onBlur={onBlur}
+            removeBottomMargin />
     );
 });
 

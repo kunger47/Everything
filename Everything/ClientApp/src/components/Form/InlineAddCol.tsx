@@ -1,5 +1,6 @@
 import SaveOnBlurInput from 'components/Form/SaveOnBlurInput';
 import React, { useEffect, useRef, useState } from 'react';
+import { Col } from 'react-bootstrap';
 
 interface Props {
     inputName: string;
@@ -8,11 +9,12 @@ interface Props {
 
     isRequired?: boolean;
     placeholder?: string;
+    className?: string;
     onBlurNoChange?: () => void;
     onFocus?: () => void;
 }
 
-const InlineAdd = (props: Props) => {
+const InlineAddCol = (props: Props) => {
     const [newValue, setNewValue] = useState<string>('');
     const [isAdding, setIsAdding] = useState<boolean>(false);
     const addRef = useRef<HTMLInputElement>(null);
@@ -34,9 +36,9 @@ const InlineAdd = (props: Props) => {
     }
 
     return (
-        <>
+        <Col className={props.className} onClick={() => !isAdding && setIsAdding(true)}>
             {!isAdding
-                ? <a onClick={() => setIsAdding(true)}>{props.addText}</a>
+                ? <a>{props.addText}</a>
                 : <SaveOnBlurInput
                     ref={addRef}
                     value={newValue}
@@ -45,8 +47,8 @@ const InlineAdd = (props: Props) => {
                     onBlur={onBlur}
                     isRequired={props.isRequired}
                 />}
-        </>
+        </Col>
     )
 };
 
-export default InlineAdd;
+export default InlineAddCol;

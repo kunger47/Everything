@@ -6,6 +6,7 @@ interface Props {
     inputName: string;
     onBlur: (newValue: string) => void;
 
+    className?: string;
     isRequired?: boolean;
     placeholder?: string;
     onBlurNoChange?: () => void;
@@ -33,7 +34,7 @@ const InlineUpdate = (props: Props) => {
     return (
         <>
             {!isEditing
-                ? <span onClick={() => setIsEditing(true)}>{props.value}</span >
+                ? <span className={props.className} onClick={() => setIsEditing(true)}>{props.value}</span >
                 : <SaveOnBlurInput
                     ref={updateRef}
                     value={props.value}

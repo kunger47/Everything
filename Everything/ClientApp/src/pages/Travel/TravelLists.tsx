@@ -1,5 +1,5 @@
-import InlineAdd from 'components/Form/InlineAdd';
-import SaveOnBlurInput from 'components/Form/SaveOnBlurInput';
+import InlineAddCol from 'components/Form/InlineAddCol';
+import InlineUpdate from 'components/Form/InlineUpdate';
 import Page from 'components/Layout/PageLayout';
 import PackingItem from 'models/travel/PackingItem';
 import TravelTag from 'models/travel/TravelTag';
@@ -37,6 +37,10 @@ const TravelLists = () => {
     const saveNewTag = (name: string) => {
         var newTag = new TravelTag();
         travelApi.createTag({ ...newTag, name: name }, getTags);
+    }
+
+    const saveTag = (tag: TravelTag) => (name: string) => {
+        travelApi.updateTag({ ...tag, name: name }, getTags);
     }
 
     const onDragEnd = (result: DropResult) => {
@@ -78,14 +82,13 @@ const TravelLists = () => {
                         )}
                     </Droppable >
                     <Row className="e-add-item-row">
-                        <Col className='e-item-block'>
-                            <InlineAdd
-                                addText={"+ Add Packing Item"}
-                                inputName={"item name"}
-                                onBlur={saveNewItem}
-                                isRequired
-                            />
-                        </Col>
+                        <InlineAddCol
+                            className='e-item-block'
+                            addText={"+ Add"}
+                            inputName={"item name"}
+                            onBlur={saveNewItem}
+                            isRequired
+                        />
                     </Row>
                 </Col >
             </DragDropContext >
@@ -97,22 +100,25 @@ const TravelLists = () => {
                 </Row>
                 <Row>
                     {tags.length > 0 && tags.map((t) =>
-                        <Col className='e-tag-block'>
-                            <span>
-                                <p className='e-tag-name'>{t.name}</p>
-                            </span>
+                        <Col xs={12} className='e-tag-block'>
+                            <InlineUpdate
+                                className='e-tag-name'
+                                value={t.name ?? ''}
+                                inputName={"tagname"}
+                                onBlur={saveTag(t)}
+                                isRequired
+                            />
                         </Col>
                     )}
                 </Row>
                 <Row className="e-add-item-row">
-                    <Col>
-                        <InlineAdd
-                            addText={"+ Add Tag"}
-                            inputName={"tag name"}
-                            onBlur={saveNewTag}
-                            isRequired
-                        />
-                    </Col>
+                    <InlineAddCol
+                        className='e-tag-block'
+                        addText={"+ Add"}
+                        inputName={"tag name"}
+                        onBlur={saveNewTag}
+                        isRequired
+                    />
                 </Row>
             </Col >
         </Page >

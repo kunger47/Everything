@@ -35,6 +35,7 @@ const PackingItemRow = (props: Props) => {
                 >
                     <Col>
                         <InlineUpdate
+                            className='e-item-name'
                             value={props.item.name ?? ''}
                             inputName={"itemName"}
                             onBlur={saveItem}
