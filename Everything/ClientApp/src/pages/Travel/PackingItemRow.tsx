@@ -1,3 +1,4 @@
+import DeleteButton from 'components/DeleteButton';
 import InlineUpdate from 'components/Form/InlineUpdate';
 import PackingItem from 'models/travel/PackingItem';
 import React, { useState } from 'react';
@@ -43,7 +44,7 @@ const PackingItemRow = (props: Props) => {
                         />
                     </Col>
                     <Col xs={1}>
-                        {isHovering && <span className="e-pull-right e-delete-icon" onClick={() => deleteItem(props.item.id)}>x</span>}
+                        {isHovering && <DeleteButton onClick={() => deleteItem(props.item.id)} />}
                     </Col>
                 </div>
             )}

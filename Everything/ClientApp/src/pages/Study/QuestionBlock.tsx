@@ -4,6 +4,7 @@ import { Col, Row } from 'react-bootstrap';
 import Question, { QuestionDifficultyType } from 'models/study/Question';
 import studyApi from 'services/apis/study-api';
 import Input from 'components/Form/Input';
+import DeleteButton from 'components/DeleteButton';
 
 interface Props {
     question: Question;
@@ -79,7 +80,7 @@ const QuestionBlock = (props: Props) => {
             <div className={showingAnswer ? 'e-question-block e-question-answer-block' : 'e-question-block'}>
                 <div className={props.question.answer ? "e-question-statement-side" : "e-question-statement-side e-question-no-answer"}>
                     <div className='e-question-actions'>
-                        {isHovering && <span className="e-pull-right e-delete-icon" onClick={() => deleteItem(props.question.id)}>x</span>}
+                        {isHovering && <DeleteButton onClick={() => deleteItem(props.question.id)} />}
                         {isHovering && <span className="" onClick={() => setShowingAnswer(!showingAnswer)}>{' FLIP '}</span>}
                     </div>
                     <div className="e-question-text">
@@ -112,7 +113,7 @@ const QuestionBlock = (props: Props) => {
                 </div>
                 <div className='e-question-answer-side'>
                     <div className='e-question-actions'>
-                        {isHovering && <span className="e-pull-right e-delete-icon" onClick={() => deleteItem(props.question.id)}>x</span>}
+                        {isHovering && <DeleteButton onClick={() => deleteItem(props.question.id)} />}
                         {isHovering && <span className="" onClick={() => setShowingAnswer(!showingAnswer)}>{' FLIP '}</span>}
                     </div>
                     <div className="e-question-text">

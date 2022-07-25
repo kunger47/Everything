@@ -8,6 +8,7 @@ import ToDoItem from 'models/todo/ToDoItem';
 import todoApi from 'services/apis/todo-api';
 import { handleRawInputChange } from 'services/form-helpers';
 import Input from 'components/Form/Input';
+import DeleteButton from 'components/DeleteButton';
 
 interface Props {
     column: ToDoColumn;
@@ -67,7 +68,7 @@ const Column = (props: Props) => {
                     <Col className='e-column-title' onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
                         {!isEditing
                             ? <span>
-                                {isHovering && <span className="e-pull-right e-delete-icon" onClick={() => deleteColumn(props.column.id)}>x</span>}
+                                {isHovering && <DeleteButton onClick={() => deleteColumn(props.column.id)} />}
                                 <p onClick={() => setIsEditing(true)}>{props.column.name}</p>
                             </span>
                             : <Input

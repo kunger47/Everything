@@ -1,6 +1,7 @@
 import './color-picker.scss';
 import { OverlayTrigger, Popover } from "react-bootstrap";
 import ColorPicker from './color-picker';
+import LimitedColorPicker from './limited-color-picker';
 
 interface Props {
     color: string;
@@ -9,7 +10,7 @@ interface Props {
     handleColorChange: (color: string) => void;
 }
 
-function ColorPickerPopover(props: Props) {
+function LimitedColorPickerPopover(props: Props) {
     return (
         <OverlayTrigger
             rootClose
@@ -18,13 +19,13 @@ function ColorPickerPopover(props: Props) {
             overlay={
                 <Popover id="button-tooltip" className="confirm-toggle" style={{ zIndex: 0 }}>
                     <Popover.Content>
-                        <ColorPicker
+                        <LimitedColorPicker
                             title={props.title ?? "Select a Color"}
                             color={props.color}
                             columns={3}
                             handleColorChange={(color: string) => {
                                 props.handleColorChange(color);
-                                // document.body.click();
+                                document.body.click();
                             }} />
                     </Popover.Content>
                 </Popover>
@@ -35,4 +36,4 @@ function ColorPickerPopover(props: Props) {
         </OverlayTrigger>
     )
 }
-export default ColorPickerPopover;
+export default LimitedColorPickerPopover;

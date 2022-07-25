@@ -5,6 +5,7 @@ import { Link as ReactLink } from 'react-router-dom';
 import studyApi from 'services/apis/study-api';
 import './Study.scss';
 import Input from 'components/Form/Input';
+import DeleteButton from 'components/DeleteButton';
 
 interface Props {
     questionCategory: QuestionCategory;
@@ -52,7 +53,7 @@ const QuestionCategoryBlock = (props: Props) => {
                 ? <>
                     {!props.blurred
                         ? <span>
-                            {isHovering && <span className="e-pull-right e-delete-icon" onClick={() => deleteQuestionCategory(props.questionCategory.id)}>x</span>}
+                            {isHovering && <DeleteButton onClick={() => deleteQuestionCategory(props.questionCategory.id)} />}
                             <span className="e-pull-left e-category-toggle">
                                 <input onClick={() => toggleCategory()} type="radio" checked={props.questionCategory.isSelected} />
                             </span>

@@ -28,7 +28,8 @@ namespace everything.Controllers
                     Id = l.Id,
                     Name = l.Name,
                     IsActive = l.IsActive,
-                    Description = l.Description
+                    Description = l.Description,
+                    ColorHexCode = l.ColorHexCode
                 }));
         }
 
@@ -40,7 +41,8 @@ namespace everything.Controllers
                 Name = item.Name,
                 Description = item.Description,
                 IsActive = true,
-                UserId = _context.Users.First().Id
+                UserId = _context.Users.First().Id,
+                ColorHexCode = item.ColorHexCode
             };
 
             _context.Add(tag);
@@ -54,6 +56,7 @@ namespace everything.Controllers
             var tag = _context.TravelTags.FirstOrDefault(l => l.Id == item.Id);
             tag.Name = item.Name;
             tag.Description = item.Description;
+            tag.ColorHexCode = item.ColorHexCode;
             await _context.SaveChangesAsync();
             return Ok(true);
         }

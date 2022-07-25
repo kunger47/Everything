@@ -7,6 +7,7 @@ import { OverlayTrigger, Popover } from 'react-bootstrap';
 import ToDoItemTask from 'models/todo/ToDoItemTask';
 import { handleRawInputChange } from 'services/form-helpers';
 import Input from 'components/Form/Input';
+import DeleteButton from 'components/DeleteButton';
 
 interface Props {
     item: ToDoItem;
@@ -90,7 +91,7 @@ const ItemBlock = (props: Props) => {
                             }
                         >
                             <span>
-                                {isHovering && <span className="e-pull-right e-delete-icon" onClick={() => deleteItem(props.item.id)}>x</span>}
+                                {isHovering && <DeleteButton onClick={() => deleteItem(props.item.id)} />}
                                 <span onClick={() => setIsEditing(true)}>{props.item.name}</span>
 
                             </span>

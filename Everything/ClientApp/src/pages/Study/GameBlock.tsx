@@ -5,6 +5,7 @@ import studyApi from 'services/apis/study-api';
 import './Study.scss';
 import Input from 'components/Form/Input';
 import Game from 'models/study/Game';
+import DeleteButton from 'components/DeleteButton';
 
 interface Props {
     game: Game;
@@ -45,7 +46,7 @@ const GameBlock = (props: Props) => {
             </ReactLink>
             {!isEditing
                 ? <span>
-                    {isHovering && <span className="e-pull-right e-delete-icon" onClick={() => deleteGame(props.game.id)}>x</span>}
+                    {isHovering && <DeleteButton onClick={() => deleteGame(props.game.id)} />}
                     <p className="e-study-block-name" onClick={() => setIsEditing(true)}>{props.game.name}</p>
                 </span>
                 : <Input

@@ -8,4 +8,8 @@
     border: solid;
     display: block;
     margin: 0px 4px;
+
+    &:hover {
+        box-shadow: 0px 0px 10px 0px lighten($black, 10) inset;
+    }
 }

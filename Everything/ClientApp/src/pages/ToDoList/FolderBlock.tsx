@@ -4,6 +4,7 @@ import todoApi from 'services/apis/todo-api';
 import { Col } from 'react-bootstrap';
 import Input from 'components/Form/Input';
 import ToDoBoardFolder from 'models/todo/ToDoBoardFolder';
+import DeleteButton from 'components/DeleteButton';
 
 interface Props {
     folder: ToDoBoardFolder;
@@ -45,7 +46,7 @@ const FolderBlock = (props: Props) => {
             </span>
             {!isEditing
                 ? <span>
-                    {isHovering && <span className="e-pull-right e-delete-icon" onClick={() => deleteFolder(props.folder.id)}>x</span>}
+                    {isHovering && <DeleteButton onClick={() => deleteFolder(props.folder.id)} />}
                     <p className="e-board-name" onClick={() => setIsEditing(true)}>{props.folder.name}</p>
                 </span>
                 : <Input

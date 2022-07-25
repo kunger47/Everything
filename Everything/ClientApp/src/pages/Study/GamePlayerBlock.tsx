@@ -5,7 +5,8 @@ import './Study.scss';
 import Input from 'components/Form/Input';
 import Player from 'models/study/Player';
 import { formatAsCurrency } from 'services/formatters';
-import ColorPickerPopover from 'components/Form/color-picker-popover';
+import LimitedColorPickerPopover from 'components/Form/limited-color-picker-popover';
+import DeleteButton from 'components/DeleteButton';
 
 interface Props {
     player: Player;
@@ -67,8 +68,8 @@ const GamePlayerBlock = (props: Props) => {
                 : <Col style={{ backgroundColor: props.player.colorHexCode ?? '' }} className='e-study-block e-player-block' onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
                     {!isEditing
                         ? <span>
-                            {isHovering && <span className="e-pull-right e-delete-icon" onClick={() => deletePlayer(props.player.id)}>x</span>}
-                            {isHovering && <ColorPickerPopover
+                            {isHovering && <DeleteButton onClick={() => deletePlayer(props.player.id)} />}
+                            {isHovering && <LimitedColorPickerPopover
                                 title={'Player Color'}
                                 color={props.player.colorHexCode ?? ''}
                                 className="e-pull-right"

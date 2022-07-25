@@ -1,28 +1,21 @@
 import InlineAddCol from 'components/Form/InlineAddCol';
-import InlineUpdate from 'components/Form/InlineUpdate';
 import Page from 'components/Layout/PageLayout';
 import PackingItem from 'models/travel/PackingItem';
-import TravelTag from 'models/travel/TravelTag';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { Col, Row } from 'react-bootstrap';
 import travelApi from 'services/apis/travel-api';
 import PackingItemRow from './PackingItemRow';
 
 import "./TravelLists.scss";
+import TravelTagsColumn from './TravelTagsColumn';
 
 const TravelLists = () => {
-    const [tags, setTags] = useState<TravelTag[]>([]);
     const [items, setItems] = useState<PackingItem[]>([]);
 
     useEffect(() => {
-        getTags();
         getItems();
     }, []);
-
-    const getTags = () => {
-        travelApi.getTags(setTags);
-    }
 
     const getItems = () => {
         travelApi.getPackingItems(setItems);
@@ -32,15 +25,6 @@ const TravelLists = () => {
         var newItem = new PackingItem();
         travelApi.createPackingItem({ ...newItem, name: name }, getItems);
         // travelApi.createPackingItem({ ...newItem, sequence: getNextSequence() }, props.reload);
-    }
-
-    const saveNewTag = (name: string) => {
-        var newTag = new TravelTag();
-        travelApi.createTag({ ...newTag, name: name }, getTags);
-    }
-
-    const saveTag = (tag: TravelTag) => (name: string) => {
-        travelApi.updateTag({ ...tag, name: name }, getTags);
     }
 
     const onDragEnd = (result: DropResult) => {
@@ -80,7 +64,7 @@ const TravelLists = () => {
                                 {provided.placeholder}
                             </div>
                         )}
-                    </Droppable >
+                    </Droppable>
                     <Row className="e-add-item-row">
                         <InlineAddCol
                             className='e-item-block'
@@ -90,38 +74,10 @@ const TravelLists = () => {
                             isRequired
                         />
                     </Row>
-                </Col >
-            </DragDropContext >
-            < Col className='e-side-bar' >
-                <Row>
-                    <Col className='e-side-bar-title'>
-                        <p>Tags</p>
-                    </Col>
-                </Row>
-                <Row>
-                    {tags.length > 0 && tags.map((t) =>
-                        <Col xs={12} className='e-tag-block'>
-                            <InlineUpdate
-                                className='e-tag-name'
-                                value={t.name ?? ''}
-                                inputName={"tagname"}
-                                onBlur={saveTag(t)}
-                                isRequired
-                            />
-                        </Col>
-                    )}
-                </Row>
-                <Row className="e-add-item-row">
-                    <InlineAddCol
-                        className='e-tag-block'
-                        addText={"+ Add"}
-                        inputName={"tag name"}
-                        onBlur={saveNewTag}
-                        isRequired
-                    />
-                </Row>
-            </Col >
-        </Page >
+                </Col>
+            </DragDropContext>
+            <TravelTagsColumn />
+        </Page>
     )
 };
 

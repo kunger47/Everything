@@ -119,6 +119,13 @@ a {
     cursor: pointer;
     color: $warning;
     margin: 0px 2px;
+    background-color: $white;
+    border-radius: 5px;
+    padding: 0px 5px 0px 5px;
+
+    &:hover {
+        background-color: darken($white, 10);
+    }
 }
 
 .e-clickable {

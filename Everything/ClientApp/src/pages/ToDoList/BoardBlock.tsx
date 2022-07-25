@@ -5,6 +5,7 @@ import ToDoBoard from 'models/todo/ToDoBoard';
 import { Col } from 'react-bootstrap';
 import { Link as ReactLink } from 'react-router-dom';
 import Input from 'components/Form/Input';
+import DeleteButton from 'components/DeleteButton';
 
 interface Props {
     board: ToDoBoard;
@@ -45,7 +46,7 @@ const BoardBlock = (props: Props) => {
             </ReactLink>
             {!isEditing
                 ? <span>
-                    {isHovering && <span className="e-pull-right e-delete-icon" onClick={() => deleteBoard(props.board.id)}>x</span>}
+                    {isHovering && <DeleteButton onClick={() => deleteBoard(props.board.id)} />}
                     <p className="e-board-name" onClick={() => setIsEditing(true)}>{props.board.name}</p>
                 </span>
                 : <Input
