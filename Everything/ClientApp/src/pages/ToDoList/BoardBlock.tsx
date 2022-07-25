@@ -46,7 +46,7 @@ const BoardBlock = (props: Props) => {
             </ReactLink>
             {!isEditing
                 ? <span>
-                    {isHovering && <DeleteButton onClick={() => deleteBoard(props.board.id)} />}
+                    {isHovering && <DeleteButton className='e-pull-right' onClick={() => deleteBoard(props.board.id)} />}
                     <p className="e-board-name" onClick={() => setIsEditing(true)}>{props.board.name}</p>
                 </span>
                 : <Input

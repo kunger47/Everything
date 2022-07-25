@@ -2,11 +2,13 @@ import React from 'react';
 
 interface Props {
     onClick: () => void;
+
+    className?: string;
 }
 
 const DeleteButton = (props: Props) => {
     return (
-        <span className="e-pull-right e-delete-icon" onClick={props.onClick}>X</span>
+        <span className={`${props.className ?? ''} e-delete-icon`} onClick={props.onClick}>X</span>
     )
 };
 

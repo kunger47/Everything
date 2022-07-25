@@ -68,7 +68,7 @@ const Column = (props: Props) => {
                     <Col className='e-column-title' onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
                         {!isEditing
                             ? <span>
-                                {isHovering && <DeleteButton onClick={() => deleteColumn(props.column.id)} />}
+                                {isHovering && <DeleteButton className='e-pull-right' onClick={() => deleteColumn(props.column.id)} />}
                                 <p onClick={() => setIsEditing(true)}>{props.column.name}</p>
                             </span>
                             : <Input

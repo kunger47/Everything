@@ -19,6 +19,6 @@ namespace everything.Models
         public int UserId { get; set; }
         public virtual User User { get; set; }
 
-        public virtual IEnumerable<TagForPackingItem> TagLinks { get; set; }
+        public virtual ICollection<TagForPackingItem> TagLinks { get; set; }
     }
 }

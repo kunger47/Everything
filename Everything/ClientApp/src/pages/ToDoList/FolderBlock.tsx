@@ -46,7 +46,7 @@ const FolderBlock = (props: Props) => {
             </span>
             {!isEditing
                 ? <span>
-                    {isHovering && <DeleteButton onClick={() => deleteFolder(props.folder.id)} />}
+                    {isHovering && <DeleteButton className='e-pull-right' onClick={() => deleteFolder(props.folder.id)} />}
                     <p className="e-board-name" onClick={() => setIsEditing(true)}>{props.folder.name}</p>
                 </span>
                 : <Input

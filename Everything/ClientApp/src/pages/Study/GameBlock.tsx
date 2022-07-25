@@ -46,7 +46,7 @@ const GameBlock = (props: Props) => {
             </ReactLink>
             {!isEditing
                 ? <span>
-                    {isHovering && <DeleteButton onClick={() => deleteGame(props.game.id)} />}
+                    {isHovering && <DeleteButton className='e-pull-right' onClick={() => deleteGame(props.game.id)} />}
                     <p className="e-study-block-name" onClick={() => setIsEditing(true)}>{props.game.name}</p>
                 </span>
                 : <Input

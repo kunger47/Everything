@@ -68,7 +68,7 @@ const GamePlayerBlock = (props: Props) => {
                 : <Col style={{ backgroundColor: props.player.colorHexCode ?? '' }} className='e-study-block e-player-block' onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
                     {!isEditing
                         ? <span>
-                            {isHovering && <DeleteButton onClick={() => deletePlayer(props.player.id)} />}
+                            {isHovering && <DeleteButton className='e-pull-right' onClick={() => deletePlayer(props.player.id)} />}
                             {isHovering && <LimitedColorPickerPopover
                                 title={'Player Color'}
                                 color={props.player.colorHexCode ?? ''}

@@ -54,6 +54,10 @@ class TravelApi {
         return Api.put({ url: `https://localhost:44340/packingitems`, body: data, onSuccess });
     }
 
+    updateTagsForPackingItem(itemId: number, data: number[], onSuccess: () => void) {
+        return Api.put({ url: `https://localhost:44340/packingitems/tags/${itemId}`, body: data, onSuccess });
+    }
+
     removePackingItem(id: number, onSuccess: () => void) {
         return Api.delete({ url: `https://localhost:44340/packingitems/${id}`, onSuccess });
     }

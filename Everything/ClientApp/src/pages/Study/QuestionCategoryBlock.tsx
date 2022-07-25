@@ -53,7 +53,7 @@ const QuestionCategoryBlock = (props: Props) => {
                 ? <>
                     {!props.blurred
                         ? <span>
-                            {isHovering && <DeleteButton onClick={() => deleteQuestionCategory(props.questionCategory.id)} />}
+                            {isHovering && <DeleteButton className='e-pull-right' onClick={() => deleteQuestionCategory(props.questionCategory.id)} />}
                             <span className="e-pull-left e-category-toggle">
                                 <input onClick={() => toggleCategory()} type="radio" checked={props.questionCategory.isSelected} />
                             </span>

@@ -91,7 +91,7 @@ const ItemBlock = (props: Props) => {
                             }
                         >
                             <span>
-                                {isHovering && <DeleteButton onClick={() => deleteItem(props.item.id)} />}
+                                {isHovering && <DeleteButton className='e-pull-right' onClick={() => deleteItem(props.item.id)} />}
                                 <span onClick={() => setIsEditing(true)}>{props.item.name}</span>
 
                             </span>

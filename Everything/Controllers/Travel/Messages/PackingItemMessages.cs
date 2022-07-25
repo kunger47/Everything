@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace everything.Controllers
 {
     public class GetPackingItemMessage
@@ -6,6 +8,7 @@ namespace everything.Controllers
         public string Name { get; set; }
         public string Description { get; set; }
         public bool IsActive { get; set; }
+        public IEnumerable<GetTravelTagMessage> Tags { get; set; }
     }
 
     public class CreatePackingItemMessage

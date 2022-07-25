@@ -39,7 +39,7 @@ const TravelTagRow = (props: Props) => {
                 onBlur={saveTag}
                 isRequired
             />
-            {isHovering && <DeleteButton onClick={() => deleteItem(props.tag.id)} />}
+            {isHovering && <DeleteButton className='e-pull-right' onClick={() => deleteItem(props.tag.id)} />}
             {isHovering && <ColorPickerPopover
                 title={'Tag Color'}
                 color={props.tag.colorHexCode ?? ''}

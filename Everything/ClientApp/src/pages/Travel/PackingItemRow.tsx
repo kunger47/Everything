@@ -3,7 +3,7 @@ import InlineUpdate from 'components/Form/InlineUpdate';
 import PackingItem from 'models/travel/PackingItem';
 import React, { useState } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
-import { Col } from 'react-bootstrap';
+import { Button, Col } from 'react-bootstrap';
 import travelApi from 'services/apis/travel-api';
 
 import "./TravelLists.scss";
@@ -19,6 +19,10 @@ const PackingItemRow = (props: Props) => {
 
     const saveItem = (name: string) => {
         travelApi.updatePackingItem({ ...props.item, name: name }, props.reload);
+    }
+
+    const saveItemTags = () => {
+        travelApi.updateTagsForPackingItem(props.item.id, [1, 2, 3], props.reload);
     }
 
     const deleteItem = (id: number) => {
@@ -42,9 +46,17 @@ const PackingItemRow = (props: Props) => {
                             onBlur={saveItem}
                             isRequired
                         />
+                        {props.item.tags.length > 0 && props.item.tags.map((t) =>
+                            <span style={{ backgroundColor: t.colorHexCode ?? '' }} className='e-tag-tag'>
+                                {t.name}
+                                {isHovering && <DeleteButton onClick={() => { }} />}
+                            </span>)}
+                    </Col>
+                    <Col xs={5}>
+                        {isHovering && <a onClick={saveItemTags}>+ Add Tag</a>}
                     </Col>
                     <Col xs={1}>
-                        {isHovering && <DeleteButton onClick={() => deleteItem(props.item.id)} />}
+                        {isHovering && <DeleteButton className='e-pull-right' onClick={() => deleteItem(props.item.id)} />}
                     </Col>
                 </div>
             )}

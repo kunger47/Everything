@@ -3,7 +3,6 @@ export default class TravelTag {
     name: string | null = null;
     description: string = '';
     isActive: boolean = false;
-    // sequence: number = 0;
     colorHexCode: string | null = null;
 
     constructor(init?: Partial<TravelTag>) {
