@@ -5,6 +5,8 @@ import React, { useEffect, useState } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { Col, Row } from 'react-bootstrap';
 import travelApi from 'services/apis/travel-api';
+import { sortByNumberPropertyAcsending } from 'services/array-helpers';
+import { getNextSequence, onSimpleListDragEnd } from 'services/drag-and-drop-helper';
 import PackingItemRow from './PackingItemRow';
 
 import "./TravelLists.scss";
@@ -12,10 +14,15 @@ import TravelTagsColumn from './TravelTagsColumn';
 
 const TravelLists = () => {
     const [items, setItems] = useState<PackingItem[]>([]);
+    const [sortedItems, setSortedItems] = useState<PackingItem[]>([]);
 
     useEffect(() => {
         getItems();
     }, []);
+
+    useEffect(() => {
+        setSortedItems(sortByNumberPropertyAcsending(items, 'sequence'));
+    }, [items]);
 
     const getItems = () => {
         travelApi.getPackingItems(setItems);
@@ -23,32 +30,14 @@ const TravelLists = () => {
 
     const saveNewItem = (name: string) => {
         var newItem = new PackingItem();
-        travelApi.createPackingItem({ ...newItem, name: name }, getItems);
-        // travelApi.createPackingItem({ ...newItem, sequence: getNextSequence() }, props.reload);
+        travelApi.createPackingItem({ ...newItem, name: name, sequence: getNextSequence(items) }, getItems);
     }
 
     const onDragEnd = (result: DropResult) => {
-        // let { destination, source, draggableId } = result;
+        var item = onSimpleListDragEnd(result, sortedItems, setSortedItems);
 
-        // if (!destination) {
-        //     return;
-        // }
-
-        // if (destination.droppableId === source.droppableId && destination.index === source.index) {
-        //     return;
-        // }
-
-        // let columnIndex = columns.findIndex(c => c.id.toString() === source.droppableId);
-        // if (columnIndex > -1) {
-        //     let col = columns[columnIndex];
-        //     let toDoIndex = col.toDoItems.findIndex(i => i.id.toString() === draggableId);
-
-        //     if (toDoIndex > -1) {
-        //         let item = col.toDoItems[toDoIndex];
-        //         let updates = copyObject(item);
-        //         todoApi.updateItem({ ...updates, sequence: destination.index, toDoColumnId: (destination.droppableId as any as number) }, loadColumns);
-        //     }
-        // }
+        if (!!item)
+            travelApi.updatePackingItem(item, getItems);
     };
 
     return (
@@ -58,7 +47,7 @@ const TravelLists = () => {
                     <Droppable droppableId={'0'}>
                         {provided => (
                             <div className='row e-column-items-container' ref={provided.innerRef} {...provided.droppableProps}>
-                                {items.length > 0 && items.map((i, index) => {
+                                {sortedItems.length > 0 && sortedItems.map((i, index) => {
                                     return <PackingItemRow key={i.id} index={index} item={i} reload={getItems} />
                                 })}
                                 {provided.placeholder}

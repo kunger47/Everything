@@ -1,3 +1,4 @@
+import SequencedItem from "models/SequencedItem";
 import { areDatesEqual } from "./date";
 
 export function average(array: (number)[]): number {

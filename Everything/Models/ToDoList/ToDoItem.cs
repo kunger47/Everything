@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace everything.Models
 {
-    public class ToDoItem
+    public class ToDoItem : ISequenced
     {
         public ToDoItem()
         {

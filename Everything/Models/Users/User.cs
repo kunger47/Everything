@@ -44,6 +44,6 @@ namespace everything.Models
         public virtual IEnumerable<Lift> Lifts { get; set; }
 
         public virtual IEnumerable<TravelTag> TravelTags { get; set; }
-        public virtual IEnumerable<PackingItem> PackingItems { get; set; }
+        public virtual ICollection<PackingItem> PackingItems { get; set; }
     }
 }

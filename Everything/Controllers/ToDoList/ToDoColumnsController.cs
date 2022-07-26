@@ -42,7 +42,8 @@ namespace everything.Controllers
                         DueDate = i.DueDate,
                         Sequence = i.Sequence,
                         ToDoColumnId = i.ToDoColumnId
-                    })
+                    }).OrderBy(i => i.Sequence)
+                    .ToList()
                 }).ToListAsync());
         }
 

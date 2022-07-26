@@ -49,26 +49,23 @@ const ToDoBoard = () => {
     }
 
     const onDragEnd = (result: DropResult) => {
-        let { destination, source, draggableId } = result;
+        let { destination, source } = result;
 
-        if (!destination) {
+        if (!destination)
             return;
-        }
-
-        if (destination.droppableId === source.droppableId && destination.index === source.index) {
+        if (destination.droppableId === source.droppableId && destination.index === source.index)
             return;
-        }
 
-        let columnIndex = columns.findIndex(c => c.id.toString() === source.droppableId);
+        let arrayCopy = copyObject(columns);
+        let columnIndex = arrayCopy.findIndex(c => c.id.toString() === source.droppableId);
+        let newColumnIndex = arrayCopy.findIndex(c => c.id.toString() === destination?.droppableId);
         if (columnIndex > -1) {
-            let col = columns[columnIndex];
-            let toDoIndex = col.toDoItems.findIndex(i => i.id.toString() === draggableId);
-
-            if (toDoIndex > -1) {
-                let item = col.toDoItems[toDoIndex];
-                let updates = copyObject(item);
-                todoApi.updateItem({ ...updates, sequence: destination.index, toDoColumnId: (destination.droppableId as any as number) }, loadColumns);
-            }
+            let item = arrayCopy[columnIndex].toDoItems.splice(source.index, 1)[0];
+            item.sequence = destination.index;
+            item.toDoColumnId = destination.droppableId as any as number;
+            arrayCopy[newColumnIndex].toDoItems.splice(destination.index, 0, item);
+            setColumns(arrayCopy);
+            todoApi.updateItem(item, loadColumns);
         }
     };
 

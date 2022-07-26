@@ -3,7 +3,7 @@ import InlineUpdate from 'components/Form/InlineUpdate';
 import PackingItem from 'models/travel/PackingItem';
 import React, { useState } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
-import { Button, Col } from 'react-bootstrap';
+import { Col } from 'react-bootstrap';
 import travelApi from 'services/apis/travel-api';
 
 import "./TravelLists.scss";
@@ -22,7 +22,7 @@ const PackingItemRow = (props: Props) => {
     }
 
     const saveItemTags = () => {
-        travelApi.updateTagsForPackingItem(props.item.id, [1, 2, 3], props.reload);
+        travelApi.updateTagsForPackingItem(props.item.id, [4, 5], props.reload);
     }
 
     const deleteItem = (id: number) => {

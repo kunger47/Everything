@@ -1,3 +1,4 @@
+using everything.Core;
 using everything.Data;
 using everything.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -14,10 +15,12 @@ namespace everything.Controllers
     public class PackingItemsController : ControllerBase
     {
         readonly EverythingContext _context;
+        readonly PackingItemUpdater _packingItemUpdater;
 
         public PackingItemsController(EverythingContext context)
         {
             _context = context;
+            _packingItemUpdater = new PackingItemUpdater(_context);
         }
 
         [HttpGet]
@@ -31,6 +34,7 @@ namespace everything.Controllers
                     Name = l.Name,
                     IsActive = l.IsActive,
                     Description = l.Description,
+                    Sequence = l.Sequence,
                     Tags = l.TagLinks.Select(t => new GetTravelTagMessage
                     {
                         Id = t.TravelTag.Id,
@@ -45,15 +49,7 @@ namespace everything.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreatePackingItemMessage item)
         {
-            var newItem = new PackingItem
-            {
-                Name = item.Name,
-                Description = item.Description,
-                IsActive = true,
-                UserId = _context.Users.First().Id
-            };
-
-            _context.Add(newItem);
+            _packingItemUpdater.AddPackingItem(item);
             await _context.SaveChangesAsync();
             return Ok(true);
         }
@@ -61,9 +57,7 @@ namespace everything.Controllers
         [HttpPut]
         public async Task<IActionResult> Update(UpdatePackingItemMessage item)
         {
-            var theItem = _context.PackingItems.FirstOrDefault(l => l.Id == item.Id);
-            theItem.Name = item.Name;
-            theItem.Description = item.Description;
+            _packingItemUpdater.UpdatePackingItem(item);
             await _context.SaveChangesAsync();
             return Ok(true);
         }

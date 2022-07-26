@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace everything.Models
 {
-    public class PackingItem
+    public class PackingItem : ISequenced
     {
         public PackingItem()
         {
@@ -12,6 +12,7 @@ namespace everything.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        public int Sequence { get; set; }
         public bool IsActive { get; set; }
 
         //public PackingItemStatus Status { get; set; }

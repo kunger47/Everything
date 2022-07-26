@@ -32,9 +32,9 @@
         margin: 0px 4px;
         padding: 3px 7px;
         border-radius: 8px;
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        // box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
         width: 100%;
-        font-size: smaller;
+        font-size: x-small;
         text-align: center;
 
         .e-tag-name {
@@ -44,16 +44,20 @@
     }
 
     .e-item-block {
-        margin: 7px 10px;
-        padding: 10px;
+        margin: 5px 10px;
+        padding: 6px 0px;
         border-radius: 3px;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
         width: 100%;
         font-weight: bold;
 
-        .e-item-name {
+        .e-item-name, a {
             overflow-x: hidden;
             text-overflow: ellipsis;
+        }
+
+        a {
+            padding: 0px 15px;
         }
     }
 }

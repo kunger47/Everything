@@ -9,6 +9,8 @@ import todoApi from 'services/apis/todo-api';
 import { handleRawInputChange } from 'services/form-helpers';
 import Input from 'components/Form/Input';
 import DeleteButton from 'components/DeleteButton';
+import { sortByNumberPropertyAcsending } from 'services/array-helpers';
+import { getNextSequence } from 'services/drag-and-drop-helper';
 
 interface Props {
     column: ToDoColumn;
@@ -39,16 +41,9 @@ const Column = (props: Props) => {
 
     const saveNew = () => {
         if (!!newItem.name?.trim())
-            todoApi.createItem({ ...newItem, toDoColumnId: props.column.id, sequence: getNextSequence() }, props.reload);
+            todoApi.createItem({ ...newItem, toDoColumnId: props.column.id, sequence: getNextSequence(props.column.toDoItems) }, props.reload);
         setIsAdding(false);
         setNew(new ToDoItem());
-    }
-
-    const getNextSequence = () => {
-        var seqs = props.column.toDoItems.map(i => i.sequence);
-        if (seqs.length < 1)
-            return 0;
-        return Math.max(...seqs) + 1;
     }
 
     const saveUpdate = () => {
@@ -83,7 +78,7 @@ const Column = (props: Props) => {
                 <Droppable droppableId={props.column.id.toString()}>
                     {provided => (
                         <div className='row e-column-items-container' ref={provided.innerRef} {...provided.droppableProps}>
-                            {props.column.toDoItems.sort((a, b) => a.sequence - b.sequence).map((item: ToDoItem, index: number) =>
+                            {props.column.toDoItems.map((item: ToDoItem, index: number) =>
                                 <ItemBlock item={item} key={item.id} index={index} reload={props.reload} />
                             )}
                             {provided.placeholder}
