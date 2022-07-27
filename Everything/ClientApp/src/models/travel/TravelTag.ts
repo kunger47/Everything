@@ -1,6 +1,6 @@
 export default class TravelTag {
     id: number = 0;
-    name: string | null = null;
+    name: string = '';
     description: string = '';
     isActive: boolean = false;
     colorHexCode: string | null = null;

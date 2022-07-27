@@ -1,26 +1,21 @@
 import InlineAddCol from 'components/Form/InlineAddCol';
 import TravelTag from 'models/travel/TravelTag';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Col, Row } from 'react-bootstrap';
 import travelApi from 'services/apis/travel-api';
 
 import "./TravelLists.scss";
 import TravelTagRow from './TravelTagRow';
 
-const TravelTagsColumn = () => {
-    const [tags, setTags] = useState<TravelTag[]>([]);
+interface Props {
+    tags: TravelTag[];
+    reload: () => void;
+}
 
-    useEffect(() => {
-        getTags();
-    }, []);
-
-    const getTags = () => {
-        travelApi.getTags(setTags);
-    }
-
+const TravelTagsColumn = (props: Props) => {
     const saveNewTag = (name: string) => {
         var newTag = new TravelTag();
-        travelApi.createTag({ ...newTag, name: name }, getTags);
+        travelApi.createTag({ ...newTag, name: name }, props.reload);
     }
 
     return (
@@ -31,7 +26,7 @@ const TravelTagsColumn = () => {
                 </Col>
             </Row>
             <Row>
-                {tags.length > 0 && tags.map((t) => <TravelTagRow key={t.id} tag={t} reload={getTags} />)}
+                {props.tags.length > 0 && props.tags.map((t) => <TravelTagRow key={t.id} tag={t} reload={props.reload} />)}
             </Row>
             <Row className="e-add-item-row">
                 <InlineAddCol

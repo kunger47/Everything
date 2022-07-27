@@ -84,7 +84,7 @@ namespace everything.Controllers
             foreach (var tagId in tagsToRemove)
             {
                 var tagLink = itemsTagLinks.FirstOrDefault(l => l.TravelTagId == tagId);
-                itemsTagLinks.Remove(tagLink);
+                _context.TagForPackingItems.Remove(tagLink);
             }
 
             var itemsTags = itemsTagLinks.Select(l => l.TravelTagId);
