@@ -22,6 +22,7 @@ import TravelLists from "pages/Travel/TravelLists";
 
 export type RouteItem = {
   name: string;
+  abrev: string;
   route: string;
   component: () => JSX.Element;
   isMainMenuLink?: boolean;
@@ -30,37 +31,37 @@ export type RouteItem = {
 
 export const Routes: RouteItem[] =
   [
-    { name: "Dashboard", route: "", component: Dashboard, isMainMenuLink: true, isExact: true },
+    { abrev: 'Db', name: "Dashboard", route: "", component: Dashboard, isMainMenuLink: true, isExact: true },
 
-    { name: "ToDo", route: "todo", component: ToDo, isMainMenuLink: true },
-    { name: "ToDoBoard", route: "todoboard", component: ToDoBoard },
+    { abrev: 'Td', name: "ToDo", route: "todo", component: ToDo, isMainMenuLink: true },
+    { abrev: 'Tb', name: "ToDoBoard", route: "todoboard", component: ToDoBoard },
 
-    { name: "Workout", route: "workout", component: Workout, isMainMenuLink: true },
-    { name: "WorkingOut", route: "workoutplan", component: WorkingOut },
+    { abrev: 'Wo', name: "Workout", route: "workout", component: Workout, isMainMenuLink: true },
+    { abrev: 'Wg', name: "WorkingOut", route: "workoutplan", component: WorkingOut },
 
-    { name: "Notes", route: "notes", component: Notes, isMainMenuLink: true },
+    { abrev: 'N', name: "Notes", route: "notes", component: Notes, isMainMenuLink: true },
 
-    { name: "Recipes", route: "recipes", component: Recipes, isMainMenuLink: true },
+    { abrev: 'Rp', name: "Recipes", route: "recipes", component: Recipes, isMainMenuLink: true },
 
-    { name: "Calendar", route: "calendar", component: Calendar, isMainMenuLink: true },
+    { abrev: 'Ca', name: "Calendar", route: "calendar", component: Calendar, isMainMenuLink: true },
 
-    { name: "Budgeting", route: "budgeting", component: Budgeting, isMainMenuLink: true },
-    { name: "Budget", route: "budget", component: Budget },
+    { abrev: 'Bu', name: "Budgeting", route: "budgeting", component: Budgeting, isMainMenuLink: true },
+    { abrev: 'Bg', name: "Budget", route: "budget", component: Budget },
 
-    { name: "Yoga", route: "yoga", component: Yoga, isMainMenuLink: true },
+    { abrev: 'Yg', name: "Yoga", route: "yoga", component: Yoga, isMainMenuLink: true },
 
-    { name: "Abs", route: "abs", component: Abs, isMainMenuLink: true },
+    { abrev: 'Ab', name: "Abs", route: "abs", component: Abs, isMainMenuLink: true },
 
-    { name: "Foraging", route: "foraging", component: Foraging, isMainMenuLink: true },
+    { abrev: 'Fo', name: "Foraging", route: "foraging", component: Foraging, isMainMenuLink: true },
 
-    { name: "Spotify", route: "spotify", component: Spotify, isMainMenuLink: true },
+    { abrev: 'Sp', name: "Spotify", route: "spotify", component: Spotify, isMainMenuLink: true },
 
-    { name: "iNaturalist", route: "iNaturalist", component: INaturalist, isMainMenuLink: true },
+    { abrev: 'In', name: "iNaturalist", route: "iNaturalist", component: INaturalist, isMainMenuLink: true },
 
-    { name: "Travel", route: "travel", component: Travel, isMainMenuLink: true },
-    { name: "Travel Lists", route: "travellists", component: TravelLists },
+    { abrev: 'Tr', name: "Travel", route: "travel", component: Travel, isMainMenuLink: true },
+    { abrev: 'Tl', name: "Travel Lists", route: "travellists", component: TravelLists },
 
-    { name: "Study", route: "study", component: Study, isMainMenuLink: true },
-    { name: "Question Category", route: "questioncategory", component: QuestionCategoryPage },
-    { name: "Game Board", route: "questiongame", component: GameBoard },
+    { abrev: 'St', name: "Study", route: "study", component: Study, isMainMenuLink: true },
+    { abrev: 'Qc', name: "Question Category", route: "questioncategory", component: QuestionCategoryPage },
+    { abrev: 'Gb', name: "Game Board", route: "questiongame", component: GameBoard },
   ];

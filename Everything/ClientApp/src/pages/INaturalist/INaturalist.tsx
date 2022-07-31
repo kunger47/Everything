@@ -3,7 +3,7 @@ import React from 'react';
 
 const INaturalist = () => {
     return (
-        <Page title="iNaturalist" classNameExtension='inat' />
+        <Page classNameExtension='inat' />
     )
 };
 

@@ -3,7 +3,7 @@ import React from 'react';
 
 const Abs = () => {
     return (
-        <Page title="Abs" classNameExtension='abs' />
+        <Page classNameExtension='abs' />
     )
 };
 

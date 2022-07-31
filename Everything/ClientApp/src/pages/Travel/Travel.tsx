@@ -7,7 +7,7 @@ import "./Travel.scss";
 
 const Travel = () => {
     return (
-        <Page title="Travel" classNameExtension='travel'>
+        <Page classNameExtension='travel'>
             <Col>
                 <Row>
                     {/* {!!selectedFolder && <BackBlock previousFolder={() => previousFolder()} />}

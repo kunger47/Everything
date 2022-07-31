@@ -70,7 +70,7 @@ const Workout = () => {
     }
 
     return (
-        <Page title="Workout" classNameExtension='workout' >
+        <Page classNameExtension='workout' >
             <Col md={10}>
                 {!isCreating
                     ? <div className="e-grouping">

@@ -3,7 +3,7 @@ import Page from 'components/Layout/PageLayout';
 
 const Calendar = () => {
     return (
-        <Page title="Calendar" classNameExtension='calendar' />
+        <Page classNameExtension='calendar' />
     )
 };
 

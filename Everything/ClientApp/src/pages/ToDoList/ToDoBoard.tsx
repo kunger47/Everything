@@ -70,7 +70,7 @@ const ToDoBoard = () => {
     };
 
     return (
-        <Page title="To Do" classNameExtension="to-do">
+        <Page title="{Board name here}" classNameExtension="to-do">
             <DragDropContext onDragEnd={onDragEnd}>
                 {columns.map((col: ToDoColumn) =>
                     <Column key={col.id} column={col} reload={loadColumns} />

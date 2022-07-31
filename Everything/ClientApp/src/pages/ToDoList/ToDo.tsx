@@ -134,7 +134,7 @@ const ToDo = () => {
     }
 
     return (
-        <Page title="To Do" classNameExtension="to-do">
+        <Page classNameExtension="to-do">
             <Col>
                 <Row>
                     {!!selectedFolder && <BackBlock previousFolder={() => previousFolder()} />}

@@ -3,7 +3,7 @@ import React from 'react';
 
 const Spotify = () => {
     return (
-        <Page title="Spotify" classNameExtension='spotify' />
+        <Page classNameExtension='spotify' />
     )
 };
 

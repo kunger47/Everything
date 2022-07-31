@@ -3,7 +3,7 @@ import React from 'react';
 
 const Notes = () => {
     return (
-        <Page title="Notes" classNameExtension='notes'>
+        <Page classNameExtension='notes'>
         </Page>
     )
 };

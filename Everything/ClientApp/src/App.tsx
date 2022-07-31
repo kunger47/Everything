@@ -8,6 +8,7 @@ import { RouteItem, Routes } from 'resources/routes';
 const App = () => {
   const [hideNavigation, setHideNavigation] = useState<boolean>(false);
   const [navRoutes, setNavRoutes] = useState<RouteItem[]>([]);
+  const [selectedRoute, setSelectedRoute] = useState<RouteItem>();
   const [routeComponents, setRouteComponents] = useState<JSX.Element[]>([]);
 
   useEffect(() => {
@@ -28,31 +29,32 @@ const App = () => {
     <React.StrictMode>
       <Router>
         {!hideNavigation ?
-          <>
-            <Navbar collapseOnSelect expand="lg" >
-              <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-              <Navbar.Collapse id="responsive-navbar-nav">
-                <Nav defaultActiveKey="/">
-                  {!!(navRoutes.length > 0) && navRoutes.map(r =>
-                    <Nav.Link as={Link} to={`/${r.route}`}>
-                      {r.name}
-                    </Nav.Link>
-                  )}
-                </Nav>
-                <div className="e-hide-navbar">
-                  <Button className={"e-pull-right"} onClick={() => setHideNavigation(true)}>Hide</Button>
-                </div>
-              </Navbar.Collapse>
-            </Navbar>
-          </>
-          : <>
-            <div className="e-hidden-navbar">
-              <span className="e-pull-right" onClick={() => setHideNavigation(false)}>
-                ^
-              </span>
-            </div>
-          </>}
-        <main>
+          <Navbar collapseOnSelect expand="lg" fixed="top">
+            <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+            <Navbar.Collapse id="responsive-navbar-nav">
+              <Nav defaultActiveKey="/">
+                {!!(navRoutes.length > 0) && navRoutes.map(r =>
+                  <Nav.Link
+                    className={`${selectedRoute == r ? 'e-selected-route' : ''}`}
+                    as={Link}
+                    to={`/${r.route}`}
+                    onClick={() => setSelectedRoute(r)}>
+                    <div>{r.abrev}</div>
+                    <div><small>{r.name}</small></div>
+                  </Nav.Link>
+                )}
+              </Nav>
+              <div className="e-hide-navbar">
+                <Button className={"e-pull-right"} onClick={() => setHideNavigation(true)}>Hide</Button>
+              </div>
+            </Navbar.Collapse>
+          </Navbar>
+          : <div className="e-hidden-navbar">
+            <span className="e-pull-right" onClick={() => setHideNavigation(false)}>
+              ^
+            </span>
+          </div>}
+        <main className={`${!hideNavigation ? 'e-navbar-shown' : ''}`}>
           <Switch>
             {!!routeComponents && !!(routeComponents.length > 0)
               && routeComponents.map(route => route)

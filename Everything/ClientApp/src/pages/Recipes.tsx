@@ -3,7 +3,7 @@ import React from 'react';
 
 const Recipes = () => {
     return (
-        <Page title="Recipes" classNameExtension='recipes' />
+        <Page classNameExtension='recipes' />
     )
 };
 

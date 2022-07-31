@@ -8,7 +8,7 @@ interface Props {
     saveUpdate?: (newValue: string) => void;
 }
 
-const Titlebar = (props: Props) => {
+const TitleBar = (props: Props) => {
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const [editableTitle, setEditableTitle] = useState<string>(props.title ?? '');
 
@@ -28,7 +28,7 @@ const Titlebar = (props: Props) => {
     }
 
     return (<>
-        {props.title && <Row className="e-title-bar">
+        {(!!props.title || !!props.saveUpdate) && <Row className="e-title-bar">
             <Col>
                 {(!props.saveUpdate || !isEditing)
                     ? <p className={!!props.saveUpdate ? 'e-clickable' : ''} onClick={() => setIsEditing(true)}>
@@ -47,4 +47,4 @@ const Titlebar = (props: Props) => {
     </>)
 }
 
-export default Titlebar;
+export default TitleBar;

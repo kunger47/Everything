@@ -8,16 +8,16 @@
         height: 100%;
     }
 
-    .navbar {
-        height: 7%;
-    }
-
     .e-title-bar {
-        height: 5%;
+        height: 33px;
     }
 
     main {
-        height: 93%;
+        height: 100%;
+        
+        &.e-navbar-shown{
+            padding-top: 62px;
+        }
     }
 }
 
@@ -45,12 +45,22 @@ body {
 }
 
 .navbar {
-    background-color: $primary;
+    background-color: $light-primary;
+
     .nav-link {
         color: $white !important;
+        background-color: $primary;
+        text-align: center;
+        min-width: 57px;
+        padding: 3px 5px;
+        margin: 0px 3px;
 
-        &:hover {
-            color: $black !important;
+        &:hover, &.e-selected-route {
+            background-color: $light-primary;
+        }
+
+        small {
+            font-size: xx-small;
         }
     }
 

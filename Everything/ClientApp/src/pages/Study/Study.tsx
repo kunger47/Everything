@@ -60,7 +60,7 @@ const Study = () => {
     }
 
     return (
-        <Page title="Study" classNameExtension='study'>
+        <Page classNameExtension='study'>
             <Col className="e-study-categories-column">
                 <Row>
                     <Col className='e-study-categories-title'>

@@ -58,7 +58,7 @@ const TravelLists = () => {
     };
 
     return (
-        <Page title="Packing Items" classNameExtension='travel-lists'>
+        <Page classNameExtension='travel-lists'>
             <DragDropContext onDragEnd={onDragEnd}>
                 <Col>
                     <Droppable droppableId={'0'}>

@@ -38,7 +38,7 @@ const Budgeting = () => {
     }
 
     return (
-        <Page title="Budgeting" classNameExtension='budgeting'>
+        <Page classNameExtension='budgeting'>
             <Col>
                 {budgets.map(b =>
                     <ReactLink to={`/budget?budgetId=${b.id}`} key={b.id}>

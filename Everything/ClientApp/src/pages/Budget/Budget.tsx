@@ -33,7 +33,7 @@ const Budget = () => {
     }
 
     return (
-        <Page title={budget?.name ?? ""} classNameExtension='budgeting'>
+        <Page title={budget?.name ?? ""} classNameExtension='budgeting' saveUpdate={() => { }}>
             {!!budget &&
                 <>
                     <Col className="e-column">
