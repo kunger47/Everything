@@ -141,10 +141,7 @@ const ToDo = () => {
                     {folders.sort((a, b) => a.id - b.id).map((folder: ToDoBoardFolder) =>
                         <FolderBlock key={folder.id} folder={folder} reload={loadFolders} selectFolder={() => setSelectedFolder(folder)} />
                     )}
-                    {boards.sort((a, b) => a.id - b.id).map((board: ToDoBoard) =>
-                        <BoardBlock key={board.id} board={board} reload={loadBoards} />
-                    )}
-                    <Col sm={3} className='e-todo-page-block e-add-board-block'>
+                    <Col sm={3} className='e-todo-page-block e-add-board-block e-folder-block'>
                         {!isAddingFolder
                             ? <p className='e-add-column' onClick={() => setIsAddingFolder(true)}>+</p>
                             : <>
@@ -157,6 +154,9 @@ const ToDo = () => {
                                 />
                             </>}
                     </Col>
+                    {boards.sort((a, b) => a.id - b.id).map((board: ToDoBoard) =>
+                        <BoardBlock key={board.id} board={board} reload={loadBoards} />
+                    )}
                     <Col sm={3} className='e-todo-page-block e-add-board-block'>
                         {!isAddingBoard
                             ? <p className='e-add-column' onClick={() => setIsAddingBoard(true)}>+</p>

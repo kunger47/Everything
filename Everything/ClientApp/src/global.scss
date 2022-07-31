@@ -11,13 +11,13 @@
     .e-title-bar {
         height: 33px;
     }
+}
 
-    main {
-        height: 100%;
-        
-        &.e-navbar-shown{
-            padding-top: 62px;
-        }
+main {
+    height: 100%;
+    
+    &.e-navbar-shown {
+        padding-top: 62px;
     }
 }
 
@@ -36,7 +36,6 @@ body {
 .e-hidden-navbar {
     background-color: $primary;
     width: 100%;
-    color: $white;
     font-weight: bold;
 
     span {
