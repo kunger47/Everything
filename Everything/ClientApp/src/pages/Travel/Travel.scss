@@ -5,15 +5,35 @@
     .e-side-bar {
         max-width: 200px;
         margin: 15px;
+    }
 
-        .e-side-bar-title {
-            text-align: center;
-            border-bottom: solid;
+    .e-packing-items-button {
+        height: 100%;
+
+        .e-travel-block {
+            margin: 7px;
+            padding: 10px;
+            border-radius: 3px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             font-weight: bold;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            a {
+                width: 100%;
+                height: 100%;
+            }
+
+            .e-block-name {
+                overflow-x: hidden;
+                text-overflow: ellipsis;
+            }
         }
     }
 
-    .e-travel-block {
+    .e-travel-page-block {
         margin: 2% 4%;
         padding: 10px;
         border-radius: 3px;
@@ -22,9 +42,29 @@
         width: 100%;
         font-weight: bold;
 
-        .e-block-name {
+        &.e-folder-block {
+            background-color: $old-yellow;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19), 10px -10px 0 -3px $grey, 10px -10px $grey;
+        }
+
+        &.e-add-trip-block {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+        }
+
+        .e-trip-name {
             overflow-x: hidden;
             text-overflow: ellipsis;
+        }
+
+        .e-select-trip-link {
+            margin-bottom: 0;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            padding: 5px;
         }
     }
 }

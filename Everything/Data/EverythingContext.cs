@@ -45,6 +45,9 @@ namespace everything.Data
             builder.Entity<TravelTag>().ToTable("TravelTags");
             builder.Entity<PackingItem>().ToTable("PackingItems");
             builder.Entity<TagForPackingItem>().ToTable("TagForPackingItems");
+            builder.Entity<TagForTrip>().ToTable("TagForTrips");
+            builder.Entity<Trip>().ToTable("Trips");
+            builder.Entity<TripFolder>().ToTable("TripFolders");
 
             foreach (var relationship in builder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
             {
@@ -88,5 +91,8 @@ namespace everything.Data
         public DbSet<TravelTag> TravelTags { get; set; }
         public DbSet<PackingItem> PackingItems { get; set; }
         public DbSet<TagForPackingItem> TagForPackingItems { get; set; }
+        public DbSet<TagForTrip> TagForTrips { get; set; }
+        public DbSet<Trip> Trips { get; set; }
+        public DbSet<TripFolder> TripFolders { get; set; }
     }
 }

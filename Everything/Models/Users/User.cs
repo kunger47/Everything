@@ -45,5 +45,7 @@ namespace everything.Models
 
         public virtual IEnumerable<TravelTag> TravelTags { get; set; }
         public virtual ICollection<PackingItem> PackingItems { get; set; }
+        public virtual ICollection<Trip> Trips { get; set; }
+        public virtual ICollection<TripFolder> TripFolders { get; set; }
     }
 }

@@ -7,6 +7,7 @@ namespace everything.Models
         public TravelTag()
         {
             PackingItemLinks = new List<TagForPackingItem>();
+            TripLinks = new List<TagForTrip>();
         }
 
         public int Id { get; set; }
@@ -19,5 +20,6 @@ namespace everything.Models
         public virtual User User { get; set; }
 
         public virtual IEnumerable<TagForPackingItem> PackingItemLinks { get; set; }
+        public virtual IEnumerable<TagForTrip> TripLinks { get; set; }
     }
 }

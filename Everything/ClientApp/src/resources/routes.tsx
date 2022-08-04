@@ -19,6 +19,7 @@ import Study from "pages/Study/Study";
 import QuestionCategoryPage from "pages/Study/QuestionCategoryPage";
 import GameBoard from "pages/Study/Game";
 import TravelLists from "pages/Travel/TravelLists";
+import TripPage from "pages/Travel/TripPage";
 
 export type RouteItem = {
   name: string;
@@ -60,6 +61,7 @@ export const Routes: RouteItem[] =
 
     { abrev: 'Tr', name: "Travel", route: "travel", component: Travel, isMainMenuLink: true },
     { abrev: 'Tl', name: "Travel Lists", route: "travellists", component: TravelLists },
+    { abrev: 'Tp', name: "Trip", route: "trip", component: TripPage },
 
     { abrev: 'St', name: "Study", route: "study", component: Study, isMainMenuLink: true },
     { abrev: 'Qc', name: "Question Category", route: "questioncategory", component: QuestionCategoryPage },
