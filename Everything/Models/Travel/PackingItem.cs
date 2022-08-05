@@ -7,6 +7,7 @@ namespace everything.Models
         public PackingItem()
         {
             TagLinks = new List<TagForPackingItem>();
+            TripPackingItems = new List<TripPackingItem>();
         }
 
         public int Id { get; set; }
@@ -21,5 +22,6 @@ namespace everything.Models
         public virtual User User { get; set; }
 
         public virtual ICollection<TagForPackingItem> TagLinks { get; set; }
+        public virtual ICollection<TripPackingItem> TripPackingItems { get; set; }
     }
 }

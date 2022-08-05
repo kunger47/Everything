@@ -23,5 +23,6 @@ namespace everything.Controllers
     public class UpdatePackingItemMessage : BasePackingItemMessage
     {
         public int Id { get; set; }
+        public bool IsActive { get; set; }
     }
 }

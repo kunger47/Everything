@@ -34,7 +34,7 @@ const InlineUpdate = (props: Props) => {
     return (
         <>
             {!isEditing
-                ? <span className={props.className} onClick={() => setIsEditing(true)}>{props.value}</span >
+                ? <span className={props.className} onClick={() => setIsEditing(true)}>{props.value}</span>
                 : <SaveOnBlurInput
                     ref={updateRef}
                     value={props.value}

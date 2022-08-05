@@ -13,6 +13,6 @@ namespace everything.Models
         public int? LiftingWorkoutId { get; set; }
         public virtual LiftingWorkout LiftingWorkout { get; set; }
 
-        public IEnumerable<LiftSet> LiftSets { get; set; }
+        public virtual IEnumerable<LiftSet> LiftSets { get; set; }
     }
 }

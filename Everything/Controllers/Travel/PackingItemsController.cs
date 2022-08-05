@@ -28,6 +28,7 @@ namespace everything.Controllers
         public IActionResult GetAll()
         {
             return Ok(_context.PackingItems
+                .Where(i => i.IsActive)
                 .Select(l => new GetPackingItemMessage
                 {
                     Id = l.Id,
@@ -102,6 +103,7 @@ namespace everything.Controllers
         }
 
         [HttpDelete]
+        [Route("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
             var item = await _context.PackingItems.FirstOrDefaultAsync(p => p.Id == id);

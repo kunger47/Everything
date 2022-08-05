@@ -18,6 +18,6 @@ namespace everything.Models
         public int UserId { get; set; }
         public virtual User User { get; set; }
 
-        public IList<LiftSetLink> LiftSetLinks { get; set; }
+        public virtual IList<LiftSetLink> LiftSetLinks { get; set; }
     }
 }

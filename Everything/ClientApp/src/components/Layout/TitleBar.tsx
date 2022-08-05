@@ -1,46 +1,33 @@
-import Input from 'components/Form/Input';
+import InlineUpdate from 'components/Form/InlineUpdate';
 import React, { useEffect, useRef, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import './TitleBar.scss';
 
 interface Props {
-    title?: string;
+    title?: string | null;
+    titlePlaceholder?: string;
     saveUpdate?: (newValue: string) => void;
 }
 
 const TitleBar = (props: Props) => {
-    const [isEditing, setIsEditing] = useState<boolean>(false);
-    const [editableTitle, setEditableTitle] = useState<string>(props.title ?? '');
-
-    const updateRef = useRef<HTMLInputElement>(null);
-
-    useEffect(() => {
-        isEditing && updateRef.current && updateRef.current.focus();
-    }, [isEditing]);
-
-    useEffect(() => {
-        setEditableTitle(props.title ?? '');
-    }, [props.title]);
-
-    const onSave = () => {
-        !!props.saveUpdate && props.saveUpdate(editableTitle);
-        setIsEditing(false);
+    const onSave = (value: string) => {
+        !!props.saveUpdate && props.saveUpdate(value);
     }
 
     return (<>
         {(!!props.title || !!props.saveUpdate) && <Row className="e-title-bar">
             <Col>
-                {(!props.saveUpdate || !isEditing)
-                    ? <p className={!!props.saveUpdate ? 'e-clickable' : ''} onClick={() => setIsEditing(true)}>
-                        {!!props.title ? props.title : "+ Add a Category Name"}
-                    </p>
-                    : <Input
-                        ref={updateRef}
-                        inputName={'Question'}
-                        value={editableTitle}
-                        handleInputChange={setEditableTitle}
+                {(!props.saveUpdate)
+                    ? <span className={!!props.saveUpdate ? 'e-clickable' : ''}>
+                        {!!props.title ? props.title : props.titlePlaceholder}
+                    </span>
+                    : <InlineUpdate
+                        placeholder={props.titlePlaceholder ?? ''}
+                        // onBlurNoChange={() => setIsEditing(false)}
+                        inputName={'header name'}
+                        value={props.title ?? props.titlePlaceholder ?? ''}
                         onBlur={onSave}
-                        removeBottomMargin />
+                        isRequired />
                 }
             </Col>
         </Row>}

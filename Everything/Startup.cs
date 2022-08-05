@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using Microsoft.EntityFrameworkCore.Proxies;
 
 namespace everything
 {
@@ -35,6 +36,7 @@ namespace everything
 
             services.AddDbContext<EverythingContext>(options =>
             {
+                //options.UseLazyLoadingProxies();
                 options.UseSqlServer(Configuration.GetConnectionString("Default"));
             });
 

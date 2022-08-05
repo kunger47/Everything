@@ -1,21 +1,34 @@
 import Page from 'components/Layout/PageLayout';
 import React, { useEffect, useRef, useState } from 'react';
-import { DragDropContext, DropResult } from 'react-beautiful-dnd';
-import ToDoColumn from 'models/todo/ToDoColumn';
-import todoApi from 'services/apis/todo-api';
-import { Col, Row } from 'react-bootstrap';
-import { handleRawInputChange } from 'services/form-helpers';
+import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { useLocation } from 'react-router-dom';
-import Input from 'components/Form/Input';
-import { copyObject } from 'services/object-helper';
+import TripPackingItem from 'models/travel/TripPackingItem';
+import { sortByNumberPropertyAcsending } from 'services/array-helpers';
+import travelApi from 'services/apis/travel-api';
+import TravelTag from 'models/travel/TravelTag';
+import MultiSelectModel from 'components/Form/multi-select-model';
+import { onSimpleListDragEnd } from 'services/drag-and-drop-helper';
+import { Col, Row } from 'react-bootstrap';
+import TripPackingItemRow from './TripPackingItemRow';
+
+import "./TripPage.scss";
+import Trip from 'models/travel/Trip';
+import MultiSelect from 'components/Form/multi-select';
 
 const TripPage = () => {
     const search = useLocation().search;
     const tripId = new URLSearchParams(search).get('tripId');
+    const [items, setItems] = useState<TripPackingItem[]>([]);
+    const [sortedItems, setSortedItems] = useState<TripPackingItem[]>([]);
+    const [tags, setTags] = useState<TravelTag[]>([]);
+    const [tagOptions, setTagOptions] = useState<MultiSelectModel[]>([]);
+    const [isEditingTags, setIsEditingTags] = useState<boolean>(false);
+    const [selectedTags, setSelectedTags] = useState<MultiSelectModel[]>([]);
 
     const [intTripId, setIntBoard] = useState<number>();
+    const [trip, setTrip] = useState<Trip>(new Trip());
 
-    const addRef = useRef<HTMLInputElement>(null);
+    const updateRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         var id = parseInt(tripId ?? "");
@@ -23,49 +36,111 @@ const TripPage = () => {
             setIntBoard(id);
     }, [tripId]);
 
-    // const onDragEnd = (result: DropResult) => {
-    //     let { destination, source } = result;
+    useEffect(() => {
+        loadPage();
+    }, [intTripId]);
 
-    //     if (!destination)
-    //         return;
-    //     if (destination.droppableId === source.droppableId && destination.index === source.index)
-    //         return;
+    useEffect(() => {
+        setSortedItems(sortByNumberPropertyAcsending(items, 'sequence'));
+    }, [items]);
 
-    //     let arrayCopy = copyObject(columns);
-    //     let columnIndex = arrayCopy.findIndex(c => c.id.toString() === source.droppableId);
-    //     let newColumnIndex = arrayCopy.findIndex(c => c.id.toString() === destination?.droppableId);
-    //     if (columnIndex > -1) {
-    //         let item = arrayCopy[columnIndex].toDoItems.splice(source.index, 1)[0];
-    //         item.sequence = destination.index;
-    //         item.toDoColumnId = destination.droppableId as any as number;
-    //         arrayCopy[newColumnIndex].toDoItems.splice(destination.index, 0, item);
-    //         setColumns(arrayCopy);
-    //         todoApi.updateItem(item, loadColumns);
-    //     }
-    // };
+    useEffect(() => {
+        setTagOptions(tags.map((t) => { return { label: t.name, value: t.id, color: t.colorHexCode ?? undefined }; }));
+    }, [tags]);
+
+    useEffect(() => {
+        isEditingTags && updateRef.current && updateRef.current.focus();
+    }, [isEditingTags]);
+
+    useEffect(() => {
+        var tags = trip.tags.map((t) => { return { label: t.name, value: t.id, color: t.colorHexCode ?? undefined }; });
+        setSelectedTags(tags);
+    }, [trip]);
+
+    const loadPage = () => {
+        getTrip();
+        getTags();
+        getItems();
+    }
+
+    const getTrip = () => {
+        if (!!intTripId)
+            travelApi.getTrip(intTripId, setTrip);
+    }
+
+    const getTags = () => {
+        if (!!intTripId)
+            travelApi.getTags(setTags);
+    }
+
+    const getItems = () => {
+        if (!!intTripId)
+            travelApi.getTripPackingItems(intTripId, setItems);
+    }
+
+    const saveTrip = (name: string) => {
+        travelApi.updateTrip({ ...trip, name: name }, getTrip);
+    }
+
+    const onDragEnd = (result: DropResult) => {
+        var item = onSimpleListDragEnd(result, sortedItems, setSortedItems);
+
+        if (!!item)
+            travelApi.updateTripPackingItem(item, getItems);
+    };
+
+    const saveTripTags = (tagIds: number[]) => {
+        if (!!intTripId)
+            travelApi.updateTagsForTrip(intTripId, tagIds, onSavedTrip);
+    }
+
+    const onSavedTrip = () => {
+        getTrip();
+        getItems();
+    }
 
     return (
-        <Page title="{Trip name here}" classNameExtension="to-do">
-            {/* <DragDropContext onDragEnd={onDragEnd}>
-                {columns.map((col: ToDoColumn) =>
-                    <Column key={col.id} column={col} reload={loadColumns} />
-                )}
-            </DragDropContext> */}
-            <Col className='e-column'>
+        <Page title={trip.name || ''} titlePlaceholder="+ Add Trip Name" saveUpdate={saveTrip} classNameExtension="trip">
+            <Col>
+                <Row className="e-trip-tags">
+                    {!isEditingTags && <span>
+                        {trip.tags.length > 0 && trip.tags.map((t) =>
+                            <span style={{ backgroundColor: t.colorHexCode ?? '' }} className='e-tag-tag e-clickable' onClick={() => setIsEditingTags(true)}>
+                                {t.name}
+                            </span>)}
+                        {trip.tags.length == 0 && <span className='e-tag-tag e-clickable' onClick={() => setIsEditingTags(true)}>
+                            + Tag
+                        </span>}
+                    </span>}
+                    {isEditingTags
+                        && <span className='e-item-field'>
+                            <MultiSelect
+                                label=''
+                                showSelectedOptions
+                                noCloseOnSelect
+                                onChange={saveTripTags}
+                                value={selectedTags}
+                                options={tagOptions}
+                                groupClass="e-no-bottom-margin"
+                                onBlur={() => setIsEditingTags(false)} />
+                        </span>
+                    }
+                </Row>
                 <Row>
-                    {/* <Col className='e-column-title'>
-                        {!isAddingColumn
-                            ? <p className='e-add-column' onClick={() => setIsAddingColumn(true)}>Add +</p>
-                            : <>
-                                <Input
-                                    ref={addRef}
-                                    value={newColumn.name ?? undefined}
-                                    inputName={"newColumnName"}
-                                    handleInputChange={handleRawInputChange([newColumn, setNewColumn], "name")}
-                                    onBlur={saveColumn}
-                                />
-                            </>}
-                    </Col> */}
+                    <DragDropContext onDragEnd={onDragEnd}>
+                        <Col>
+                            <Droppable droppableId={'0'}>
+                                {provided => (
+                                    <div className='row e-column-items-container' ref={provided.innerRef} {...provided.droppableProps}>
+                                        {sortedItems.length > 0 && sortedItems.map((i, index) => {
+                                            return <TripPackingItemRow key={i.id} index={index} item={i} tagOptions={tagOptions} reload={getItems} />
+                                        })}
+                                        {provided.placeholder}
+                                    </div>
+                                )}
+                            </Droppable>
+                        </Col>
+                    </DragDropContext>
                 </Row>
             </Col>
         </Page>

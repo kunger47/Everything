@@ -100,7 +100,7 @@ const GameBoard = () => {
     }
 
     return (
-        <Page title={game.name ?? "loading..."} classNameExtension="study" saveUpdate={() => { }}>
+        <Page title={game.name ?? "loading..."} titlePlaceholder="+ Add Game Name" classNameExtension="study" saveUpdate={() => { }}>
             <GamePlayersColumn
                 players={sortedPlayersByMoney}
                 gameId={intGameId}

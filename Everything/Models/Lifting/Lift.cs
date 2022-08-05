@@ -24,7 +24,7 @@ namespace everything.Models
         public int LiftTypeId { get; set; }
         public virtual LiftType LiftType { get; set; }
 
-        public IEnumerable<MuscleGroupForLift> MuscleGroupLinks { get; set; }
-        public IEnumerable<LiftSetLink> LiftSetLinks { get; set; }
+        public virtual IEnumerable<MuscleGroupForLift> MuscleGroupLinks { get; set; }
+        public virtual IEnumerable<LiftSetLink> LiftSetLinks { get; set; }
     }
 }

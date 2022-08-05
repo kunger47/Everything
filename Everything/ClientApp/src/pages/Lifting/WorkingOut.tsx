@@ -39,7 +39,7 @@ const WorkingOut = () => {
     }
 
     return (
-        <Page title="{Workout name here}" classNameExtension='workingout'>
+        <Page title="{Workout name here}" titlePlaceholder="+ Add Workout Name" classNameExtension='workingout'>
             {setLinks.length > 0 &&
                 <>
                     <Col md={2} className="e-sidebar">

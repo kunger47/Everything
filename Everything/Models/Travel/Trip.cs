@@ -7,6 +7,7 @@ namespace everything.Models
         public Trip()
         {
             TagLinks = new List<TagForTrip>();
+            TripPackingItems = new List<TripPackingItem>();
         }
 
         public int Id { get; set; }
@@ -21,5 +22,6 @@ namespace everything.Models
         public virtual TripFolder Folder { get; set; }
 
         public virtual ICollection<TagForTrip> TagLinks { get; set; }
+        public virtual ICollection<TripPackingItem> TripPackingItems { get; set; }
     }
 }

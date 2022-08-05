@@ -8,40 +8,39 @@ using System.Linq;
 
 namespace everything.Core
 {
-    public class PackingItemUpdater
+    public class TripPackingItemUpdater
     {
         readonly EverythingContext _context;
 
-        public PackingItemUpdater(EverythingContext context)
+        public TripPackingItemUpdater(EverythingContext context)
         {
             _context = context;
         }
 
-        public void AddPackingItem(CreatePackingItemMessage message)
+        public void AddTripPackingItem(CreateTripPackingItemMessage message)
         {
-            var user = GetUser();
-            var newItem = new PackingItem();
-            newItem.IsActive = true;
+            var trip = Getrip();
+            var newItem = new TripPackingItem();
             UpdateItemFromMessage(newItem, message);
-            user.PackingItems.Add(newItem);
-            ResequenceItemsAfterAdd(message, user);
+            trip.TripPackingItems.Add(newItem);
+            ResequenceItemsAfterAdd(message, trip);
         }
 
-        public void UpdatePackingItem(UpdatePackingItemMessage message)
+        public void UpdateTripPackingItem(UpdateTripPackingItemMessage message)
         {
-            var selectedItem = GetPackingItem(message.Id);
-            var user = GetUser();
+            var selectedItem = GetTripPackingItem(message.Id);
+            var trip = Getrip();
             if (selectedItem != null)
             {
                 var originalSequence = selectedItem.Sequence;
                 UpdateItemFromMessage(selectedItem, message);
-                ResequenceItemsAfterUpdate(message, user, originalSequence);
+                ResequenceItemsAfterUpdate(message, trip, originalSequence);
             }
         }
 
-        //public void RemovePackingItem(int itemId)
+        //public void RemoveTripPackingItem(int itemId)
         //{
-        //    var selectedItem = GetPackingItem(itemId);
+        //    var selectedItem = GetTripPackingItem(itemId);
 
         //    if (selectedItem != null)
         //    {
@@ -52,24 +51,22 @@ namespace everything.Core
         //    }
         //}
 
-        private PackingItem GetPackingItem(int itemId)
+        private TripPackingItem GetTripPackingItem(int itemId)
         {
-            return _context.PackingItems
-                .Include(i => i.User)
-                    .ThenInclude(c => c.PackingItems)
+            return _context.TripPackingItems
+                //.Include(i => i.Trip)
+                //    .ThenInclude(c => c.TripPackingItems)
                 .FirstOrDefault(i => i.Id == itemId);
         }
 
-        private void UpdateItemFromMessage(PackingItem item, BasePackingItemMessage message)
+        private void UpdateItemFromMessage(TripPackingItem item, SequencedTripPackingItemMessage message)
         {
-            item.Name = message.Name;
             item.Sequence = message.Sequence;
-            item.Description = message.Description;
         }
 
-        private void ResequenceItemsAfterAdd(BasePackingItemMessage message, User user)
+        private void ResequenceItemsAfterAdd(SequencedTripPackingItemMessage message, Trip trip)
         {
-            var itemList = user.PackingItems.ToList();
+            var itemList = trip.TripPackingItems.ToList();
 
             foreach (var item in itemList.Where(t => t.Id != 0))
                 if (item.Sequence >= message.Sequence)
@@ -78,11 +75,11 @@ namespace everything.Core
             ResequenceGivenItems(itemList);
         }
 
-        private void ResequenceItemsAfterUpdate(UpdatePackingItemMessage message, User user, int originalSequence)
+        private void ResequenceItemsAfterUpdate(UpdateTripPackingItemMessage message, Trip trip, int originalSequence)
         {
             if (originalSequence != message.Sequence)
             {
-                var itemList = user.PackingItems.ToList();
+                var itemList = trip.TripPackingItems.ToList();
 
                 if (originalSequence >= message.Sequence)
                     HandleMovingItemUp(message, itemList);
@@ -91,7 +88,7 @@ namespace everything.Core
             }
         }
 
-        private void HandleMovingItemUp(UpdatePackingItemMessage message, List<PackingItem> itemList)
+        private void HandleMovingItemUp(UpdateTripPackingItemMessage message, List<TripPackingItem> itemList)
         {
             foreach (var item in itemList.Where(t => t.Id != message.Id))
                 if (item.Sequence >= message.Sequence)
@@ -100,7 +97,7 @@ namespace everything.Core
             ResequenceGivenItems(itemList);
         }
 
-        private void HandleMovingItemDown(UpdatePackingItemMessage message, List<PackingItem> itemList)
+        private void HandleMovingItemDown(UpdateTripPackingItemMessage message, List<TripPackingItem> itemList)
         {
             foreach (var item in itemList.Where(t => t.Id != message.Id))
                 if (item.Sequence <= message.Sequence)
@@ -109,7 +106,7 @@ namespace everything.Core
             ResequenceGivenItems(itemList);
         }
 
-        private void ResequenceGivenItems(List<PackingItem> itemList)
+        private void ResequenceGivenItems(List<TripPackingItem> itemList)
         {
             if (itemList != null)
             {
@@ -127,14 +124,14 @@ namespace everything.Core
         //    ResequenceGivenItems(itemList);
         //}
 
-        private User GetUser()
+        private Trip Getrip()
         {
-            var user = _context.Users
-                .Include(c => c.PackingItems)
+            var trip = _context.Trips
+                .Include(c => c.TripPackingItems)
                 .FirstOrDefault();
-            if (user == null)
+            if (trip == null)
                 throw new Exception();
-            return user;
+            return trip;
         }
     }
 }

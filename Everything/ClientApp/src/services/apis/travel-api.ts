@@ -2,6 +2,7 @@ import PackingItem from "models/travel/PackingItem";
 import TravelTag from "models/travel/TravelTag";
 import Trip from "models/travel/Trip";
 import TripFolder from "models/travel/TripFolder";
+import TripPackingItem from "models/travel/TripPackingItem";
 import Api from "../api";
 
 class TravelApi {
@@ -27,6 +28,10 @@ class TravelApi {
         return Api.post({ url: `https://localhost:44340/trips`, body: data, onSuccess });
     }
 
+    getTrip(id: number, onSuccess: (result: Trip) => void) {
+        return Api.callApi({ url: `https://localhost:44340/trips/${id}`, onSuccess });
+    }
+
     getTrips(onSuccess: (result: Trip[]) => void) {
         return Api.callApi({ url: `https://localhost:44340/trips`, onSuccess });
     }
@@ -39,8 +44,29 @@ class TravelApi {
         return Api.put({ url: `https://localhost:44340/trips`, body: data, onSuccess });
     }
 
+    updateTagsForTrip(id: number, data: number[], onSuccess: () => void) {
+        return Api.put({ url: `https://localhost:44340/trips/tags/${id}`, body: data, onSuccess });
+    }
+
     removeTrip(tripId: number, onSuccess: () => void) {
         return Api.delete({ url: `https://localhost:44340/trips/${tripId}`, onSuccess });
+    }
+
+    //TripPackingItems
+    createTripPackingItem(data: TripPackingItem, onSuccess: () => void) {
+        return Api.post({ url: `https://localhost:44340/trippackingitems`, body: data, onSuccess });
+    }
+
+    getTripPackingItems(tripId: number, onSuccess: (result: TripPackingItem[]) => void) {
+        return Api.callApi({ url: `https://localhost:44340/trippackingitems/${tripId}`, onSuccess });
+    }
+
+    updateTripPackingItem(data: TripPackingItem, onSuccess: () => void) {
+        return Api.put({ url: `https://localhost:44340/trippackingitems`, body: data, onSuccess });
+    }
+
+    removeTripPackingItem(id: number, onSuccess: () => void) {
+        return Api.delete({ url: `https://localhost:44340/trippackingitems/${id}`, onSuccess });
     }
 
     //PackingItems

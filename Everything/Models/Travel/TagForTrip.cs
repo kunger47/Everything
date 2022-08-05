@@ -8,6 +8,6 @@ namespace everything.Models
         public virtual Trip Trip { get; set; }
 
         public int TravelTagId { get; set; }
-        public TravelTag TravelTag { get; set; }
+        public virtual TravelTag TravelTag { get; set; }
     }
 }

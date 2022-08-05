@@ -2,6 +2,8 @@ using everything.Data;
 using everything.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -19,7 +21,7 @@ namespace everything.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> GetAll()
         {
             return Ok(await _context.Trips
                 .Select(c => new GetTripMessage
@@ -37,6 +39,29 @@ namespace everything.Controllers
                         ColorHexCode = t.TravelTag.ColorHexCode
                     })
                 }).ToListAsync());
+        }
+
+        [HttpGet]
+        [Route("{id:int}")]
+        public IActionResult GetById(int id)
+        {
+            return Ok(_context.Trips
+                .Where(t => t.Id == id)
+                .Select(c => new GetTripMessage
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    Description = c.Description,
+                    FolderId = c.FolderId,
+                    Tags = c.TagLinks.Select(t => new GetTravelTagMessage
+                    {
+                        Id = t.TravelTag.Id,
+                        Name = t.TravelTag.Name,
+                        Description = t.TravelTag.Description,
+                        IsActive = t.TravelTag.IsActive,
+                        ColorHexCode = t.TravelTag.ColorHexCode
+                    })
+                }).FirstOrDefault());
         }
 
         [HttpGet]
@@ -71,7 +96,14 @@ namespace everything.Controllers
                 Name = item.Name,
                 Description = item.Description,
                 UserId = _context.Users.First().Id,
-                FolderId = item.FolderId
+                FolderId = item.FolderId,
+                TripPackingItems = _context.PackingItems
+                    .Where(pi => pi.TagLinks.Count() == 0)
+                    .Select(pi => new TripPackingItem
+                    {
+                        PackingItem = pi,
+                        Sequence = pi.Sequence
+                    }).ToList()
             };
 
             _context.Add(board);
@@ -82,13 +114,89 @@ namespace everything.Controllers
         [HttpPut]
         public async Task<IActionResult> Update(UpdateTripMessage item)
         {
-            var board = await _context.Trips.FirstOrDefaultAsync(p => p.Id == item.Id);
+            var trip = await _context.Trips.FirstOrDefaultAsync(p => p.Id == item.Id);
 
-            board.Name = item.Name;
-            board.Description = item.Description;
-            board.FolderId = item.FolderId;
+            trip.Name = item.Name;
+            trip.Description = item.Description;
+            trip.FolderId = item.FolderId;
 
             await _context.SaveChangesAsync();
+            return Ok(true);
+        }
+
+        [HttpPut]
+        [Route("tags/{id:int}")]
+        public async Task<IActionResult> UpdateTags(int id, IEnumerable<int> tagIds)
+        {
+            var theTrip = _context.Trips
+                .Include(p => p.TagLinks)
+                    .ThenInclude(l => l.TravelTag)
+                .Include(t => t.TripPackingItems)
+                    .ThenInclude(i => i.PackingItem)
+                .FirstOrDefault(l => l.Id == id);
+
+            if (theTrip == null)
+                throw new Exception("Trip doesn't exist");
+
+            var itemsTagLinks = theTrip.TagLinks;
+
+            var tagsToRemove = new List<int>();
+            foreach (var tagId in itemsTagLinks.Select(l => l.TravelTag.Id))
+                if (!tagIds.Contains(tagId))
+                    tagsToRemove.Add(tagId);
+
+            foreach (var tagId in tagsToRemove)
+            {
+                var tagLink = itemsTagLinks.FirstOrDefault(l => l.TravelTagId == tagId);
+                _context.TagForTrips.Remove(tagLink);
+            }
+
+            var itemsTags = itemsTagLinks.Select(l => l.TravelTagId);
+            var tagsToAdd = new List<int>();
+            foreach (var tagId in tagIds)
+                if (!itemsTags.Contains(tagId))
+                    tagsToAdd.Add(tagId);
+
+            foreach (var tagId in tagsToAdd)
+                itemsTagLinks.Add(new TagForTrip { TripId = id, TravelTagId = tagId });
+
+            await _context.SaveChangesAsync();
+
+            var tripsPackingItems = theTrip.TripPackingItems;
+            var itemsAlreadyInTrip = tripsPackingItems.Select(i => i.PackingItem);
+            var currentSequenceNumber = tripsPackingItems.Select(i => i.Sequence).Max();
+            var itemsToAddToTrip = new List<TripPackingItem>();
+            var usersPackingItems = _context.PackingItems
+                .Include(i => i.TagLinks)
+                    .ThenInclude(l => l.TravelTag)
+                .Where(i => i.UserId == 1);
+
+            foreach (var item in usersPackingItems)
+            {
+                if (!itemsAlreadyInTrip.Any(i => i.Id == item.Id))
+                {
+                    foreach (var tag in item.TagLinks.Select(l => l.TravelTag))
+                    {
+                        if (item.TagLinks.Select(l => l.TravelTag).Any(t => t.Id == tag.Id))
+                        {
+                            currentSequenceNumber++;
+                            itemsToAddToTrip.Add(new TripPackingItem
+                            {
+                                PackingItem = item,
+                                Sequence = currentSequenceNumber
+                            });
+                        }
+                    }
+                }
+            }
+
+            foreach (var item in itemsToAddToTrip)
+            {
+                theTrip.TripPackingItems.Add(item);
+            }
+
+            await _context.SaveChangesAsync();
+
             return Ok(true);
         }
 
@@ -102,7 +210,7 @@ namespace everything.Controllers
             //{
             //    _context.TagForTrips.Remove(link);
             //}
-            //_context.Trips.Remove(trip);
+            _context.Trips.Remove(trip);
 
             await _context.SaveChangesAsync();
             return NoContent();
