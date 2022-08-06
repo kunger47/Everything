@@ -47,6 +47,31 @@ namespace everything.Controllers
                 }));
         }
 
+        [HttpGet]
+        [Route("notincludedintrip/{tripid:int}")]
+        public IActionResult GetAllNotIncludedInTrip(int tripId)
+        {
+            return Ok(_context.PackingItems
+                .Where(i => i.IsActive)
+                .Where(i => !i.TripPackingItems.Any(i => i.TripId == tripId))
+                .Select(l => new GetPackingItemMessage
+                {
+                    Id = l.Id,
+                    Name = l.Name,
+                    IsActive = l.IsActive,
+                    Description = l.Description,
+                    Sequence = l.Sequence,
+                    Tags = l.TagLinks.Select(t => new GetTravelTagMessage
+                    {
+                        Id = t.TravelTag.Id,
+                        Name = t.TravelTag.Name,
+                        Description = t.TravelTag.Description,
+                        IsActive = t.TravelTag.IsActive,
+                        ColorHexCode = t.TravelTag.ColorHexCode
+                    })
+                }));
+        }
+
         [HttpPost]
         public async Task<IActionResult> Create(CreatePackingItemMessage item)
         {
@@ -98,6 +123,21 @@ namespace everything.Controllers
                 itemsTagLinks.Add(new TagForPackingItem { PackingItemId = itemId, TravelTagId = tagId });
 
 
+            await _context.SaveChangesAsync();
+            return Ok(true);
+        }
+
+        [HttpPut]
+        [Route("{id:int}/addtotrip/{tripId:int}")]
+        public async Task<IActionResult> Update(int id, int tripId)
+        {
+            var currentMaxSequence = _context.TripPackingItems?.Select(i => i.Sequence).Max() ?? 0;
+            _context.TripPackingItems.Add(new TripPackingItem
+            {
+                PackingItemId = id,
+                TripId = tripId,
+                Sequence = currentMaxSequence + 1
+            });
             await _context.SaveChangesAsync();
             return Ok(true);
         }

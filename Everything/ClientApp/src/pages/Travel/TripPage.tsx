@@ -14,6 +14,7 @@ import TripPackingItemRow from './TripPackingItemRow';
 import "./TripPage.scss";
 import Trip from 'models/travel/Trip';
 import MultiSelect from 'components/Form/multi-select';
+import PackingItem from 'models/travel/PackingItem';
 
 const TripPage = () => {
     const search = useLocation().search;
@@ -24,6 +25,9 @@ const TripPage = () => {
     const [tagOptions, setTagOptions] = useState<MultiSelectModel[]>([]);
     const [isEditingTags, setIsEditingTags] = useState<boolean>(false);
     const [selectedTags, setSelectedTags] = useState<MultiSelectModel[]>([]);
+
+    const [showUnused, setShowUnused] = useState<boolean>(false);
+    const [unusedPackingItems, setUnusedPackingItems] = useState<PackingItem[]>([]);
 
     const [intTripId, setIntBoard] = useState<number>();
     const [trip, setTrip] = useState<Trip>(new Trip());
@@ -61,6 +65,7 @@ const TripPage = () => {
         getTrip();
         getTags();
         getItems();
+        getUnusedPackingItems();
     }
 
     const getTrip = () => {
@@ -76,6 +81,11 @@ const TripPage = () => {
     const getItems = () => {
         if (!!intTripId)
             travelApi.getTripPackingItems(intTripId, setItems);
+    }
+
+    const getUnusedPackingItems = () => {
+        if (!!intTripId)
+            travelApi.getUnusedPackingItemsForTrip(intTripId, setUnusedPackingItems);
     }
 
     const saveTrip = (name: string) => {
@@ -142,6 +152,26 @@ const TripPage = () => {
                         </Col>
                     </DragDropContext>
                 </Row>
+                <Row>
+                    <Col className="e-section-title e-clickable" onClick={() => setShowUnused(!showUnused)}>
+                        <span>{showUnused ? 'Unused Items' : 'Show Unused Items'}</span>
+                    </Col>
+                </Row>
+                {showUnused && <Row>
+                    {unusedPackingItems.length > 0 && unusedPackingItems.map((item, index) => {
+                        return <Row className='e-item-block'>
+                            <Col>
+                                <span className='e-item-field'>
+                                    {item.name ?? ''}
+                                </span>
+                                {item.tags.length > 0 && item.tags.map((t) =>
+                                    <span style={{ backgroundColor: t.colorHexCode ?? '' }} className='e-tag-tag e-clickable'>
+                                        {t.name}
+                                    </span>)}
+                            </Col>
+                        </Row>
+                    })}
+                </Row>}
             </Col>
         </Page>
     )

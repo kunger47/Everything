@@ -90,6 +90,10 @@ class TravelApi {
         return Api.delete({ url: `https://localhost:44340/packingitems/${id}`, onSuccess });
     }
 
+    getUnusedPackingItemsForTrip(tripId: number, onSuccess: (result: PackingItem[]) => void) {
+        return Api.callApi({ url: `https://localhost:44340/packingitems/notincludedintrip/${tripId}`, onSuccess });
+    }
+
     //Tags
     getTags(onSuccess: (result: TravelTag[]) => void) {
         return Api.callApi({ url: `https://localhost:44340/traveltags`, onSuccess });

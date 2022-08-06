@@ -138,61 +138,80 @@ namespace everything.Controllers
             if (theTrip == null)
                 throw new Exception("Trip doesn't exist");
 
-            var itemsTagLinks = theTrip.TagLinks;
+            var tripTagLinks = theTrip.TagLinks;
 
             var tagsToRemove = new List<int>();
-            foreach (var tagId in itemsTagLinks.Select(l => l.TravelTag.Id))
+            foreach (var tagId in tripTagLinks.Select(l => l.TravelTag.Id))
                 if (!tagIds.Contains(tagId))
                     tagsToRemove.Add(tagId);
 
             foreach (var tagId in tagsToRemove)
             {
-                var tagLink = itemsTagLinks.FirstOrDefault(l => l.TravelTagId == tagId);
+                var tagLink = tripTagLinks.FirstOrDefault(l => l.TravelTagId == tagId);
                 _context.TagForTrips.Remove(tagLink);
             }
 
-            var itemsTags = itemsTagLinks.Select(l => l.TravelTagId);
+            var itemsTags = tripTagLinks.Select(l => l.TravelTagId);
             var tagsToAdd = new List<int>();
             foreach (var tagId in tagIds)
                 if (!itemsTags.Contains(tagId))
                     tagsToAdd.Add(tagId);
 
             foreach (var tagId in tagsToAdd)
-                itemsTagLinks.Add(new TagForTrip { TripId = id, TravelTagId = tagId });
+                tripTagLinks.Add(new TagForTrip { TripId = id, TravelTagId = tagId });
 
             await _context.SaveChangesAsync();
 
+            var theUpdatedTrip = _context.Trips
+                .Include(p => p.TagLinks)
+                    .ThenInclude(l => l.TravelTag)
+                .Include(t => t.TripPackingItems)
+                    .ThenInclude(i => i.PackingItem)
+                .FirstOrDefault(l => l.Id == id);
+
             var tripsPackingItems = theTrip.TripPackingItems;
             var itemsAlreadyInTrip = tripsPackingItems.Select(i => i.PackingItem);
-            var currentSequenceNumber = tripsPackingItems.Select(i => i.Sequence).Max();
-            var itemsToAddToTrip = new List<TripPackingItem>();
+            var currentSequenceNumber = tripsPackingItems.Count > 0 ? tripsPackingItems.Select(i => i.Sequence).Max() : -1;
+            var tripTags = theUpdatedTrip.TagLinks.Select(l => l.TravelTag);
+
             var usersPackingItems = _context.PackingItems
                 .Include(i => i.TagLinks)
                     .ThenInclude(l => l.TravelTag)
                 .Where(i => i.UserId == 1);
 
+            var itemsToAddToTrip = new List<TripPackingItem>();
             foreach (var item in usersPackingItems)
             {
                 if (!itemsAlreadyInTrip.Any(i => i.Id == item.Id))
                 {
+                    var foundAllTags = true;
                     foreach (var tag in item.TagLinks.Select(l => l.TravelTag))
                     {
-                        if (item.TagLinks.Select(l => l.TravelTag).Any(t => t.Id == tag.Id))
+                        if (tripTags != null && tripTags.Any(t => t.Id == tag.Id))
                         {
+                            foundAllTags = foundAllTags && true;
                             currentSequenceNumber++;
-                            itemsToAddToTrip.Add(new TripPackingItem
-                            {
-                                PackingItem = item,
-                                Sequence = currentSequenceNumber
-                            });
                         }
+                        else
+                        {
+                            foundAllTags = false;
+                        }
+                    }
+
+                    if (foundAllTags)
+                    {
+                        itemsToAddToTrip.Add(new TripPackingItem
+                        {
+                            PackingItem = item,
+                            Sequence = currentSequenceNumber
+                        });
                     }
                 }
             }
 
             foreach (var item in itemsToAddToTrip)
             {
-                theTrip.TripPackingItems.Add(item);
+                theUpdatedTrip.TripPackingItems.Add(item);
             }
 
             await _context.SaveChangesAsync();
